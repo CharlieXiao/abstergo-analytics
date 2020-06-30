@@ -1,0 +1,73 @@
+.ab-header{
+    background-color: white!important;
+    padding:0!important;
+    box-shadow: 0 4px 10px 0 rgba(0,21,41,.08);
+}
+
+.ab-sider{
+    box-shadow: 6px 0px 10px 0 rgba(0,21,41,.08);
+}
+
+.ab-container{
+    margin: 24px;
+}
+
+.ab-footer{
+    text-align: center;
+}
+
+.ab-logo-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 64px;
+    padding-left: 24px;
+    /* background-color: #fafafa; */
+    user-select: none;
+    box-shadow: 0px 0px 10px 0 #e8e8e8;
+}
+
+.ab-logo-img{
+    height: 32px;
+    /* animation: logo-rotate 3s linear infinite normal; */
+}
+
+/* @keyframes logo-rotate{
+	0%{
+		transform: rotate(0deg);
+	}
+	100%{
+		transform: rotate(360deg);
+	}
+} */
+
+.ab-logo-text{
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-left: 20px;
+    font-family: Avenir,-apple-system,BlinkMacSystemFont,segoe ui,Roboto,helvetica neue,Arial,noto sans,sans-serif,apple color emoji,segoe ui emoji,segoe ui symbol,noto color emoji,sans-serif;
+}
+
+.ab-collapsed{
+    font-size: 20px;
+    padding: 22px 24px;
+}
+
+.ab-collapsed:hover{
+    color: #1890ff;
+}
+
+.ab-menu{
+    margin: 6px 0 !important;
+    border: none !important;
+}
+
+.ab-loading{
+    text-align: center;
+}
+
+.ab-card{
+    background-color: white;
+    padding: 10px;
+    box-shadow: 0 0 10px 0 rgb(0,0,0,.15);
+}
