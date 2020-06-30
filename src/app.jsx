@@ -1,15 +1,19 @@
 import React from 'react'
-import PageRouter from './component/pagerouter'
 import PageLayout from './component/layout'
-import { HashRouter as Router } from 'react-router-dom'
-import Home from './pages/home'
+import {
+    Switch, Route, HashRouter as Router
+} from 'react-router-dom'
+import Home from './home/index'
 
-const App = ()=>{
+const App = () => {
     return (
         <Router>
-            <PageLayout>
-                <PageRouter/>
-            </PageLayout>
+            <Switch>
+                {/* 路由到首页 */}
+                <Route component={Home} path='/' exact />
+                {/* 其他路径都换转到内容页面 */}
+                <Route component={PageLayout} />
+            </Switch>
         </Router>
     )
 }

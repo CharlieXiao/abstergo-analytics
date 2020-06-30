@@ -1,24 +1,33 @@
 import React from 'react'
-import {
-    Switch, Route
-} from 'react-router-dom'
-
-import {RouteConfig} from '../utils/config'
+import {Route,Switch} from 'react-router-dom'
 import NotFound from '../pages/404'
-import Home from '../pages/home'
+import Dashboard from '../pages/dashboard'
+import CityAvgPrice from '../pages/city/avgprice'
+import CityMinPrice from '../pages/city/minprice'
+import CityLineNum from '../pages/city/linenum'
+import FlightPlane from '../pages/flight/plane'
+import FlightAvgPrice from '../pages/flight/avgprice'
+import FlightLineNum from '../pages/flight/linenum'
+import CoronaLineNum from '../pages/corona/linenum'
+import CoronaPrice from '../pages/corona/price'
+import Trivial from '../pages/trivial'
 
 const PageRouter = ()=>{
     return (
         <Switch>
-            <Route component={Home} path="/" exact/>
-            {RouteConfig.map((route,index)=>{
-                return (
-                    <Route key={index} component={route.component} path={route.path} exact={route.exact} />
-                );
-            })}
+            <Route path="/dashboard" component={Dashboard}  exact/>
+            <Route path="/city/minprice" component={CityMinPrice} exact/>
+            <Route path="/city/avgprice" component={CityAvgPrice} exact/>
+            <Route path="/city/linenum" component={CityLineNum} exact/>
+            <Route path="/flight/avgprice" component={FlightAvgPrice} exact/>
+            <Route path="/flight/plane" component={FlightPlane} exact/>
+            <Route path="/flight/linenum" component={FlightLineNum} exact/>
+            <Route path="/corona/price" component={CoronaPrice} exact/>
+            <Route path="/corona/linenum" component={CoronaLineNum} exact/>
+            <Route path="/trivial" component={Trivial} exact/>
             <Route component={NotFound}/>
         </Switch>
-    );
+    )
 }
 
-export default PageRouter;
+export default PageRouter

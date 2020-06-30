@@ -1,11 +1,11 @@
 import React from 'react';
 import TweenOne from 'rc-tween-one';
 import { Menu } from 'antd';
-import { getChildrenToRender } from '../utils/utils';
+import { getChildrenToRender } from './utils';
 
 const { Item, SubMenu } = Menu;
 
-class Header3 extends React.Component {
+class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -25,7 +25,9 @@ class Header3 extends React.Component {
     const { phoneOpen } = this.state;
     const navData = dataSource.Menu.children;
     const navChildren = navData.map((item) => {
+      // children:a 取别名，转换成其他形式
       const { children: a, subItem, ...itemProps } = item;
+      // 当存在有子选项时
       if (subItem) {
         return (
           <SubMenu
@@ -34,12 +36,12 @@ class Header3 extends React.Component {
             title={
               <div
                 {...a}
-                className={`header3-item-block ${a.className}`.trim()}
+                className={`header0-item-block ${a.className}`.trim()}
               >
                 {a.children.map(getChildrenToRender)}
               </div>
             }
-            popupClassName="header3-item-child"
+            popupClassName="header0-item-child"
           >
             {subItem.map(($item, ii) => {
               const { children: childItem } = $item;
@@ -63,7 +65,8 @@ class Header3 extends React.Component {
       }
       return (
         <Item key={item.name} {...itemProps}>
-          <a {...a} className={`header3-item-block ${a.className}`.trim()}>
+          {/* 跳转连接 */}
+          <a {...a} className={`header0-item-block ${a.className}`.trim()}>
             {a.children.map(getChildrenToRender)}
           </a>
         </Item>
@@ -71,25 +74,34 @@ class Header3 extends React.Component {
     });
     const moment = phoneOpen === undefined ? 300 : null;
     return (
+      // 单元素动效组件
       <TweenOne
+        // 需要替换的组件
         component="header"
         animation={{ opacity: 0, type: 'from' }}
-        {...dataSource.wrapper}
+        className='header0 home-page-wrapper'
+        // {...dataSource.wrapper}
         {...props}
       >
         <div
-          {...dataSource.page}
-          className={`${dataSource.page.className}${phoneOpen ? ' open' : ''}`}
+          // {...dataSource.page}
+          // className={`${dataSource.page.className}${phoneOpen ? ' open' : ''}`}
+          // 当手机访问时转换为列表模式
+          className={`home-page${phoneOpen ? ' open' : ''}`}
         >
           <TweenOne
             animation={{ x: -30, type: 'from', ease: 'easeOutQuad' }}
-            {...dataSource.logo}
+            // {...dataSource.logo}
+            className="header0-logo"
           >
-            <img width="100%" src={dataSource.logo.children} alt="img" />
+            {/* logo设置 */}
+            <img width="100%" src="https://os.alipayobjects.com/rmsportal/mlcYmsRilwraoAe.svg" alt="img" />
           </TweenOne>
+          {/* 手机模式下显示 */}
           {isMobile && (
             <div
-              {...dataSource.mobileMenu}
+              // {...dataSource.mobileMenu}
+              className="header0=mobile-menu"
               onClick={() => {
                 this.phoneClick();
               }}
@@ -100,11 +112,11 @@ class Header3 extends React.Component {
             </div>
           )}
           <TweenOne
-            {...dataSource.Menu}
+            // {...dataSource.Menu}
+            className="header0-menu"
             animation={
               isMobile
                 ? {
-                    x: 0,
                     height: 0,
                     duration: 300,
                     onComplete: (e) => {
@@ -122,7 +134,7 @@ class Header3 extends React.Component {
             <Menu
               mode={isMobile ? 'inline' : 'horizontal'}
               defaultSelectedKeys={['sub0']}
-              theme="light"
+              theme="dark"
             >
               {navChildren}
             </Menu>
@@ -133,4 +145,4 @@ class Header3 extends React.Component {
   }
 }
 
-export default Header3;
+export default Header;
