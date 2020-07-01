@@ -28,7 +28,6 @@ const PageMenu = () => {
     const location = useLocation()
     const [selectKey, setSelectKey] = useState(["5"])
     useEffect(() => {
-        console.log(location.pathname)
         const currPath = location.pathname
         if(PageKeyMapper[currPath]){
             const Pathkey = PageKeyMapper[currPath]
@@ -42,13 +41,12 @@ const PageMenu = () => {
         // setSelectKey([location.pathname])
         // 仅在地址发生变化的时候执行该段代码
     }, [location])
-    console.log(selectKey)
     return (
         <Menu theme="light"
             selectedKeys={selectKey}
             // defaultSelectedKeys={["1"]}
             mode="inline"
-            onSelect={(props)=>{console.log(props);}}>
+            className="ab-menu" >
             <Item icon={<DashboardOutlined/>} key="1" title="Dashboard">
                 <Link to="/dashboard">概览</Link>
             </Item>

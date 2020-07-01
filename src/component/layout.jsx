@@ -6,6 +6,9 @@ import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
 } from '@ant-design/icons'
+import {
+    useHistory
+} from 'react-router-dom'
 import logo from '../img/abstergo.jpg'
 import PageMenu from './menu'
 import PageRouter from './pagerouter'
@@ -15,13 +18,12 @@ const { Header, Sider, Footer, Content } = Layout
 const PageLayout = () => {
     const [collapsed, setCollapsed] = useState(false)
     const [useSider, setUseSider] = useState(document.body.clientWidth > 578 ? true : false)
-
+    const history = useHistory()
     const handleCollapsed = () => {
         setCollapsed(collapsed ? false : true)
     }
 
     const handleBreakPoint = (broken) => {
-        console.log(broken)
         if (broken) {
             setUseSider(false)
             setCollapsed(true)
@@ -43,14 +45,14 @@ const PageLayout = () => {
                 onBreakpoint={handleBreakPoint}
                 breakpoint={"sm"}
                 trigger={null} hidden={!useSider}>
-                <div className="ab-logo-container">
+                <div className="ab-logo-container" onClick={() => { history.push("/") }}>
                     <img src={logo} alt="logo" className="ab-logo-img" />
                     <div className="ab-logo-text" hidden={collapsed}>Abstergo</div>
                 </div>
                 <PageMenu />
             </Sider>
 
-            {!useSider && 
+            {!useSider &&
                 <Drawer visible={!collapsed} onClose={closeDrawer} width={256} placement={"left"} closable={false}>
                     <div className="ab-logo-container">
                         <img src={logo} alt="logo" className="ab-logo-img" />
@@ -69,9 +71,8 @@ const PageLayout = () => {
                                 onClick={handleCollapsed} />
                     }
                 </Header>
-                <Content className="ab-container">
-                    {/* {children} */}
-                    <PageRouter/>
+                <Content>
+                    <PageRouter />
                 </Content>
                 <Footer className="ab-footer">
                     Abstergo Analytics ©2020 | Powered by Ant Design

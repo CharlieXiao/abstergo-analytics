@@ -1,8 +1,36 @@
 import React from 'react'
+import PageHeader from '../../component/pageheader'
+import InputTable from '../../component/inputTable'
 
-const CityAvgPrice = ()=>{
+const routes = [
+    {
+        path: '/',
+        breadcrumbName: '首页',
+    },
+    {
+        breadcrumbName: '城市',
+        menu: [{
+            path: '/city/minprice',
+            title: '城市间平均价格'
+        }, {
+            path: '/city/linenum',
+            title: '城市航班数'
+        }]
+    },
+    {
+        breadcrumbName: '城市间平均价格',
+    },
+];
+
+const CityAvgPrice = () => {
     return (
-        <div>This is CityAvgPrice</div>        
+        <div className="ab-page-header-wrapper">
+            <PageHeader title="城市间平均价格" routes={routes} />
+            <div className="ab-container">
+                This is CityAvgPrice
+            </div>
+            <InputTable/>
+        </div>
     );
 }
 

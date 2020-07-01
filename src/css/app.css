@@ -1,11 +1,14 @@
 .ab-header{
     background-color: white!important;
     padding:0!important;
-    box-shadow: 0 4px 10px 0 rgba(0,21,41,.08);
+    box-shadow: 0 1px 5px 0 rgba(0,21,41,.08);
+    /* 保证阴影正确显示 */
+    z-index: 9;
 }
 
 .ab-sider{
-    box-shadow: 6px 0px 10px 0 rgba(0,21,41,.08);
+    box-shadow: 1px 0px 10px 0 rgba(0,21,41,.08);
+    z-index: 10;
 }
 
 .ab-container{
@@ -14,6 +17,24 @@
 
 .ab-footer{
     text-align: center;
+}
+
+.ab-page-header{
+    background-color: #fff;
+    padding: 16px 24px;
+}
+
+.ab-page-header-heading-title{
+    margin-top: 16px;
+    margin-right: 12px;
+    margin-bottom: 0;
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 32px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .ab-logo-container{

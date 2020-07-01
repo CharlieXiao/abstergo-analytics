@@ -15,7 +15,7 @@ import Trivial from '../pages/trivial'
 const PageRouter = ()=>{
     return (
         <Switch>
-            <Route path="/dashboard" component={Dashboard}  exact/>
+            <Route path="/dashboard" component={Dashboard} exact/>
             <Route path="/city/minprice" component={CityMinPrice} exact/>
             <Route path="/city/avgprice" component={CityAvgPrice} exact/>
             <Route path="/city/linenum" component={CityLineNum} exact/>
