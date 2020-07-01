@@ -11,27 +11,30 @@ import {
 const { SubMenu,Item } = Menu
 
 const PageKeyMapper = {
-    "/dashboard":{key:"1",title:"概览 | Abstergo"},
-    "/city/minprice":{key:"2",title:"城市间航班信息 | Abstergo"},
-    "/city/avgprice":{key:"3",title:"城市平均机票价格 | Abstergo"},
-    "/city/linenum":{key:"4",title:"城市航班数 | Abstergo"},
-    "/flight/avgprice":{key:"5",title:"平均机票价格 | Abstergo"},
-    "/flight/plane":{key:"6",title:"航班飞机偏好 | Abstergo"},
-    "/flight/linenum":{key:"7",title:"各大航空公司航班数 | Abstergo"},
-    "/corona/price":{key:"8",title:"机票价格变化 | Abstergo"},
-    "/corona/linenum":{key:"9",title:"感染人数与航班数 | Abstergo"},
-    "/trivial":{key:"10",title:"你知道吗？ | Abstergo"}
+    "/dashboard":{key:"1",title:"概览 | Abstergo",openKey:""},
+    "/city/minprice":{key:"2",title:"城市间航班信息 | Abstergo",openKey:"city"},
+    "/city/avgprice":{key:"3",title:"城市平均机票价格 | Abstergo",openKey:"city"},
+    "/city/linenum":{key:"4",title:"城市航班数 | Abstergo",openKey:"city"},
+    "/flight/avgprice":{key:"5",title:"平均机票价格 | Abstergo",openKey:"flight"},
+    "/flight/plane":{key:"6",title:"航班飞机偏好 | Abstergo",openKey:"flight"},
+    "/flight/linenum":{key:"7",title:"各大航空公司航班数 | Abstergo",openKey:"flight"},
+    "/corona/price":{key:"8",title:"机票价格变化 | Abstergo",openKey:"corona"},
+    "/corona/linenum":{key:"9",title:"感染人数与航班数 | Abstergo",openKey:"corona"},
+    "/trivial":{key:"10",title:"你知道吗？ | Abstergo",openKey:""}
 }
 
 // 页表menu组件
 const PageMenu = () => {
     const location = useLocation()
-    const [selectKey, setSelectKey] = useState(["5"])
+    const [selectKey, setSelectKey] = useState([])
+    const [openKey,setOpenKey] = useState([])
     useEffect(() => {
         const currPath = location.pathname
         if(PageKeyMapper[currPath]){
             const Pathkey = PageKeyMapper[currPath]
             setSelectKey([Pathkey.key])
+            // 根据路由选择设置打开的菜单
+            setOpenKey([Pathkey.openKey])
             document.title = Pathkey.title
         }else{
             // 路由错误
@@ -44,6 +47,7 @@ const PageMenu = () => {
     return (
         <Menu theme="light"
             selectedKeys={selectKey}
+            openKeys={openKey}
             // defaultSelectedKeys={["1"]}
             mode="inline"
             className="ab-menu" >

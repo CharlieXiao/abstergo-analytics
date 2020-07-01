@@ -9,7 +9,7 @@ import {
 import {
     useHistory
 } from 'react-router-dom'
-import logo from '../img/abstergo.jpg'
+import logo from '../img/abstergo.png'
 import PageMenu from './menu'
 import PageRouter from './pagerouter'
 

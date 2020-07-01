@@ -1,9 +1,10 @@
 import React from 'react';
-import { Button } from 'antd';
+// import { Button } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import QueueAnim from 'rc-queue-anim';
 import TweenOne from 'rc-tween-one';
-import { isImg } from './utils';
+// import { isImg } from './utils';
+import Map from '../component/cityMap'
 
 class Banner extends React.PureComponent {
   render() {
@@ -19,7 +20,7 @@ class Banner extends React.PureComponent {
           delay={200}
           {...dataSource.textWrapper}
         >
-          <div key="title" {...dataSource.title}>
+          {/* <div key="title" {...dataSource.title}>
             {typeof dataSource.title.children === 'string' &&
             dataSource.title.children.match(isImg) ? (
               <img src={dataSource.title.children} width="100%" alt="img" />
@@ -29,10 +30,11 @@ class Banner extends React.PureComponent {
           </div>
           <div key="content" {...dataSource.content}>
             {dataSource.content.children}
-          </div>
-          <Button ghost key="button" {...dataSource.button}>
+          </div> */}
+          <Map/>
+          {/* <Button ghost key="button" {...dataSource.button}>
             {dataSource.button.children}
-          </Button>
+          </Button> */}
         </QueueAnim>
         <TweenOne
           animation={{

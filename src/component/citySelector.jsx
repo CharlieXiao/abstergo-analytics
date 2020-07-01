@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Select } from 'antd';
 
-import cityArray from '../city'
+import {cityArray} from '../city'
 const { Option } = Select;
 
 const CitySelector = ({formDataChange}) => {

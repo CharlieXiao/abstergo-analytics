@@ -1,6 +1,5 @@
 import React,{useState,useEffect} from 'react'
 import PageHeader from '../../component/pageheader'
-import CitySelector from '../../component/citySelector';
 import InputTable from '../../component/inputTable'
 import Map from '../../component/cityMap'
 
@@ -34,8 +33,8 @@ const CityAvgPrice = () => {
             <PageHeader title="城市间平均价格" routes={routes} />
             <div className="ab-container">
                 <InputTable onFormSubmit={setQueryData}/>
+                <Map/>
             </div>
-            <Map/>
         </div>
     );
 }
