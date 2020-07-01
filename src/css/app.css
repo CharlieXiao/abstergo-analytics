@@ -97,6 +97,34 @@
 }
     
 .ab-form-container{
-    padding: 24px;
+    padding: 0 16px 16px 16px;
     background-color: white;
+}
+
+.ab-form-item{
+    margin: 16px 16px 0 0!important;
+}
+
+.ab-form-button{
+    margin-right: 16px;
+}
+
+.ab-home-logo-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 64px;
+    color:rgba(255, 255, 255, 0.65);
+    user-select: none;
+}
+
+.ab-home-logo-img{
+    height: 36px;
+}
+
+.ab-home-logo-text{
+    font-size: 1.5rem;
+    font-weight: 200;
+    margin-left: 20px;
+    font-family: Avenir,-apple-system,BlinkMacSystemFont,segoe ui,Roboto,helvetica neue,Arial,noto sans,sans-serif,apple color emoji,segoe ui emoji,segoe ui symbol,noto color emoji,sans-serif;
 }

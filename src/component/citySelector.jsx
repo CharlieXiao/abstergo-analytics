@@ -6,14 +6,11 @@ import cityArray from '../city'
 const { Option } = Select;
 
 const CitySelector = ({formDataChange}) => {
-
     const onChange = (value)=>{
-        console.log(`selected ${value}`);
         if(formDataChange){
             formDataChange(value)
         }
     }
-    
     // const onBlur = ()=> {
     //     console.log('blur');
     // }

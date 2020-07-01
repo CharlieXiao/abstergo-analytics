@@ -1,7 +1,8 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import PageHeader from '../../component/pageheader'
 import CitySelector from '../../component/citySelector';
 import InputTable from '../../component/inputTable'
+import Map from '../../component/cityMap'
 
 const routes = [
     {
@@ -24,12 +25,17 @@ const routes = [
 ];
 
 const CityAvgPrice = () => {
+    const [queryData,setQueryData] = useState({})
+    useEffect(()=>{
+        console.log(queryData)
+    },[queryData])
     return (
         <div className="ab-page-header-wrapper">
             <PageHeader title="城市间平均价格" routes={routes} />
             <div className="ab-container">
-                <InputTable/>
+                <InputTable onFormSubmit={setQueryData}/>
             </div>
+            <Map/>
         </div>
     );
 }

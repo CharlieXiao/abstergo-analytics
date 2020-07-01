@@ -2,7 +2,7 @@ import React from 'react';
 import TweenOne from 'rc-tween-one';
 import { Menu } from 'antd';
 import { getChildrenToRender } from './utils';
-import abstergo_logo from "../img/abstergo.jpg"
+import logo from "../img/abstergo-white.png"
 
 const { Item, SubMenu } = Menu;
 
@@ -97,9 +97,9 @@ class Header extends React.Component {
           >
             {/* logo设置 */}
             {/* <img width="100%" src={abstergo_logo} alt="img" className="ab-logo-home"/> */}
-            <div className="ab-logo-container">
-              <img src={abstergo_logo} alt="logo" className="ab-logo-img" />
-              <div className="ab-logo-text" >Abstergo</div>
+            <div className="ab-home-logo-container">
+              <img src={logo} alt="logo" className="ab-home-logo-img" />
+              <div className="ab-home-logo-text" >Abstergo</div>
             </div>
           </TweenOne>
           {/* 手机模式下显示 */}
