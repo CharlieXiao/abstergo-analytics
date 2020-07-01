@@ -1,45 +1,47 @@
-import { Form, Input, Button, Select } from 'antd';
+import { Form, Input, Button, Select, DatePicker } from 'antd';
 import React from 'react'
+import CitySelector from './citySelector'
 
+const { RangePicker } = DatePicker;
 const { Option } = Select;
-const layout = {
-  labelCol: {
-    span: 8,
-  },
-  wrapperCol: {
-    span: 16,
-  },
-};
-const tailLayout = {
-  wrapperCol: {
-    offset: 8,
-    span: 16,
-  },
-};
+// 表单布局
+// const layout = {
+//   labelCol: {
+//     span: 8,
+//   },
+//   wrapperCol: {
+//     span: 16,
+//   },
+// };
+
+// const tailLayout = {
+//   wrapperCol: {
+//     offset: 8,
+//     span: 16,
+//   },
+// };
 
 const InputTable = () => {
+  // 获取表单数据信息
   const [form] = Form.useForm();
 
-  const onGenderChange = value => {
-    switch (value) {
-      case 'male':
-        form.setFieldsValue({
-          note: 'Hi, man!',
-        });
-        return;
+  // 数据变化回调函数
 
-      case 'female':
-        form.setFieldsValue({
-          note: 'Hi, lady!',
-        });
-        return;
+  // const onCityChange = value=>{
+  //   form.setFieldsValue()
+  // }
 
-      case 'other':
-        form.setFieldsValue({
-          note: 'Hi there!',
-        });
-    }
-  };
+  const onDeptCityChange = value => {
+    form.setFieldsValue({
+      dep_city: value
+    })
+  }
+
+  const onArrCityChange = value => {
+    form.setFieldsValue({
+      arr_city: value
+    })
+  }
 
   const onFinish = values => {
     console.log(values);
@@ -49,77 +51,36 @@ const InputTable = () => {
     form.resetFields();
   };
 
-  const onFill = () => {
-    form.setFieldsValue({
-      note: 'Hello world!',
-      gender: 'male',
-    });
-  };
-
   return (
-    <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
-      <Form.Item
-        name="note"
-        label="Note"
-        rules={[
-          {
-            required: true,
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        name="gender"
-        label="Gender"
-        rules={[
-          {
-            required: true,
-          },
-        ]}
-      >
-        <Select
-          placeholder="Select a option and change input text above"
-          onChange={onGenderChange}
-          allowClear
-        >
-          <Option value="male">male</Option>
-          <Option value="female">female</Option>
-          <Option value="other">other</Option>
-        </Select>
-      </Form.Item>
-      <Form.Item
-        noStyle
-        shouldUpdate={(prevValues, currentValues) => prevValues.gender !== currentValues.gender}
-      >
-        {({ getFieldValue }) =>
-          getFieldValue('gender') === 'other' ? (
-            <Form.Item
-              name="customizeGender"
-              label="Customize Gender"
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          ) : null
-        }
-      </Form.Item>
-      <Form.Item {...tailLayout}>
-        <Button type="primary" htmlType="submit">
-          Submit
+    <div className="ab-form-container">
+      <Form form={form} 
+            // 表单名称
+            name="cityminprice" 
+            // 结束回调函数
+            onFinish={onFinish} 
+            layout="inline" 
+            // 隐藏必须输入标记
+            hideRequiredMark>
+        <Form.Item name="dep_city" label="出发城市" rules={[{ required: true }]}>
+          <CitySelector formDataChange={onDeptCityChange} />
+        </Form.Item>
+        <Form.Item name="arr_city" label="目的城市" rules={[{ required: true }]}>
+          <CitySelector formDataChange={onArrCityChange} />
+        </Form.Item>
+        <Form.Item name="month" label="日期范围" rules={[{ required: true }]}>
+          {/* 日期范围选择器 */}
+          <RangePicker picker="month" />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Submit
         </Button>
-        <Button htmlType="button" onClick={onReset}>
-          Reset
+          <Button htmlType="button" onClick={onReset}>
+            Reset
         </Button>
-        <Button type="link" htmlType="button" onClick={onFill}>
-          Fill form
-        </Button>
-      </Form.Item>
-    </Form>
+        </Form.Item>
+      </Form>
+    </div>
   );
 };
 

@@ -1,5 +1,6 @@
 import React from 'react'
 import PageHeader from '../../component/pageheader'
+import CitySelector from '../../component/citySelector';
 import InputTable from '../../component/inputTable'
 
 const routes = [
@@ -27,9 +28,8 @@ const CityAvgPrice = () => {
         <div className="ab-page-header-wrapper">
             <PageHeader title="城市间平均价格" routes={routes} />
             <div className="ab-container">
-                This is CityAvgPrice
+                <InputTable/>
             </div>
-            <InputTable/>
         </div>
     );
 }
