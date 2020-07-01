@@ -13,8 +13,16 @@ export const Nav00DataSource = {
         name: 'item0',
         className: 'header0-item',
         children: {
+          href: '#/dashboard',
+          children: [{ children: '概览', name: 'text' }],
+        },
+      },
+      {
+        name: 'item1',
+        className: 'header0-item',
+        children: {
           href: '#',
-          children: [{ children: '导航一', name: 'text' }],
+          children: [{ children: '城市', name: 'text' }],
         },
         subItem: [
           {
@@ -23,21 +31,83 @@ export const Nav00DataSource = {
             children: {
               className: 'item-sub-item',
               children: [
-                {
-                  name: 'image0',
-                  className: 'item-image',
-                  children:
-                    'https://gw.alipayobjects.com/zos/rmsportal/ruHbkzzMKShUpDYMEmHM.svg',
-                },
+
+                // // 图片
+                // {
+                //   name: 'image0',
+                //   className: 'item-image',
+                //   children:
+                //     'https://gw.alipayobjects.com/zos/rmsportal/ruHbkzzMKShUpDYMEmHM.svg',
+                // },
+                //titie
                 {
                   name: 'title',
                   className: 'item-title',
-                  children: 'Ant Design',
+                  children: '城市间航班信息',
+                  href: '#/city/minprice',
                 },
+                // //详细描述
+                // {
+                //   name: 'content',
+                //   className: 'item-content',
+                //   children: '查询城市到城市间所有特定时间所有的航班信息',
+                // },
+              ],
+            },
+          },
+          {
+            name: 'sub1',
+            className: 'item-sub',
+            children: {
+              className: 'item-sub-item',
+              children: [
                 {
-                  name: 'content',
-                  className: 'item-content',
-                  children: '企业级 UI 设计体系',
+                  name: 'title',
+                  className: 'item-title',
+                  children: '城市平均机票价格',
+                  href: '#/city/avgprice',
+                },
+              ],
+            },
+          },
+          {
+            name: 'sub2',
+            className: 'item-sub',
+            children: {
+              className: 'item-sub-item',
+              children: [
+                {
+                  name: 'title',
+                  className: 'item-title',
+                  children: '城市航班数',
+                  href: '#/city/linenum',
+                },
+              ],
+            },
+          },
+        ],
+      },
+     
+      {
+        name: 'item2',
+        className: 'header0-item',
+        children: {
+          href: '#',
+          children: [{ children: '航班', name: 'text' }],
+        },
+        subItem: [
+          {
+            name: 'sub0',
+            className: 'item-sub',
+            children: {
+              className: 'item-sub-item',
+              children: [
+
+                {
+                  name: 'title',
+                  className: 'item-title',
+                  children: '平均机票价格',
+                  href: '#/flight/avgprice',
                 },
               ],
             },
@@ -49,20 +119,25 @@ export const Nav00DataSource = {
               className: 'item-sub-item',
               children: [
                 {
-                  name: 'image0',
-                  className: 'item-image',
-                  children:
-                    'https://gw.alipayobjects.com/zos/rmsportal/ruHbkzzMKShUpDYMEmHM.svg',
+                  name: 'title',
+                  className: 'item-title',
+                  children: '航班飞机偏好',
+                  href: '#/flight/plane',
                 },
+              ],
+            },
+          },
+          {
+            name: 'sub2',
+            className: 'item-sub',
+            children: {
+              className: 'item-sub-item',
+              children: [
                 {
                   name: 'title',
                   className: 'item-title',
-                  children: 'Ant Design',
-                },
-                {
-                  name: 'content',
-                  className: 'item-content',
-                  children: '企业级 UI 设计体系',
+                  children: '航空公司航班数',
+                  href: '#/flight/linenum',
                 },
               ],
             },
@@ -70,27 +145,52 @@ export const Nav00DataSource = {
         ],
       },
       {
-        name: 'item1',
-        className: 'header0-item',
-        children: {
-          href: '#',
-          children: [{ children: '导航二', name: 'text' }],
-        },
-      },
-      {
-        name: 'item2',
-        className: 'header0-item',
-        children: {
-          href: '#',
-          children: [{ children: '导航三', name: 'text' }],
-        },
-      },
-      {
         name: 'item3',
         className: 'header0-item',
         children: {
           href: '#',
-          children: [{ children: '导航四', name: 'text' }],
+          children: [{ children: '新冠疫情专题', name: 'text' }],
+        },
+        subItem: [
+          {
+            name: 'sub0',
+            className: 'item-sub',
+            children: {
+              className: 'item-sub-item',
+              children: [
+
+                {
+                  name: 'title',
+                  className: 'item-title',
+                  children: '新冠与机票价格',
+                  href: '#/corona/price',
+                },
+              ],
+            },
+          },
+          {
+            name: 'sub1',
+            className: 'item-sub',
+            children: {
+              className: 'item-sub-item',
+              children: [
+                {
+                  name: 'title',
+                  className: 'item-title',
+                  children: '新冠与乘机人数',
+                  href: '#/corona/linenum',
+                },
+              ],
+            },
+          },
+        ],
+      },
+      {
+        name: 'item4',
+        className: 'header0-item',
+        children: {
+          href: '#/triviel',
+          children: [{ children: '你知道吗？', name: 'text' }],
         },
       },
     ],
