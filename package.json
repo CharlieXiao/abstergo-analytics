@@ -17,6 +17,7 @@
     "ant-design-pro": "^2.3.2",
     "antd": "^4.3.5",
     "axios": "^0.19.2",
+    "bizcharts": "^4.0.7",
     "craco-less": "^1.17.0",
     "echarts": "^4.8.0",
     "enquire-js": "^0.2.1",

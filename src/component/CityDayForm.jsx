@@ -6,7 +6,7 @@ import locale from "antd/es/date-picker/locale/zh_CN";
 
 const { RangePicker } = DatePicker;
 
-const InputTable = ({ onFormSubmit }) => {
+const CityMonthForm = ({ onFormSubmit }) => {
   // 获取表单数据信息
   const [form] = Form.useForm();
 
@@ -34,8 +34,8 @@ const InputTable = ({ onFormSubmit }) => {
       const data = {
         dep: values.dep_city,
         arr: values.arr_city,
-        start: values.month[0].format("YYYY-MM"),
-        end: values.month[1].format("YYYY-MM")
+        start: values.month[0].format("YYYY-MM-DD"),
+        end: values.month[1].format("YYYY-MM-DD")
       }
       console.log(data)
       onFormSubmit(data);
@@ -99,7 +99,7 @@ const InputTable = ({ onFormSubmit }) => {
               >
                 {/* 日期范围选择器 */}
                 <RangePicker
-                  picker="month"
+                //   picker="month"
                   locale={locale}
                   style={{maxWidth:"230px"}}
                 />
@@ -122,4 +122,4 @@ const InputTable = ({ onFormSubmit }) => {
   );
 };
 
-export default InputTable;
+export default CityMonthForm;

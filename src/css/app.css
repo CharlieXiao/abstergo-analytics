@@ -65,7 +65,7 @@
 
 .ab-logo-text{
     font-size: 1.5rem;
-    font-weight: 500;
+    font-weight: 400;
     margin-left: 20px;
     font-family: Avenir,-apple-system,BlinkMacSystemFont,segoe ui,Roboto,helvetica neue,Arial,noto sans,sans-serif,apple color emoji,segoe ui emoji,segoe ui symbol,noto color emoji,sans-serif;
 }
@@ -123,4 +123,9 @@
     font-weight: 200;
     margin-left: 20px;
     font-family: Avenir,-apple-system,BlinkMacSystemFont,segoe ui,Roboto,helvetica neue,Arial,noto sans,sans-serif,apple color emoji,segoe ui emoji,segoe ui symbol,noto color emoji,sans-serif;
+}
+
+.ab-content-container{
+    background-color: white;
+    padding: 24px;
 }

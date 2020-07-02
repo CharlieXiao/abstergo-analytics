@@ -5,14 +5,12 @@ import Dashboard from '../pages/dashboard'
 import CityAvgPrice from '../pages/city/avgprice'
 import CityMinPrice from '../pages/city/minprice'
 import CityLineNum from '../pages/city/linenum'
-import FlightPlane from '../pages/flight/plane'
-import FlightAvgPrice from '../pages/flight/avgprice'
-import FlightLineNum from '../pages/flight/linenum'
+import FlightHistoryPrice from '../pages/flight/FlightHistoryPrice'
+import FlightCompanyInfo from "../pages/flight/FlightCompanyInfo"
 import CoronaLineNum from '../pages/corona/linenum'
 import CoronaPrice from '../pages/corona/price'
 import Trivial from '../pages/trivial'
-import FlightHistoryPrice from '../pages/flight/FlightHistoryPrice'
-import FlightCompanyInfo from "../pages/flight/FlightCompanyInfo"
+
 
 const PageRouter = ()=>{
     return (

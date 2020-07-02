@@ -4,7 +4,7 @@ import { DownOutlined } from '@ant-design/icons';
 import QueueAnim from 'rc-queue-anim';
 import TweenOne from 'rc-tween-one';
 // import { isImg } from './utils';
-import Map from '../component/cityMap'
+import Map from '../component/HomeMap'
 
 class Banner extends React.PureComponent {
   render() {

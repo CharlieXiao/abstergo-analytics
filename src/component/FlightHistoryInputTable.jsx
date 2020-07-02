@@ -1,8 +1,6 @@
-import { Form, Button, Select } from "antd";
+import { Form, Button } from "antd";
 import React,{useState} from "react";
 import CitySelector from "./citySelector";
-// 导入地区
-import locale from "antd/es/date-picker/locale/zh_CN";
 import FlightSelector from "./FlightSelector"
 
 
