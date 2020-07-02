@@ -11,17 +11,6 @@ const FlightSelector = ({formDataChange,flightData}) =>{
         console.log(value);
         formDataChange(value);
       }
-    //   function onBlur() {
-    //     console.log('blur');
-    //   }
-      
-    //   function onFocus() {
-    //     console.log('focus');
-    //   }
-      
-    //   function onSearch(val) {
-    //     console.log('search:', val);
-    //   }
 
       return(
         <Select
