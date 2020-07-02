@@ -1,5 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import PageHeader from '../../component/pageheader'
+import PriceMonthForm from '../../component/PriceMonthForm';
+import { Skeleton } from 'antd'
+import ScatterMap from '../../component/ScatterMap'
 
 const routes = [
     {
@@ -10,26 +13,42 @@ const routes = [
         breadcrumbName: '城市',
         menu: [{
             path: '/city/minprice',
-            title: '城市间平均价格'
+            title: '最低机票价格'
         }, {
-            path: '/city/linenum',
-            title: '城市航班数'
+            path: '/city/avgprice',
+            title: '平均机票价格'
         }]
     },
     {
-        breadcrumbName: '城市间平均价格',
+        breadcrumbName: '各市航班数量',
     },
 ];
 
-const CityLineNum = ()=>{
+const CityLineNum = () => {
+    const [data, setData] = useState([])
+    const [loading, setLoading] = useState(false)
+    useEffect(() => {
+        
+    }, [])
+
+    const onFormSubmit = (queryData) => {
+        console.log(queryData)
+    }
+
     return (
         <div className="ab-page-header-wrapper">
-            <PageHeader title="城市间平均价格" routes={routes} />
+            <PageHeader title="各市航班数量" routes={routes} />
             <div className="ab-container">
-                This is CityAvgPrice
+                <PriceMonthForm onFormSubmit={onFormSubmit} />
+                <div className="ab-content-container">
+                    <Skeleton loading={loading} active>
+                        <ScatterMap/>
+                    </Skeleton>
+                </div>
             </div>
-        </div>    
+        </div>
     );
 }
 
 export default CityLineNum;
+
