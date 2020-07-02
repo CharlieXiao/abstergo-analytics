@@ -43,6 +43,14 @@ const cityArray = [
     { city: '珠海', code: 'ZUH' }
 ]
 
+function getCityByCode(code){
+    for(let i=0;i<cityArray.length;i++){
+        if(code===cityArray[i].code){
+            return cityArray[i].city
+        }
+    }
+}
+
 const cityCord = {
     "北京"   :{"log": 116.46,    "lat": 39.92},
     "泉州"     :{"log": 118.58,    "lat": 24.93},
@@ -87,4 +95,4 @@ const cityCord = {
     "合肥"     :{"log": 117.27,    "lat": 31.86},
     "南京"     :{"log": 118.78,    "lat": 32.04},
 }
-export { cityArray,cityCord}
+export { cityArray,cityCord,getCityByCode}
