@@ -52,8 +52,9 @@ const PageMenu = () => {
             openKeys={openKey}
             // defaultSelectedKeys={["1"]}
             mode="inline"
+            className="ab-menu"
             onOpenChange = {(key)=>{setOpenKey(key)}}
-            className="ab-menu" >
+            >
             <Item icon={<DashboardOutlined/>} key="1" title="Dashboard">
                 <Link to="/dashboard">概览</Link>
             </Item>
@@ -94,7 +95,7 @@ const PageMenu = () => {
                 </Item>
             </SubMenu>
             <Item icon={<RedditOutlined/>} key="10" title="你知道吗">
-                <Link to="/triviel">你知道吗？</Link>
+                <Link to="/trivial">你知道吗？</Link>
             </Item>
         </Menu>)
 }
