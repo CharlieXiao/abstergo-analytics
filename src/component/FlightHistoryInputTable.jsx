@@ -23,7 +23,8 @@ const InputTable = ({ onFormSubmit }) => {
         //每次输入完城市后，判断实入是否完成，如果完成就查询航班数据
         let curValues = form.getFieldsValue();
         if(curValues.arr_city === undefined || curValues.dep_city === undefined ){
-            //do nothing
+            //清空FlightData
+            setFlightData([]);
         }
         else{
             setFlightData(getFlightData(curValues.arr_city,curValues.dep_city));
@@ -37,10 +38,11 @@ const InputTable = ({ onFormSubmit }) => {
         });
         // 数据输入完成后验证数据
         form.validateFields(["arr_city"]);
-        //每次输入完城市后，判断实入是否完成，如果完成就查询航班数据
+        //每次输入完城市后，判断输入是否完成，如果完成就查询航班数据
         let curValues = form.getFieldsValue();
         if(curValues.arr_city === undefined || curValues.dep_city === undefined ){
-            //do nothing
+            //清空FlightData
+            setFlightData([]);
         }
         else{
 
