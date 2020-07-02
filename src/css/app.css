@@ -98,16 +98,11 @@
 }
     
 .ab-form-container{
-    padding: 0 16px 16px 16px;
+    /* padding: 0 16px 16px 16px;
+    background-color: white; */
     background-color: white;
-}
-
-.ab-form-item{
-    margin: 16px 16px 0 0!important;
-}
-
-.ab-form-button{
-    margin-right: 16px;
+    padding: 24px 24px 0 24px;
+    margin-bottom: 24px;
 }
 
 .ab-home-logo-container{

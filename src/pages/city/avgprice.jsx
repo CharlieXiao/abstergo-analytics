@@ -24,7 +24,7 @@ const routes = [
 ];
 
 const CityAvgPrice = () => {
-    const [queryData,setQueryData] = useState({})
+    const [queryData,setQueryData] = useState({dep:'CTU',arr:'CKG'})
     useEffect(()=>{
         console.log(queryData)
     },[queryData])

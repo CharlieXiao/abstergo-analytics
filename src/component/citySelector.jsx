@@ -32,9 +32,9 @@ const CitySelector = ({formDataChange}) => {
             placeholder="选择城市"
             // 
             optionFilterProp="children"
+            style={{maxWidth:"230px"}}
             // 数据发送变化的回调函数
             onChange={onChange}
-            style={{width:"130px"}}
             // onFocus={onFocus}
             // onBlur={onBlur}
             // onSearch={onSearch}

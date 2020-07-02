@@ -16,7 +16,6 @@ const convertData = (data) => {
             });
         }
     }
-    console.log(res)
     return res;
 };
 
@@ -109,7 +108,6 @@ class Map extends Component {
 
     componentWillUpdate() {
         if (this.myChart) {
-            console.log("render?")
             this.myChart.resize('auto', 'auto')
         }
     }

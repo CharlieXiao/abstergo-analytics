@@ -1,4 +1,4 @@
-import { Form, Button , DatePicker } from "antd";
+import { Form, Button, DatePicker, Row, Col } from "antd";
 import React from "react";
 import CitySelector from "./citySelector";
 // 导入地区
@@ -32,10 +32,10 @@ const InputTable = ({ onFormSubmit }) => {
     console.log();
     if (onFormSubmit) {
       const data = {
-        dep:values.dep_city,
-        arr:values.arr_city,
-        start:values.month[0].format("YYYY-MM-DD"),
-        end:values.month[1].format("YYYY-MM-DD")
+        dep: values.dep_city,
+        arr: values.arr_city,
+        start: values.month[0].format("YYYY-MM"),
+        end: values.month[1].format("YYYY-MM")
       }
       console.log(data)
       onFormSubmit(data);
@@ -47,7 +47,7 @@ const InputTable = ({ onFormSubmit }) => {
   };
 
   const citySelectRules = [
-    { required: true,message:'请选择城市' },
+    { required: true, message: '请选择城市' },
     // 自定义验证规则
     ({ getFieldValue }) => ({
       validator(rule, value) {
@@ -61,58 +61,63 @@ const InputTable = ({ onFormSubmit }) => {
 
   return (
     <div className="ab-form-container">
-      <Form
-        form={form}
-        // 表单名称
-        name="cityminprice"
-        // 结束回调函数
-        onFinish={onFinish}
-        layout="inline"
-        // 隐藏必须输入标记
-        hideRequiredMark
-      >
-        <Form.Item
-          name="dep_city"
-          label="出发城市"
-          rules={citySelectRules}
-          className="ab-form-item"
+      <div>
+        <Form
+          form={form}
+          // 表单名称
+          name="cityminprice"
+          // 结束回调函数
+          onFinish={onFinish}
+          layout="horizontal"
+          // 隐藏必须输入标记
+          hideRequiredMark
         >
-          <CitySelector formDataChange={onDeptCityChange} />
-        </Form.Item>
-        <Form.Item
-          name="arr_city"
-          label="目的城市"
-          rules={citySelectRules}
-          className="ab-form-item"
-        >
-          <CitySelector formDataChange={onArrCityChange} />
-        </Form.Item>
-        <Form.Item
-          name="month"
-          label="日期范围"
-          rules={[{ required: true,message:"请选择日期范围" }]}
-          className="ab-form-item"
-        >
-          {/* 日期范围选择器 */}
-          <RangePicker
-            picker="month"
-            style={{ width: "220px" }}
-            locale={locale}
-          />
-        </Form.Item>
-        <Form.Item className="ab-form-item">
-          <Button type="primary" htmlType="submit" className="ab-form-button">
-            Submit
-          </Button>
-          <Button
-            htmlType="button"
-            onClick={onReset}
-            className="ab-form-button"
-          >
-            Reset
-          </Button>
-        </Form.Item>
-      </Form>
+          <Row gutter={[16,8]}>
+            <Col xs={12} sm={12} md={12} lg={12} xl={8} xxl={6}>
+              <Form.Item
+                name="dep_city"
+                label="出发城市"
+                rules={citySelectRules}
+              >
+                <CitySelector formDataChange={onDeptCityChange} />
+              </Form.Item>
+            </Col>
+            <Col xs={12} sm={12} md={12} lg={12} xl={8} xxl={6}>
+              <Form.Item
+                name="arr_city"
+                label="目的城市"
+                rules={citySelectRules}
+              >
+                <CitySelector formDataChange={onArrCityChange}/>
+              </Form.Item>
+            </Col>
+            <Col xs={12} sm={12} md={12} lg={12} xl={8} xxl={6}>
+              <Form.Item
+                name="month"
+                label="日期范围"
+                rules={[{ required: true, message: "请选择日期范围" }]}
+              >
+                {/* 日期范围选择器 */}
+                <RangePicker
+                  picker="month"
+                  locale={locale}
+                  style={{maxWidth:"230px"}}
+                />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={12} md={12} lg={12} xl={24} xxl={6}>
+              <Form.Item>
+                <Button type="primary" htmlType="submit" style={{marginRight:"10px"}}>
+                  查询
+                </Button>
+                <Button htmlType="button" onClick={onReset} style={{marginLeft:"10px"}} >
+                  重置
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      </div>
     </div>
   );
 };
