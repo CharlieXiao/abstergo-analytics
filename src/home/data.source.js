@@ -43,7 +43,7 @@ export const Nav00DataSource = {
                 {
                   name: 'title',
                   className: 'item-title',
-                  children: '城市间航班信息',
+                  children: '最低机票价格',
                   href: '#/city/minprice',
                 },
                 // //详细描述
@@ -64,7 +64,7 @@ export const Nav00DataSource = {
                 {
                   name: 'title',
                   className: 'item-title',
-                  children: '城市平均机票价格',
+                  children: '平均机票价格',
                   href: '#/city/avgprice',
                 },
               ],
@@ -79,7 +79,7 @@ export const Nav00DataSource = {
                 {
                   name: 'title',
                   className: 'item-title',
-                  children: '城市航班数',
+                  children: '航班数',
                   href: '#/city/linenum',
                 },
               ],
@@ -106,8 +106,8 @@ export const Nav00DataSource = {
                 {
                   name: 'title',
                   className: 'item-title',
-                  children: '平均机票价格',
-                  href: '#/flight/avgprice',
+                  children: '历史价格查询',
+                  href: '#/flight/historyprice',
                 },
               ],
             },
@@ -121,23 +121,8 @@ export const Nav00DataSource = {
                 {
                   name: 'title',
                   className: 'item-title',
-                  children: '航班飞机偏好',
-                  href: '#/flight/plane',
-                },
-              ],
-            },
-          },
-          {
-            name: 'sub2',
-            className: 'item-sub',
-            children: {
-              className: 'item-sub-item',
-              children: [
-                {
-                  name: 'title',
-                  className: 'item-title',
-                  children: '航空公司航班数',
-                  href: '#/flight/linenum',
+                  children: '航空公司信息',
+                  href: '#/flight/companyinfo',
                 },
               ],
             },
@@ -162,7 +147,7 @@ export const Nav00DataSource = {
                 {
                   name: 'title',
                   className: 'item-title',
-                  children: '新冠与机票价格',
+                  children: '机票价格变化',
                   href: '#/corona/price',
                 },
               ],
@@ -177,7 +162,7 @@ export const Nav00DataSource = {
                 {
                   name: 'title',
                   className: 'item-title',
-                  children: '新冠与乘机人数',
+                  children: '航班数量变化',
                   href: '#/corona/linenum',
                 },
               ],
