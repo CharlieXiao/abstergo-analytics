@@ -1,8 +1,16 @@
 import React from 'react'
+import PriceAffectedChart from "./dashboard-component/PriceAffectedTotalChart"
+import LineNumAffectedTotalChart from "./dashboard-component/LineNumAffectedTotalChart"
+import DayTimeAndPriceChart from "./dashboard-component/DayTimeAndPriceChart"
 
 const Dashboard = (props)=>{
     return (
-        <div>This is Dashboard</div>        
+        <div>
+            <PriceAffectedChart />
+            <LineNumAffectedTotalChart />
+            <DayTimeAndPriceChart />
+        </div>
+         
     );
 }
 
