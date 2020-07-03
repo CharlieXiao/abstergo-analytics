@@ -144,3 +144,8 @@
 .ab-slider-container{
     margin-top: 20px;
 }
+
+.ab-chart-container{
+    background-color: white;
+    padding: 24px;
+}
