@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import DataSet from '@antv/data-set'
 import { Chart, Interval, Tooltip, Coordinate } from 'bizcharts'
+import { Card } from 'antd'
 
 const YearPriceBarChart = () => {
     const [data, setData] = useState([])
@@ -39,18 +40,17 @@ const YearPriceBarChart = () => {
             });
             setData(dv.rows)
         }, 1000)
-    },[])
+    }, [])
 
     return (
-        <div className="ab-chart-container">
-            {/* <div className="ab-chart-title">全年各市航班价格平均值</div> */}
-            <Chart height={400} data={data} autoFit>
+        <Card title="全年各市航班价格平均值">
+            <Chart height={300} data={data} autoFit>
                 {/* 设置成条形图 */}
                 <Coordinate transpose />
                 <Interval position="country*population" />
                 <Tooltip showMarkers={false} />
             </Chart>
-        </div>
+        </Card>
     )
 }
 

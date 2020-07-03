@@ -5,6 +5,7 @@ import { Skeleton, Form, Button } from "antd";
 import PageHeader from '../../component/pageheader'
 import { ColumnLine } from '@ant-design/charts';
 import { getCityByCode } from "../../city"
+import { Card } from 'antd'
 
 const LineNumAffectedTotalChart = () => {
 
@@ -66,7 +67,11 @@ const LineNumAffectedTotalChart = () => {
         },
     };
 
-    return <ColumnLine {...config} />;
+    return (
+        <Card title="全年各市航班价格平均值">
+            <ColumnLine {...config} />
+        </Card>  
+    )
 
 }
 

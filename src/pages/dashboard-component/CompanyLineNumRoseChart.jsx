@@ -6,6 +6,7 @@ import {
     Axis,
     Coordinate
 } from 'bizcharts';
+import { Card } from 'antd'
 
 const CompanyLineNumRoseChart = () => {
     const [data, setData] = useState([])
@@ -25,39 +26,39 @@ const CompanyLineNumRoseChart = () => {
     }, [])
 
     return (
-        <div className="ab-chart-container">
-            <Chart height={400} data={data} autoFit>
-            <Coordinate
-                type="polar"
-                startAngle={Math.PI} // 起始角度
-                endAngle={Math.PI * (3 / 2)} // 结束角度
-            />
-            <Axis name="value" grid={{
-                line: {
-                    type: 'circle',
-                },
-                closed: false,
-            }} />
-            <Tooltip showTitle={false} />
-            <Interval
-                position="type*value"
-                adjust="stack"
-                color={['type', 'rgb(252,143,72)-rgb(255,215,135)']}
-                element-highlight
-                style={{
-                    lineWidth: 1,
-                    stroke: '#fff',
-                }}
-                label={['value', {
-                    offset: -15,
-                    style: {
-                        textAlign: 'center',
-                        fill: '#000',
+        <Card title="全年各市航班价格平均值">
+            <Chart height={300} data={data} autoFit>
+                <Coordinate
+                    type="polar"
+                    startAngle={Math.PI} // 起始角度
+                    endAngle={Math.PI * (3 / 2)} // 结束角度
+                />
+                <Axis name="value" grid={{
+                    line: {
+                        type: 'circle',
                     },
-                }]}
-            />
-        </Chart>
-        </div>
+                    closed: false,
+                }} />
+                <Tooltip showTitle={false} />
+                <Interval
+                    position="type*value"
+                    adjust="stack"
+                    color={['type', 'rgb(252,143,72)-rgb(255,215,135)']}
+                    element-highlight
+                    style={{
+                        lineWidth: 1,
+                        stroke: '#fff',
+                    }}
+                    label={['value', {
+                        offset: -15,
+                        style: {
+                            textAlign: 'center',
+                            fill: '#000',
+                        },
+                    }]}
+                />
+            </Chart>
+        </Card>
     );
 }
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Line } from '@ant-design/charts';
+import { Card } from 'antd'
 
 const DayTimeAndPriceChart = ()=>{
 
@@ -18,12 +19,13 @@ const DayTimeAndPriceChart = ()=>{
     },[])
 
       const config = {
+        height:"300",
         title: {
-          visible: true,
+          visible: false,
           text: '配置折线数据点样式',
         },
         description: {
-          visible: true,
+          visible: false,
           text: '自定义配置趋势线上数据点的样式',
         },
         padding: 'auto',
@@ -47,7 +49,11 @@ const DayTimeAndPriceChart = ()=>{
           },
         },
       };
-      return <Line {...config} />;
+      return(
+        <Card title="全年各市航班价格平均值">
+           <Line {...config} />
+        </Card>
+      );
 }
 
 
