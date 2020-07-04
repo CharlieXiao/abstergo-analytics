@@ -4,6 +4,7 @@ import { Skeleton, Form, Button } from "antd";
 import CitySelector from "../../component/citySelector";
 import { Row, Col, Select } from 'antd'
 import { Chart, Line, Point,Tooltip } from 'bizcharts';
+import axios from 'axios';
 
 const { Option } = Select;
 
@@ -63,25 +64,41 @@ const FlightSelector = ({ formDataChange, flightData }) => {
 const FlightHistoryInputTable = ({ onFormSubmit }) => {
     // 获取表单数据信息
     const [form] = Form.useForm();
-
     const [flightData, setFlightData] = useState([]);
 
-    // 数据变化回调函数
+     /**
+     * 根据出发城市和到达城市查询有哪些航班
+     * @param {出发城市} dep_city 
+     * @param {到达城市} arr_city 
+     */
+    const getAndSetFlightData = (dep_city,arr_city)=>{
+        axios.post("/flight/getCityToCityFlights",{dep_city:dep_city,arr_city:arr_city}).then((res)=>{
+            if(res.data.success){
+                setFlightData(res.data.data);
+            }else{
+                alert(res.data.msg);
+            }
+        }).catch((e)=>{
+            let data = ["AA1234", "AA2345", "AA3456"];
+            setFlightData(data);
+        })
+    }
 
+    // 数据变化回调函数
     const onDeptCityChange = (value) => {
         form.setFieldsValue({
             dep_city: value,
         });
         form.validateFields(["dep_city"]);
 
-        //每次输入完城市后，判断实入是否完成，如果完成就查询航班数据
+        //每次输入完城市后，判断输入是否完成，如果完成就查询航班数据
         let curValues = form.getFieldsValue();
         if (curValues.arr_city === undefined || curValues.dep_city === undefined) {
             //清空FlightData
             setFlightData([]);
         }
         else {
-            setFlightData(getFlightData(curValues.arr_city, curValues.dep_city));
+            getAndSetFlightData(curValues.arr_city,curValues.dep_city);//这里的set是异步的
         }
 
     };
@@ -99,15 +116,11 @@ const FlightHistoryInputTable = ({ onFormSubmit }) => {
             setFlightData([]);
         }
         else {
-
-            setFlightData(getFlightData(curValues.arr_city, curValues.dep_city)); //这里的set是异步的
+            getAndSetFlightData(curValues.arr_city,curValues.dep_city);//这里的set是异步的
         }
     };
 
-    const getFlightData = (dep_city, arr_city) => {
-        //临时数据，到时候改为网络请求
-        return ["AA1234", "AA2345", "AA3456"];
-    }
+   
 
     const onFlighChange = (value) => {
         form.setFieldsValue({
@@ -209,16 +222,30 @@ const FlightHistoryInputTable = ({ onFormSubmit }) => {
     );
 };
 
+
 const FlightHistoryPrice = () => {
 
     const [flightData, setFlightData] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [chartName, setChartName] = useState("")
-    const onFormSubmit = (queryData) => {
-        console.log(queryData)
-        setLoading(true)
-        setTimeout(() => {
-            const res = [
+    const [chartName, setChartName] = useState("");
+
+
+    /**
+     * 获取并设置特定航班号航班的历史价格
+     * @param {出发城市}} dep_city 
+     * @param {到达城市} arr_city 
+     * @param {航班号} flightNum 
+     */
+    const getAndSetFlightData = (dep_city,arr_city,flightNum)=>{
+        axios.post("/flight/getFlightHistoryPrice",{dep_city:dep_city,arr_city:arr_city,flightNum:flightNum}).then((res)=>{
+            if(res.data.success){
+                setFlightData(res.data.data);
+            }else{
+                console.log(res.data.msg);
+                
+            }
+        }).catch((e)=>{
+            let res = [
                 {
                     year: "2020-7-2",
                     price: 3
@@ -256,22 +283,23 @@ const FlightHistoryPrice = () => {
                     price: 13
                 }
             ];
+            setFlightData(res);
+        })
+    }
+
+    const onFormSubmit = (queryData) => {
+        console.log(queryData)
+        setLoading(true)
+        setTimeout(() => {
             setChartName(`${queryData.flight} 号航班的历史价格`)
-            setFlightData(res)
+            getAndSetFlightData(queryData.dep,queryData.arr,queryData.flight);
             setLoading(false)
         }, 1000)
     }
 
     useEffect(() => {
         setLoading(true)
-        setFlightData([{
-            year: "2020-7-2",
-            price: 3
-        },
-        {
-            year: "2020-7-1",
-            price: 4
-        },]);
+        getAndSetFlightData("重庆","北京","123456");
         setLoading(false);
     }, [])
 

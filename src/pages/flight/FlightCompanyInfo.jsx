@@ -12,6 +12,7 @@ import {
     Coordinate
 } from 'bizcharts';
 import { DataView, DataSet } from '@antv/data-set';
+import axios from 'axios';
 
 const { Option } = Select;
 const routes = [
@@ -245,7 +246,7 @@ const CompanyLoveCountriesChart = ({ data }) => {
         <Chart data={dv.rows} autoFit>
             <Coordinate transpose />
             <Interval position="city*到达总航班数" />
-            <Tooltip marker={false}/>
+            <Tooltip marker={false} />
         </Chart>
     );
 }
@@ -256,7 +257,7 @@ const PlaneCard = ({ content }) => {
     // console.log(content);
     return (
         <>
-            <Card title={content.name} style={{width:"300px"}}>
+            <Card title={content.name} style={{ width: "300px" }}>
                 <p>{content.introduction}</p>
             </Card>
         </>
@@ -273,104 +274,97 @@ const FlightCompanyInfo = () => {
     const [planeIntroduction, setPlaneIntroduction] = useState({ name: "", introduction: "" });
     const [chartName, setChartName] = useState("");
 
-    useEffect(() => {
-        const data = [
-            { value: 251, type: '大事例一', name: '子事例一' },
-            { value: 1048, type: '大事例一', name: '子事例二' },
-            { value: 610, type: '大事例二', name: '子事例三' },
-            { value: 434, type: '大事例二', name: '子事例四' },
-            { value: 335, type: '大事例三', name: '子事例五' },
-            { value: 250, type: '大事例三', name: '子事例六' },
-        ];
-        setPlaneTypeData(data);
 
-        const cityData = [
-            {
-                city: "中国",
-                到达总航班数: 131744
-            },
-            {
-                city: "印度",
-                到达总航班数: 104970
-            },
-            {
-                city: "美国",
-                到达总航班数: 29034
-            },
-            {
-                city: "印尼",
-                到达总航班数: 23489
-            },
-            {
-                city: "巴西",
-                到达总航班数: 18203
+    /**
+     * 获取并设置所有机型的以及介绍
+     */
+    const getAndSetPlaneInfos = () => {
+        //发送axios请求获取所有机型以及介绍
+        axios.get("/plane/getPlanesIntroductions").then((res) => {
+            if (res.data.success) {
+                let infos = res.data.data;
+                setPlaneInfos(infos);
+            } else {
+                console.log("Yichang ");
             }
-        ];
-        setLoveCityData(cityData);
-    }, [])
+        }).catch((e) => {
+            let infos = [
+                { name: "波音737", introduction: "this is 波音737" },
+                { name: "波音747", introduction: "this is 波音747" },
+                { name: "空客", introduction: "this is 空客" },
+                { name: "波音737-1", introduction: "this is 波音737-1" },
+                { name: "波音737-2", introduction: "this is 波音737-2" },
+                { name: "波音747-1", introduction: "this is 波音747-1" },
+                { name: "波音747-2", introduction: "this is 波音747-2" },
+                { name: "空客A318", introduction: "this is 空客A318" },
+                { name: "空客A319", introduction: "this is 空客A319" }
+            ];
+            setPlaneInfos(infos);
+        })
+    }
 
-    const getPlaneTypeData = (companyName) => {
+    /**
+     * 
+     * @param {获取并设置航公公司所有飞机机型以及数量} companyName 
+     */
+    function getAndSetPlaneTypeData(companyName) {
         //根据companyName 进行网络请求拿到对应航空公司的机型数据
-        //先直接返回了
-
-        const infos = [
-            { name: "波音737", introduction: "this is 波音737" },
-            { name: "波音747", introduction: "this is 波音747" },
-            { name: "空客", introduction: "this is 空客" },
-            { name: "波音737-1", introduction: "this is 波音737-1" },
-            { name: "波音737-2", introduction: "this is 波音737-2" },
-            { name: "波音747-1", introduction: "this is 波音747-1" },
-            { name: "波音747-2", introduction: "this is 波音747-2" },
-            { name: "空客A318", introduction: "this is 空客A318" },
-            { name: "空客A319", introduction: "this is 空客A319" }
-        ]
-        setPlaneInfos(infos);
-
-        //这里只返回data，上面顺便把introduction存了
-        const data = [
-            { value: 251, type: '波音737', name: '波音737-1' },
-            { value: 1048, type: '波音737', name: '波音737-2' },
-            { value: 610, type: '波音747', name: '波音747-1' },
-            { value: 434, type: '波音747', name: '波音747-2' },
-            { value: 335, type: '空客', name: '空客A318' },
-            { value: 250, type: '空客', name: '空客A319' },
-        ]
-        return data;
-    }
-
-    const getLoveCityData = (companyName) => {
-        //根据companyName 进行网络请求拿到对应航空公司的偏爱城市列表
-        //先直接返回了
-        const data = [
-            {
-                city: "重庆",
-                到达总航班数: 131744
-            },
-            {
-                city: "北京",
-                到达总航班数: 104970
-            },
-            {
-                city: "上海",
-                到达总航班数: 29034
-            },
-            {
-                city: "深圳",
-                到达总航班数: 23489
-            },
-            {
-                city: "CQU",
-                到达总航班数: 18203
+        //通过axios获取飞机机型信息   
+        axios.get("/company/getAircraftInfos?companyName=" + companyName).then((res) => {
+            if (res.data.success) {
+                setPlaneTypeData(res.data.data);
+            } else {
+                console.log("not success");
             }
-        ]
-        return data;
+        }).catch((e) => {
+            console.log("异常");
+            let types = [
+                { value: 251, type: '波音737', name: '波音737-1' },
+                { value: 1048, type: '波音737', name: '波音737-2' },
+                { value: 610, type: '波音747', name: '波音747-1' },
+                { value: 434, type: '波音747', name: '波音747-2' },
+                { value: 335, type: '空客', name: '空客A318' },
+                { value: 250, type: '空客', name: '空客A319' },
+            ]
+            setPlaneTypeData(types);
+        })
     }
+
+    /**
+     * 
+     * @param {获取并设置公司的偏爱城市列表} companyName 
+     */
+    const getAndSetLoveCityData = (companyName) => {
+        axios.get("/company/getLoveCities?companyName=" + companyName).then((res) => {
+            if (res.data.success) {
+                setLoveCityData(res.data.data)
+            } else {
+                console.log(res.data.msg);
+
+            }
+        }).catch((e) => {
+            let data = [{ city: "重庆", 到达总航班数: 131744 },
+                        { city: "北京", 到达总航班数: 104970 },
+                        { city: "上海", 到达总航班数: 29034 },
+                        { city: "深圳", 到达总航班数: 23489 },
+                        { city: "CQU", 到达总航班数: 18203 }
+                        ]
+            setLoveCityData(data);
+        })
+    }
+    
+    useEffect(() => {
+        //默认设置南方航空
+        getAndSetPlaneInfos();
+        getAndSetPlaneTypeData("南方航空");
+        getAndSetLoveCityData("南方航空");
+    }, [])
 
     const onFormSubmit = (queryData) => {
         console.log(queryData);
         setChartName(`${queryData.company} 详细信息`);
-        setPlaneTypeData(getPlaneTypeData(queryData));
-        setLoveCityData(getLoveCityData(queryData));
+        getAndSetPlaneTypeData(queryData);
+        getAndSetLoveCityData(queryData);
     }
 
     const clickPieHandler = (clickName) => {
@@ -395,8 +389,8 @@ const FlightCompanyInfo = () => {
                         </Col>
                         <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
                             <div className="ab-pie-card">
-                            <PlaneTypePie data={planeTypeData} isClicked={clickPieHandler} />
-                            <PlaneCard content={planeIntroduction}/>
+                                <PlaneTypePie data={planeTypeData} isClicked={clickPieHandler} />
+                                <PlaneCard content={planeIntroduction} />
                             </div>
                         </Col>
                     </Row>

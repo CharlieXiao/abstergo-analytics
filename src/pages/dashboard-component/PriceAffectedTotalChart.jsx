@@ -6,6 +6,7 @@ import PageHeader from '../../component/pageheader'
 import { ColumnLine } from '@ant-design/charts';
 import { getCityByCode } from "../../city"
 import { Card } from 'antd'
+import axios from 'axios'
 
 const PriceAffectedChart = () => {
 
@@ -14,36 +15,55 @@ const PriceAffectedChart = () => {
     const [affectedData, setAffectedData] = useState([]);
 
 
+    /**
+     * 每月获取全国所有感染人数
+     */
+    const getAndSetAffectedData = ()=>{
+        axios.get("/corona/getTotalAffected").then((res)=>{
+            if(res.data.success){
+                setAffectedData(res.data.data);
+            }else{
+                alert(res.data.msg);
+            }
+        }).catch((e)=>{
+            let affectedData = [
+                { 时间: '2020-01', 感染人数: 23, },
+                { 时间: '2020-02', 感染人数: 35, },
+                { 时间: '2020-03', 感染人数: 89, },
+                { 时间: '2020-04', 感染人数: 69, },
+                { 时间: '2020-05', 感染人数: 345, },
+                { 时间: '2020-06', 感染人数: 2220, },
+            ];
+            setAffectedData(affectedData);
+        })
+    }
+
+    /**
+     * 每月获取全国机票平均价格
+     */
+    const getAndSetPriceData = () =>{
+        axios.get("/flight/getTotalPrice").then((res)=>{
+            if(res.data.success){
+                setAffectedData(res.data.data);
+            }else{
+                alert(res.data.msg);
+            }
+        }).catch((e)=>{
+            let priceData = [
+                { 时间: '2020-01', 价格: 23, },
+                { 时间: '2020-02', 价格: 35, },
+                { 时间: '2020-03', 价格: 89, },
+                { 时间: '2020-04', 价格: 69, },
+                { 时间: '2020-05', 价格: 345, },
+                { 时间: '2020-06', 价格: 2220, },
+            ];
+            setPriceData(priceData);
+        })
+    }
+
     useEffect(() => {
-        //获取priceData和affecteddata
-        let priceData = [
-            { 时间: '2019-03-10', 价格: 350, },
-            { 时间: '2019-03-20', 价格: 360, },
-            { 时间: '2019-03-30', 价格: 370, },
-            { 时间: '2019-04-10', 价格: 380, },
-            { 时间: '2019-04-20', 价格: 550, },
-            { 时间: '2019-04-30', 价格: 250, },
-            { 时间: '2019-05-10', 价格: 850, },
-            { 时间: '2019-05-20', 价格: 950, },
-            { 时间: '2019-05-30', 价格: 350, },
-            { 时间: '2019-06-10', 价格: 350, },
-        ];
-        let affectedData = [
-            { 时间: '2019-03-10', 感染人数: 23, },
-            { 时间: '2019-03-20', 感染人数: 35, },
-            { 时间: '2019-03-30', 感染人数: 89, },
-            { 时间: '2019-04-10', 感染人数: 69, },
-            { 时间: '2019-04-20', 感染人数: 345, },
-            { 时间: '2019-04-30', 感染人数: 2220, },
-            { 时间: '2019-05-10', 感染人数: 3500, },
-            { 时间: '2019-05-20', 感染人数: 4500, },
-            { 时间: '2019-05-30', 感染人数: 7000, },
-            { 时间: '2019-06-10', 感染人数: 10000, },
-
-        ];
-
-        setPriceData(priceData);
-        setAffectedData(affectedData);
+        getAndSetPriceData();
+        getAndSetAffectedData();
     }, []);
 
     const config = {

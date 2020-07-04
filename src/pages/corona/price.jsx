@@ -5,6 +5,7 @@ import { Skeleton, Form, Button } from "antd";
 import PageHeader from '../../component/pageheader'
 import { ColumnLine } from '@ant-design/charts';
 import { getCityByCode } from "../../city"
+import axios from 'axios';
 
 
 const routes = [
@@ -127,98 +128,80 @@ const PriceAffectedChart = ({ priceData, affectedData }) => {
 
 //页面主组件
 const CoronaPrice = () => {
-
-
-    console.log("render");
-
     const [priceData, setPriceData] = useState([]);
     const [affectedData, setAffectedData] = useState([]);
     const [city, setCity] = useState([]);
     // const [loading, setLoading] = useState(true);
-    useEffect(() => {
-        let priceData = [
-            {
-                时间: '2019-03',
-                价格: 350,
-            },
-            {
-                时间: '2019-04',
-                价格: 900,
-            },
-            {
-                时间: '2019-05',
-                价格: 300,
-            },
-            {
-                时间: '2019-06',
-                价格: 450,
-            },
-            {
-                时间: '2019-07',
-                价格: 470,
-            },
-        ];
-        let affectedData = [
-            {
-                时间: '2019-03',
-                感染人数: 800,
-            },
-            {
-                时间: '2019-04',
-                感染人数: 600,
-            },
-            {
-                时间: '2019-05',
-                感染人数: 400,
-            },
-            {
-                时间: '2019-06',
-                感染人数: 380,
-            },
-            {
-                时间: '2019-07',
-                感染人数: 220,
-            },
-        ];
-        setPriceData(priceData);
-        setAffectedData(affectedData);
 
+    /**
+     * 获取并设置特定城市在1月到7月的平均机票价格
+     * @param {城市} city 
+     */
+    const getAndSetPriceData = (city)=>{
+        console.log("this is city" + city);
+        
+        axios.get("/corona/getPrice?city="+city).then((res)=>{
+            if(res.data.success){
+                setPriceData(res.data.data);
+            }else{
+                alert(res.data.msg);
+            }
+        }).catch((e)=>{
+            let priceData = [
+                { 时间: '2019-03-10', 价格: 350, },
+                { 时间: '2019-03-20', 价格: 360, },
+                { 时间: '2019-03-30', 价格: 370, },
+                { 时间: '2019-04-10', 价格: 380, },
+                { 时间: '2019-04-20', 价格: 550, },
+                { 时间: '2019-04-30', 价格: 250, },
+                { 时间: '2019-05-10', 价格: 850, },
+                { 时间: '2019-05-20', 价格: 950, },
+                { 时间: '2019-05-30', 价格: 350, },
+                { 时间: '2019-06-10', 价格: 350, },
+            ];
+            setPriceData(priceData);
+        })
+    };
+
+    /**
+     * 获取并设置特定城市在1月到7月总计感染人数
+     * @param {城市} city 
+     */
+    const getAndSetAffectedData = (city)=>{
+        axios.get("/corona/getAffected?city="+city).then((res)=>{
+            if(res.data.success){
+                setAffectedData(res.data.data);
+            }else{
+                alert(res.data.msg);
+            }
+        }).catch((e)=>{
+            let affectedData = [
+                { 时间: '2019-03-10', 感染人数: 23, },
+                { 时间: '2019-03-20', 感染人数: 35, },
+                { 时间: '2019-03-30', 感染人数: 89, },
+                { 时间: '2019-04-10', 感染人数: 69, },
+                { 时间: '2019-04-20', 感染人数: 345, },
+                { 时间: '2019-04-30', 感染人数: 2220, },
+                { 时间: '2019-05-10', 感染人数: 3500, },
+                { 时间: '2019-05-20', 感染人数: 4500, },
+                { 时间: '2019-05-30', 感染人数: 7000, },
+                { 时间: '2019-06-10', 感染人数: 10000, },
+            ];
+            setAffectedData(affectedData);
+        })
+    }
+    
+    useEffect(() => {
+        getAndSetPriceData("武汉");
+        getAndSetAffectedData("武汉");
     }, [])
 
     const onFormSubmit = (data) => {
         console.log(data);
         setCity(`${getCityByCode(data.arr)}的感染人数和到达该城市机票价格随时间变化图`)
         //根据拿到的城市信息查询priceData和affectedData
-        //这里给假数据
-        let priceData = [
-            { 时间: '2019-03-10', 价格: 350, },
-            { 时间: '2019-03-20', 价格: 360, },
-            { 时间: '2019-03-30', 价格: 370, },
-            { 时间: '2019-04-10', 价格: 380, },
-            { 时间: '2019-04-20', 价格: 550, },
-            { 时间: '2019-04-30', 价格: 250, },
-            { 时间: '2019-05-10', 价格: 850, },
-            { 时间: '2019-05-20', 价格: 950, },
-            { 时间: '2019-05-30', 价格: 350, },
-            { 时间: '2019-06-10', 价格: 350, },
-        ];
-        let affectedData = [
-            { 时间: '2019-03-10', 感染人数: 23, },
-            { 时间: '2019-03-20', 感染人数: 35, },
-            { 时间: '2019-03-30', 感染人数: 89, },
-            { 时间: '2019-04-10', 感染人数: 69, },
-            { 时间: '2019-04-20', 感染人数: 345, },
-            { 时间: '2019-04-30', 感染人数: 2220, },
-            { 时间: '2019-05-10', 感染人数: 3500, },
-            { 时间: '2019-05-20', 感染人数: 4500, },
-            { 时间: '2019-05-30', 感染人数: 7000, },
-            { 时间: '2019-06-10', 感染人数: 10000, },
-
-        ];
-        setPriceData(priceData);
-        setAffectedData(affectedData);
-
-
+        getAndSetPriceData(data.arr);
+        getAndSetAffectedData(data.arr);
     }
 
     return (
