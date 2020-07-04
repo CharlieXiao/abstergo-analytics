@@ -95,4 +95,173 @@ const cityCord = {
     "乌鲁木齐": { "log": 87.68, "lat": 43.77 },
     "呼和浩特": { "log": 111.65, "lat": 40.82 },
 }
-export { cityArray, cityCord, getCityByCode }
+
+const company =
+    [
+        {
+            "comp_code": "CZ",
+            "comp_name": "南方航空"
+        },
+        {
+            "comp_code": "MU",
+            "comp_name": "东方航空"
+        },
+        {
+            "comp_code": "CA",
+            "comp_name": "中国国际航空"
+        },
+        {
+            "comp_code": "MF",
+            "comp_name": "厦门航空"
+        },
+        {
+            "comp_code": "ZH",
+            "comp_name": "深圳航空"
+        },
+        {
+            "comp_code": "HU",
+            "comp_name": "海南航空"
+        },
+        {
+            "comp_code": "3U",
+            "comp_name": "四川航空"
+        },
+        {
+            "comp_code": "SC",
+            "comp_name": "山东航空"
+        },
+        {
+            "comp_code": "G5",
+            "comp_name": "华夏航空"
+        },
+        {
+            "comp_code": "9C",
+            "comp_name": "春秋航空"
+        },
+        {
+            "comp_code": "HO",
+            "comp_name": "吉祥航空"
+        },
+        {
+            "comp_code": "FM",
+            "comp_name": "上海航空"
+        },
+        {
+            "comp_code": "JD",
+            "comp_name": "首都航空"
+        },
+        {
+            "comp_code": "GS",
+            "comp_name": "天津航空"
+        },
+        {
+            "comp_code": "PN",
+            "comp_name": "西部航空"
+        },
+        {
+            "comp_code": "EU",
+            "comp_name": "成都航空"
+        },
+        {
+            "comp_code": "GJ",
+            "comp_name": "浙江长龙航空"
+        },
+        {
+            "comp_code": "NS",
+            "comp_name": "河北航空"
+        },
+        {
+            "comp_code": "8L",
+            "comp_name": "祥鹏航空"
+        },
+        {
+            "comp_code": "AQ",
+            "comp_name": "九元航空"
+        },
+        {
+            "comp_code": "BK",
+            "comp_name": "奥凯航空"
+        },
+        {
+            "comp_code": "DZ",
+            "comp_name": "东海航空"
+        },
+        {
+            "comp_code": "QW",
+            "comp_name": "青岛航空"
+        },
+        {
+            "comp_code": "KY",
+            "comp_name": "昆明航空"
+        },
+        {
+            "comp_code": "DR",
+            "comp_name": "瑞丽航空"
+        },
+        {
+            "comp_code": "TV",
+            "comp_name": "西藏航空"
+        },
+        {
+            "comp_code": "GX",
+            "comp_name": "北部湾航空"
+        },
+        {
+            "comp_code": "FU",
+            "comp_name": "福州航空"
+        },
+        {
+            "comp_code": "Y8",
+            "comp_name": "金鹏航空"
+        },
+        {
+            "comp_code": "RY",
+            "comp_name": "江西航空"
+        },
+        {
+            "comp_code": "KN",
+            "comp_name": "联合航空"
+        },
+        {
+            "comp_code": "UQ",
+            "comp_name": "乌鲁木齐航空"
+        },
+        {
+            "comp_code": "9H",
+            "comp_name": "长安航空"
+        },
+        {
+            "comp_code": "GY",
+            "comp_name": "多彩航空"
+        },
+        {
+            "comp_code": "A6",
+            "comp_name": "红土航空"
+        },
+        {
+            "comp_code": "GT",
+            "comp_name": "桂林航空"
+        },
+        {
+            "comp_code": "LT",
+            "comp_name": "龙江航空"
+        },
+        {
+            "comp_code": "CN",
+            "comp_name": "大新华航空"
+        },
+        {
+            "comp_code": "JR",
+            "comp_name": "幸福航空"
+        }
+    ]
+    
+function getCompanyNameByCode(code){
+    for(let index in company){
+        if(code === company[index].comp_code){
+            return company[index].comp_name;
+        }
+    }
+    return null;
+}
+export { cityArray, cityCord, getCityByCode,company,getCompanyNameByCode }

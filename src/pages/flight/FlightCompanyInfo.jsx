@@ -13,6 +13,8 @@ import {
 } from 'bizcharts';
 import { DataView, DataSet } from '@antv/data-set';
 import axios from 'axios';
+import { host } from "../../config"
+import {company,getCodeByCompanyName, getCompanyNameByCode} from "../../city"
 
 const { Option } = Select;
 const routes = [
@@ -35,7 +37,7 @@ const routes = [
 //航空公司选择器
 const CompanySeletor = ({ formDataChange }) => {
 
-    const companyData = ["南方航空", "东方航空", "西方肮空", "北方航空"];
+    const companyData = company;
 
     function onChange(value) {
         formDataChange(value);
@@ -45,22 +47,16 @@ const CompanySeletor = ({ formDataChange }) => {
         <Select
             showSearch
             style={{ width: 200 }}
-            placeholder="选择航班"
+            placeholder="选择航空公司"
             optionFilterProp="children"
             onChange={onChange}
-            // onFocus={onFocus}
-            // onBlur={onBlur}
-            // onSearch={onSearch}
             filterOption={(input, option) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
             }
         >
-            {/* <Option value="jack">Jack</Option>
-        <Option value="lucy">Lucy</Option>
-        <Option value="tom">Tom</Option> */}
             {
                 companyData.map((element, index) => {
-                    return <Option value={element} key={index}>{element}</Option>
+                return <Option value={element.comp_code} key={index}>{element.comp_name} {element.comp_code}</Option>
                 })
             }
         </Select>
@@ -73,22 +69,9 @@ const InputTable = ({ onFormSubmit }) => {
     // 获取表单数据信息
     const [form] = Form.useForm();
 
-    // 数据变化回调函数
-
-    const onFinish = (values) => {
-        if (onFormSubmit) {
-            const data = {
-                company: values.company,
-            };
-            onFormSubmit(data);
-        }
-    };
-
     const onCompanyChange = (value) => {
-        form.setFieldsValue({
-            company: value,
-        });
-        form.validateFields(["company"]);
+        let data = { company: value };
+        onFormSubmit(data);
     };
 
     return (
@@ -98,7 +81,7 @@ const InputTable = ({ onFormSubmit }) => {
                 // 表单名称
                 name="cityminprice"
                 // 结束回调函数
-                onFinish={onFinish}
+                // onFinish={onFinish}
                 layout="horizontal"
                 // 隐藏必须输入标记
                 hideRequiredMark
@@ -115,13 +98,13 @@ const InputTable = ({ onFormSubmit }) => {
                         </Form.Item>
                     </Col>
 
-                    <Col xs={24} sm={12} md={12} lg={12} xl={16} xxl={6}>
+                    {/* <Col xs={24} sm={12} md={12} lg={12} xl={16} xxl={6}>
                         <Form.Item className="ab-form-item">
                             <Button type="primary" htmlType="submit" style={{ marginRight: "10px" }}>
                                 查询
                             </Button>
                         </Form.Item>
-                    </Col>
+                    </Col> */}
                 </Row>
             </Form>
         </div>
@@ -154,7 +137,6 @@ const PlaneTypePie = ({ data, isClicked }) => {
 
     // console.log(dv1.rows);
 
-    console.log("rendering...")
 
     return (
         <Chart
@@ -173,6 +155,8 @@ const PlaneTypePie = ({ data, isClicked }) => {
                 const curData = ev.data.data;
                 //根据data的name type 和 value尝试在data中匹配数据，如果匹配失败，就说明是内饼，如果成功，就说明是外饼
                 let isInternal = true;
+                console.log(curData);
+                console.log(data);    
                 data.map((element, index) => {
                     if (element.type === curData.type && element.name === curData.name && element.value === curData.value) {
                         //do nothing
@@ -184,9 +168,13 @@ const PlaneTypePie = ({ data, isClicked }) => {
 
                 if (isInternal) {
                     //是内饼
+                    console.log("是内饼");
+                    
                     isClicked(curData.type);
                 } else {
                     //是外饼
+                    console.log("是外饼");
+                    
                     isClicked(curData.name);
                 }
             }}
@@ -241,7 +229,6 @@ const CompanyLoveCountriesChart = ({ data }) => {
         }
     });
 
-    console.log("bar chart rendering")
     return (
         <Chart data={dv.rows} autoFit>
             <Coordinate transpose />
@@ -265,7 +252,6 @@ const PlaneCard = ({ content }) => {
 }
 
 
-
 //页面主组件
 const FlightCompanyInfo = () => {
     const [planeTypeData, setPlaneTypeData] = useState([]);
@@ -280,14 +266,21 @@ const FlightCompanyInfo = () => {
      */
     const getAndSetPlaneInfos = () => {
         //发送axios请求获取所有机型以及介绍
-        axios.get("/plane/getPlanesIntroductions").then((res) => {
+        axios.get(host + "/plane/getPlanesIntroductions").then((res) => {
             if (res.data.success) {
-                let infos = res.data.data;
+                //收到数据的形式是{craftModelAKA:"波音747",craftDesc:"xxxxx"}
+                let tmpInfos = res.data.data;
+                let infos = [];
+
+                for (let index in tmpInfos) {
+                    infos.push({ name: tmpInfos[index].craftModelAKA, introduction: tmpInfos[index].craftDesc });
+                }
                 setPlaneInfos(infos);
             } else {
                 console.log("Yichang ");
             }
         }).catch((e) => {
+            alert("请求机型以及介绍数据异常");
             let infos = [
                 { name: "波音737", introduction: "this is 波音737" },
                 { name: "波音747", introduction: "this is 波音747" },
@@ -304,20 +297,25 @@ const FlightCompanyInfo = () => {
     }
 
     /**
-     * 
-     * @param {获取并设置航公公司所有飞机机型以及数量} companyName 
+     * 获取并设置航公公司所有飞机机型以及数量
+     * @param {城市名，CKG} companyName 
      */
     function getAndSetPlaneTypeData(companyName) {
         //根据companyName 进行网络请求拿到对应航空公司的机型数据
-        //通过axios获取飞机机型信息   
-        axios.get("/company/getAircraftInfos?companyName=" + companyName).then((res) => {
+        //通过axios获取飞机机型信息      
+        axios.get(host+"/company/getAircraftInfos?companyName=" + companyName).then((res) => {
             if (res.data.success) {
-                setPlaneTypeData(res.data.data);
+                let tmpData = res.data.data;
+                let data =[];
+                for(let index in tmpData){
+                    data.push({value:tmpData[index].num,type:tmpData[index].craftCompany,name:tmpData[index].craftFamily});
+                }
+                setPlaneTypeData(data);
             } else {
                 console.log("not success");
             }
         }).catch((e) => {
-            console.log("异常");
+            alert("请求机型占比异常");
             let types = [
                 { value: 251, type: '波音737', name: '波音737-1' },
                 { value: 1048, type: '波音737', name: '波音737-2' },
@@ -331,40 +329,46 @@ const FlightCompanyInfo = () => {
     }
 
     /**
-     * 
-     * @param {获取并设置公司的偏爱城市列表} companyName 
+     * 获取并设置公司的偏爱城市列表
+     * @param {城市名,CKG} companyName 
      */
     const getAndSetLoveCityData = (companyName) => {
-        axios.get("/company/getLoveCities?companyName=" + companyName).then((res) => {
+        axios.get(host+"/company/getLoveCities?companyName=" + companyName).then((res) => {
+            
             if (res.data.success) {
-                setLoveCityData(res.data.data)
+                let tmpData = res.data.data;
+                let data = [];
+                for(let index in tmpData){
+                    data.push({city:tmpData[index].ct,到达总航班数:tmpData[index].count});
+                }
+                setLoveCityData(data);
             } else {
                 console.log(res.data.msg);
-
             }
         }).catch((e) => {
+            alert("获取偏爱城市异常");
             let data = [{ city: "重庆", 到达总航班数: 131744 },
-                        { city: "北京", 到达总航班数: 104970 },
-                        { city: "上海", 到达总航班数: 29034 },
-                        { city: "深圳", 到达总航班数: 23489 },
-                        { city: "CQU", 到达总航班数: 18203 }
-                        ]
+            { city: "北京", 到达总航班数: 104970 },
+            { city: "上海", 到达总航班数: 29034 },
+            { city: "深圳", 到达总航班数: 23489 },
+            { city: "CQU", 到达总航班数: 18203 }
+            ]
             setLoveCityData(data);
         })
     }
-    
+
     useEffect(() => {
         //默认设置南方航空
         getAndSetPlaneInfos();
-        getAndSetPlaneTypeData("南方航空");
-        getAndSetLoveCityData("南方航空");
-    }, [])
+        getAndSetPlaneTypeData("CZ");
+        getAndSetLoveCityData("CZ");
+    },[])
 
     const onFormSubmit = (queryData) => {
         console.log(queryData);
-        setChartName(`${queryData.company} 详细信息`);
-        getAndSetPlaneTypeData(queryData);
-        getAndSetLoveCityData(queryData);
+        setChartName(`${getCompanyNameByCode(queryData.company)} 详细信息`);
+        getAndSetPlaneTypeData(queryData.company);
+        getAndSetLoveCityData(queryData.company);
     }
 
     const clickPieHandler = (clickName) => {
