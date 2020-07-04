@@ -7,6 +7,7 @@ import { ColumnLine } from '@ant-design/charts';
 import { getCityByCode } from "../../city"
 import { Card } from 'antd'
 import axios from 'axios'
+import {host} from "../../config"
 
 const PriceAffectedChart = () => {
 
@@ -19,9 +20,17 @@ const PriceAffectedChart = () => {
      * 每月获取全国所有感染人数
      */
     const getAndSetAffectedData = ()=>{
-        axios.get("/corona/getTotalAffected").then((res)=>{
+        axios.get(host+"/corona/getTotalAffected").then((res)=>{    
+            console.log(res);
+                  
             if(res.data.success){
-                setAffectedData(res.data.data);
+                let tmpData = res.data.data;
+                let data =[];
+                for(let index in tmpData){
+                    data.push({时间:tmpData[index].dateId,感染人数:tmpData[index].confirmedCount});
+                }
+                console.log(data);
+                setAffectedData(data);
             }else{
                 alert(res.data.msg);
             }
