@@ -21,6 +21,7 @@
     "bizcharts": "^4.0.7",
     "craco-less": "^1.17.0",
     "echarts": "^4.8.0",
+    "echarts-for-react": "^2.0.16",
     "enquire-js": "^0.2.1",
     "rc-queue-anim": "^1.8.5",
     "rc-scroll-anim": "^2.7.4",

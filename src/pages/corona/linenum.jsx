@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import PageHeader from '../../component/pageheader'
 import { Skeleton } from 'antd'
 import echarts from 'echarts';
@@ -36,6 +36,7 @@ const convertData = (data) => {
             });
         }
     }
+    console.log(res)
     return res;
 };
 
@@ -305,7 +306,7 @@ var option = {
     options: []
 };
 
-class ScatterMap extends React.Component {
+class Map extends React.Component {
     componentDidMount() {
         this.initalECharts();
     }
@@ -343,7 +344,7 @@ class ScatterMap extends React.Component {
             console.log(res)
             console.log(res1);
             console.log(res2);
-            console.log(province);
+            // console.log(province);
             option.options.push({
                 title: [{
                         text: days[n] + "日 感染人数与航班数量",
@@ -439,6 +440,150 @@ class ScatterMap extends React.Component {
     }
 }
 
+const ScatterMap = ({mapData})=>{
+    const mapContainer = useRef(null)
+    let chart = null
+
+    useEffect(()=>{
+        console.log("data change")
+    },[mapData])
+
+    useEffect(()=>{
+        return ()=>{
+            console.log("dipose chart")
+            if(chart){
+                chart.dispose()
+            }
+        }
+    },[])
+
+    useEffect(()=>{
+        const chartInstance = echarts.getInstanceByDom(mapContainer.current)
+        if(chartInstance){
+            chartInstance.resize("auto","auto")
+        }
+    })
+
+    const renderChart = ()=>{
+        const chartInstance = echarts.getInstanceByDom(mapContainer.current)
+        if(chartInstance){
+            chart = chartInstance
+        }else{
+            chart = echarts.init(mapContainer.current)
+            chart.setOption(option)
+        }
+        let seriesOptions = []
+        for (let n = 0; n < days.length; n++) {
+            let res = [];
+            for (let j = 0; j < data[n].length; j++) {
+                res.push({
+                    name: province[j],
+                    value: data[n][j]
+                });
+            }
+
+            res.sort(function(a, b) {
+                return b.value - a.value;
+            });
+            let res1 = [];
+            let res2 = [];
+            for (let t = 0; t < 10; t++) {
+                res1[t] = res[t].name;
+                res2[t] = res[t].value;
+            }
+            // console.log(res)
+            // console.log(res1)
+            // console.log(res2)
+            seriesOptions.push({
+                title: [{
+                        text: days[n] + "日 感染人数与航班数量",
+                        textStyle: {
+                            color: '#2D3E53',
+                            fontSize: 28
+                        },
+                        left: 20,
+                        top: 20,
+                    },{
+                        show: true,
+                        text: '感染人数排行',
+                        textStyle: {
+                            color: '#2D3E53',
+                            fontSize: 18
+                        },
+                        right: '10%',
+                        top: '15%'
+                    }
+                ],
+                yAxis: {
+                    data: res1,
+                },
+                series: [
+                {
+                    type: 'map',
+                    data: res
+                }, {
+                    type: 'bar',
+                    data: res2,
+                    itemStyle: {
+                        normal: {
+                            color: function(params) {
+                                // build a color map as your need.
+                                var colorList = [{
+                                        colorStops: [{
+                                            offset: 0,
+                                            color: '#FF0000' // 0% 处的颜色
+                                        }, {
+                                            offset: 1,
+                                            color: '#990000' // 100% 处的颜色
+                                        }]
+                                    },
+                                    {
+                                        colorStops: [{
+                                            offset: 0,
+                                            color: '#00C0FA' // 0% 处的颜色
+                                        }, {
+                                            offset: 1,
+                                            color: '#2F95FA' // 100% 处的颜色
+                                        }]
+                                    }
+                                ];
+                                if (params.dataIndex < 3) {
+                                    return colorList[0]
+                                } else {
+                                    return colorList[1]
+                                }
+                            },
+                        }
+                    },
+                },{
+                    name: '航班起降数',
+                    type: 'scatter',
+                    coordinateSystem: 'geo',
+                    data:convertData(cityArray),
+                    cursor:'pointer',
+                    symbolSize:(value,params)=>{
+                        // 保证最小大小为5
+                        return 10+value[2]
+                    },
+                    itemStyle:{
+                        color:'rgba(128,0,0,1)',
+                        borderColor:"#fff",
+                        borderWidth:2
+                    },
+                    tooltip:{
+                        formatter:(params)=>{
+                            // console.log(params)
+                            return `${params.data.name} <br/> 航班数量: ${params.value[2]}`
+                        }
+                    }
+                }]
+            });
+        }
+    }
+
+    return <div ref={mapContainer} style={{height:"70vh",width:"70vw",margin:"auto"}} />
+}
+
 const CoronaLineNumber = () => {
     // const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
@@ -463,7 +608,7 @@ const CoronaLineNumber = () => {
                 <div className="ab-content-container">
                     <Skeleton loading={loading} active>
                         <div className="ab-chart-title">{chartName}</div>
-                        <ScatterMap/>
+                        <Map/>
                     </Skeleton>
                 </div>
             </div>
