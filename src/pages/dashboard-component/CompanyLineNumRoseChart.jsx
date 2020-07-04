@@ -14,26 +14,27 @@ const CompanyLineNumRoseChart = () => {
     useEffect(() => {
         setTimeout(() => {
             const res = [
-                { type: '分类一', value: 27 },
-                { type: '分类二', value: 25 },
-                { type: '分类三', value: 18 },
-                { type: '分类四', value: 15 },
-                { type: '分类五', value: 10 },
-                { type: 'Other', value: 5 },
+                { company: '南方航空', lines: 11001 },
+                { company: '中国国际航空', lines: 7822 },
+                { company: '海南航空', lines: 6300 },
+                { company: '深圳航空', lines: 4322 },
+                { company: '东方航空', lines: 2132 },
+                { company: '西部航空', lines: 1230 },
+                { company: "成都航空", lines: 500},
             ];
             setData(res)
         }, 1000)
     }, [])
 
     return (
-        <Card title="全年各市航班价格平均值">
+        <Card title="全年各航空公司航班数">
             <Chart height={300} data={data} autoFit>
                 <Coordinate
                     type="polar"
                     startAngle={Math.PI} // 起始角度
                     endAngle={Math.PI * (3 / 2)} // 结束角度
                 />
-                <Axis name="value" grid={{
+                <Axis name="company" grid={{
                     line: {
                         type: 'circle',
                     },
@@ -41,15 +42,15 @@ const CompanyLineNumRoseChart = () => {
                 }} />
                 <Tooltip showTitle={false} />
                 <Interval
-                    position="type*value"
+                    position="company*lines"
                     adjust="stack"
-                    color={['type', 'rgb(252,143,72)-rgb(255,215,135)']}
+                    color={['company', 'rgb(252,143,72)-rgb(255,215,135)']}
                     element-highlight
                     style={{
                         lineWidth: 1,
                         stroke: '#fff',
                     }}
-                    label={['value', {
+                    label={['lines', {
                         offset: -15,
                         style: {
                             textAlign: 'center',

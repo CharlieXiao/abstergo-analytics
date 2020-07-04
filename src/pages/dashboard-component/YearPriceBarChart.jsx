@@ -7,27 +7,12 @@ const YearPriceBarChart = () => {
     const [data, setData] = useState([])
     useEffect(() => {
         setTimeout(() => {
-            const res = [
-                {
-                    country: "北京",
-                    population: 131744
-                },
-                {
-                    country: "上海",
-                    population: 104970
-                },
-                {
-                    country: "广州",
-                    population: 29034
-                },
-                {
-                    country: "深圳",
-                    population: 23489
-                },
-                {
-                    country: "厦门",
-                    population: 18203
-                }
+            const res =  [
+                {city: "北京",price: 131744},
+                {city: "上海",price: 104970},
+                {city: "广州",price: 29034},
+                {city: "深圳",price: 23489},
+                {city: "厦门",price: 18203}
             ];
             const ds = new DataSet();
             const dv = ds.createView().source(res);
@@ -35,7 +20,7 @@ const YearPriceBarChart = () => {
                 type: "sort",
                 callback(a, b) {
                     // 排序依据，和原生js的排序callback一致
-                    return a.population - b.population;
+                    return a.price - b.price;
                 }
             });
             setData(dv.rows)
@@ -47,7 +32,7 @@ const YearPriceBarChart = () => {
             <Chart height={300} data={data} autoFit>
                 {/* 设置成条形图 */}
                 <Coordinate transpose />
-                <Interval position="country*population" />
+                <Interval position="city*price" />
                 <Tooltip showMarkers={false} />
             </Chart>
         </Card>

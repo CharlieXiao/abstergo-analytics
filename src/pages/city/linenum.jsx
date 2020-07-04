@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import PageHeader from '../../component/pageheader'
-import { Skeleton, Row, Col, Form, Button, DatePicker } from 'antd'
+import { Skeleton, DatePicker, Card } from 'antd'
 import echarts from 'echarts';
-// import 'echarts/map/js/china';
 import geoJson from 'echarts/map/json/china.json';
-import { cityCord, cityArray } from '../../city';
+import { cityCord } from '../../city';
 import locale from "antd/es/date-picker/locale/zh_CN";
+import moment from 'moment';
+
+echarts.registerMap('china', geoJson);
 
 const routes = [
     {
@@ -27,114 +29,97 @@ const routes = [
     },
 ];
 
-const PriceMonthForm = ({ onFormSubmit }) => {
-    // 获取表单数据信息
-    const [form] = Form.useForm();
-
-    const onFinish = (values) => {
-        if (onFormSubmit) {
-            const data = {
-                month: values.month.format("YYYY-MM"),
-            }
-            onFormSubmit(data);
-        }
-    };
-
-    return (
-        <div className="ab-form-container">
-            <div>
-                <Form
-                    form={form}
-                    // 表单名称
-                    name="cityminprice"
-                    // 结束回调函数
-                    onFinish={onFinish}
-                    layout="horizontal"
-                    // 隐藏必须输入标记
-                    hideRequiredMark
-                >
-                    <Row gutter={[16, 8]}>
-                        <Col xs={12} sm={12} md={12} lg={12} xl={8} xxl={6}>
-                            <Form.Item
-                                name="month"
-                                label="月份"
-                                rules={[{ required: true, message: "请选择月份" }]}
-                            >
-                                {/* 日期范围选择器 */}
-                                <DatePicker
-                                    picker="month"
-                                    locale={locale}
-                                    style={{ maxWidth: "230px" }}
-                                />
-                            </Form.Item>
-                        </Col>
-                        <Col xs={24} sm={12} md={12} lg={12} xl={24} xxl={6}>
-                            <Form.Item>
-                                <Button type="primary" htmlType="submit" style={{ marginRight: "10px" }}>
-                                    查询
-                </Button>
-                            </Form.Item>
-                        </Col>
-                    </Row>
-                </Form>
-            </div>
-        </div>
-    );
-};
-
 const convertData = (data) => {
-    var res = [];
-    for (var i = 0; i < data.length; i++) {
-        var geoCoord = cityCord[data[i].city];
+    let res = [];
+    let min = 0x7f7f7f7f;
+    let max = 0;
+    data.forEach((element)=>{
+        if(element.linenum > max){
+            max = element.linenum
+        }
+        if(element.linenum < min){
+            min = element.linenum
+        }
+    })
+    data.forEach((element) => {
+        let geoCoord = cityCord[element.city];
         if (geoCoord) {
             res.push({
-                name: data[i].city,
-                value: [geoCoord.log, geoCoord.lat, Math.floor(Math.random()*20)+1],
-                type: 'node'
+                name: element.city,
+                value: [geoCoord.log, geoCoord.lat, element.linenum],
+                type: 'node',
+                size: Math.floor( (element.linenum - min) / (max - min) * 20 ) + 10
             });
         }
-    }
+    })
     return res;
 };
 
-const NodeSeries = {
-    name: '航班起降数',
-    type: 'scatter',
-    coordinateSystem: 'geo',
-    data:convertData(cityArray),
-    cursor:'pointer',
-    symbolSize:(value,params)=>{
-        // 保证最小大小为5
-        return 5+value[2]
-    }
-}
+const dataTemplate = [
+    { city: '北京', linenum: 36, },
+    { city: '长春', linenum: 36, },
+    { city: '重庆', linenum: 36, },
+    { city: '长沙', linenum: 36, },
+    { city: '成都', linenum: 36, },
+    { city: '大连', linenum: 36,  },
+    { city: '福州', linenum: 36,  },
+    { city: '广州', linenum: 36,  },
+    { city: '贵阳', linenum: 36,  },
+    { city: '桂林', linenum: 36,  },
+    { city: '海口', linenum: 36,  },
+    { city: '合肥', linenum: 36,  },
+    { city: '杭州', linenum: 36,  },
+    { city: '济南', linenum: 36,  },
+    { city: '昆明', linenum: 16,  },
+    { city: '兰州', linenum: 16,  },
+    { city: '拉萨', linenum: 16,  },
+    { city: '南昌', linenum: 16,  },
+    { city: '南京', linenum: 16,  },
+    { city: '南宁', linenum: 16,  },
+    { city: '泉州', linenum: 16,  },
+    { city: '青岛', linenum: 16, },
+    { city: '上海', linenum: 16, },
+    { city: '沈阳', linenum: 16, },
+    { city: '三亚', linenum: 6, },
+    { city: '深圳', linenum: 6, },
+    { city: '天津', linenum: 6,  },
+    { city: '太原', linenum: 6,  },
+    { city: '温州', linenum: 6,  },
+    { city: '武汉', linenum: 6,  },
+    { city: '无锡', linenum: 6,  },
+    { city: '西安', linenum: 6,  },
+    { city: '厦门', linenum: 6,  },
+    { city: '西宁', linenum: 6,  },
+    { city: '银川', linenum: 6,  },
+    { city: '扬州', linenum: 6,  },
+    { city: '郑州', linenum: 6,  },
+    { city: '珠海', linenum: 6,  },
+    { city: '石家庄', linenum: 46,  },
+    { city: '哈尔滨', linenum: 46,  },
+    { city: '呼和浩特', linenum: 46,  },
+    { city: '乌鲁木齐', linenum: 46,  },
+]
 
 const option = {
     tooltip: {
+        // hover item时出现tooltip
         trigger: 'item'
     },
-    grid: {
-        left: '10%',
-        right: '10%',
-        top: '10%',
-        bottom: '10%',
-        containLabel: true
-    },
-    visualMap:{
-        type:'continuous',
-        calculable:false,
-        min:1,
-        max:20,
+    visualMap: {
+        type: 'continuous',
+        calculable: false,
+        min: 1,
+        max: 1000,
     },
     geo: {
         map: 'china',
-        roam:true,
-        scaleLimit:{
-            // 最小缩放值
-            min:1,
-            // 最大缩放倍数
-            max:10
-        },
+        roam: false,
+        // scaleLimit: {
+        //     // 最小缩放值
+        //     min: 1,
+        //     // 最大缩放倍数
+        //     max: 10
+        // },
         zoom: 1.2,
         silent: true,
         itemStyle: {
@@ -142,34 +127,65 @@ const option = {
             borderColor: '#666'
         }
     },
-    series: [
-        NodeSeries
-    ]
+    series: [{
+        name: '航班起降数',
+        type: 'scatter',
+        coordinateSystem: 'geo',
+        // dimensions: ['city','linenum','size'],
+        data: [],
+        cursor: 'pointer',
+        symbolSize: (value, params) => {
+            // 保证最小大小为5
+            return params.data.size
+        },
+        tooltip: {
+            formatter: (params) => {
+                return `${params.name}<br/>航班数：${params.data.value[2]}`
+            }
+        }
+    }]
 
 }
 
-class ScatterMap extends React.Component {
-    componentDidMount() {
-        this.initalECharts();
-    }
+const ScatterMap = ({data})=>{
+    const mapContainer = useRef(null)
+    let myChart = null
+    // 当数据发生变化时触发重新绘制
+    useEffect(()=>{
+        renderChart(data)
+    },[data])
 
-    componentWillUpdate() {
-        if (this.myChart) {
-            this.myChart.resize('auto', 'auto')
+    useEffect(()=>{
+        return ()=>{
+            // 销毁对象
+            if(myChart){
+                myChart.dispose()
+            }
         }
-    }
+    },[])
 
-    initalECharts() {
-        echarts.registerMap('china', geoJson);
-        this.myChart = echarts.init(document.getElementById('mainMap'));
-        this.myChart.setOption(option)
-    }
+    // 每次render时重新调整大小
+    useEffect(()=>{
+        const renderedInstance = echarts.getInstanceByDom(mapContainer.current)
+        if(renderedInstance){
+            renderedInstance.resize('auto','auto')
+        }
+    })
 
-    render() {
-        return (
-            <div id="mainMap" style={{ width: '70vw', height: '70vh',margin:'auto' }} ></div>
-        );
+    const renderChart = (data)=>{
+        const renderedInstance = echarts.getInstanceByDom(mapContainer.current)
+        if (renderedInstance) {
+            myChart = renderedInstance
+        } else {
+            myChart = echarts.init(mapContainer.current)
+            myChart.setOption(option)
+        }
+        myChart.setOption({series:[{name: '航班起降数', data:convertData(data)}]})
     }
+    
+    return (
+        <div ref={mapContainer} style={{ height: '70vh',width:'70vw', margin: 'auto' }} ></div>
+    );
 }
 
 const CityLineNum = () => {
@@ -177,29 +193,31 @@ const CityLineNum = () => {
     const [loading, setLoading] = useState(false)
     const [chartName, setChartName] = useState("")
     useEffect(() => {
-        
+        onDatePickerChange(new moment("201903", "YYYYMM"))
     }, [])
 
-    const onFormSubmit = (queryData) => {
-        console.log(queryData)
+    const onDatePickerChange = (date) => {
         setLoading(true)
-        setTimeout(()=>{
+        setChartName(`${date.format("YYYY年M月")} 各城市航班数量`)
+        setTimeout(() => {
+            dataTemplate.forEach((element) => {
+                element.linenum = Math.floor(Math.random() * 1000) + 1
+            })
+            setData(dataTemplate)
             setLoading(false)
-            setChartName(`${queryData.month} 各市航班起降数量`)
-        },1000)
+        }, 1000)
     }
 
     return (
         <div className="ab-page-header-wrapper">
             <PageHeader title="各市航班数量" routes={routes} />
             <div className="ab-container">
-                <PriceMonthForm onFormSubmit={onFormSubmit} />
-                <div className="ab-content-container">
+                <Card title={chartName} bordered={false}
+                    extra={<DatePicker picker="month" locale={locale} onSelect={onDatePickerChange} defaultValue={new moment("201903", "YYYYMM")} allowClear={false} format="YYYY/M" />} >
                     <Skeleton loading={loading} active>
-                        <div className="ab-chart-title">{chartName}</div>
-                        <ScatterMap/>
+                        <ScatterMap data={data} />
                     </Skeleton>
-                </div>
+                </Card>
             </div>
         </div>
     );

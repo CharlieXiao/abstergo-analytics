@@ -416,7 +416,7 @@ class ScatterMap extends React.Component {
                         return 10+value[2]
                     },
                     itemStyle:{
-                        color:'rgba(220,20,60,1)',
+                        color:'rgba(128,0,0,1)',
                         borderColor:"#fff",
                         borderWidth:2
                     },

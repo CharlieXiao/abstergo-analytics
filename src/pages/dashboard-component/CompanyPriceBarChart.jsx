@@ -8,38 +8,15 @@ const CompanyPriceBarChart = () => {
     useEffect(() => {
         setTimeout(() => {
             const res = [
-                {
-                    country: "南方航空",
-                    population: 131744
-                },
-                {
-                    country: "中国国际航空",
-                    population: 104970
-                },
-                {
-                    country: "海南航空",
-                    population: 29034
-                },
-                {
-                    country: "深圳航空",
-                    population: 23489
-                },
-                {
-                    country: "东方航空",
-                    population: 46554
-                },{
-                    country: "西部航空",
-                    population: 12312
-                },{
-                    country: "厦门航空",
-                    population: 79845
-                },{
-                    country: "成都航空",
-                    population: 1322
-                },{
-                    country: "首都航空",
-                    population: 78945
-                },
+                {company: "南方航空",price: 131744},
+                {company: "中国国际航空",price: 104970},
+                {company: "海南航空",price: 29034},
+                {company: "深圳航空",price: 23489},
+                {company: "东方航空",price: 46554},
+                {company: "西部航空",price: 12312},
+                {company: "厦门航空",price: 79845},
+                {company: "成都航空",price: 1322},
+                {company: "首都航空",price: 78945},
             ];
             const ds = new DataSet();
             const dv = ds.createView().source(res);
@@ -47,7 +24,7 @@ const CompanyPriceBarChart = () => {
                 type: "sort",
                 callback(a, b) {
                     // 排序依据，和原生js的排序callback一致
-                    return a.population - b.population;
+                    return a.price - b.price;
                 }
             });
             setData(dv.rows)
@@ -55,11 +32,11 @@ const CompanyPriceBarChart = () => {
     },[])
 
     return (
-        <Card title="全年各市航班价格平均值">
+        <Card title="全年各航空公司航班平均价格">
             <Chart height={400} data={data} autoFit>
                 {/* 设置成条形图 */}
                 {/* <Coordinate transpose /> */}
-                <Interval position="country*population" />
+                <Interval position="company*price" />
                 <Tooltip showMarkers={false} />
             </Chart>
         </Card>

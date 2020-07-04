@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import PageHeader from '../../component/pageheader'
-import { Skeleton, Row, Col, Form, Button, DatePicker } from 'antd'
+import { Skeleton, Row, Col, Form, Button, DatePicker, Card } from 'antd'
 import { Chart, Coordinate, Interval, Tooltip } from "bizcharts";
 import locale from "antd/es/date-picker/locale/zh_CN";
 import DataSet from "@antv/data-set";
+import moment from 'moment'
 
 const routes = [
     {
@@ -26,108 +27,42 @@ const routes = [
 ];
 
 
-const PriceMonthForm = ({ onFormSubmit }) => {
-    // 获取表单数据信息
-    const [form] = Form.useForm();
-
-    const onFinish = (values) => {
-        if (onFormSubmit) {
-            const data = {
-                month: values.month.format("YYYY-MM"),
-            }
-            onFormSubmit(data);
-        }
-    };
-
-    return (
-        <div className="ab-form-container">
-            <div>
-                <Form
-                    form={form}
-                    // 表单名称
-                    name="cityminprice"
-                    // 结束回调函数
-                    onFinish={onFinish}
-                    layout="horizontal"
-                    // 隐藏必须输入标记
-                    hideRequiredMark
-                >
-                    <Row gutter={[16, 8]}>
-                        <Col xs={12} sm={12} md={12} lg={12} xl={8} xxl={6}>
-                            <Form.Item
-                                name="month"
-                                label="月份"
-                                rules={[{ required: true, message: "请选择月份" }]}
-                            >
-                                {/* 日期范围选择器 */}
-                                <DatePicker
-                                    picker="month"
-                                    locale={locale}
-                                    style={{ maxWidth: "230px" }}
-                                />
-                            </Form.Item>
-                        </Col>
-                        <Col xs={24} sm={12} md={12} lg={12} xl={16} xxl={6}>
-                            <Form.Item>
-                                <Button type="primary" htmlType="submit" style={{ marginRight: "10px" }}>
-                                    查询
-                </Button>
-                            </Form.Item>
-                        </Col>
-                    </Row>
-                </Form>
-            </div>
-        </div>
-    );
-};
-
 const CityAvgPrice = () => {
 
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
     const [chartName, setChartName] = useState("")
     useEffect(() => {
-        setLoading(false)
-        const res = [
-            {
-                country: "中国",
-                population: 131744
-            },
-            {
-                country: "印度",
-                population: 104970
-            },
-            {
-                country: "美国",
-                population: 29034
-            },
-            {
-                country: "印尼",
-                population: 23489
-            },
-            {
-                country: "巴西",
-                population: 18203
-            }
-        ];
-        const ds = new DataSet();
-        const dv = ds.createView().source(res);
-        dv.source(res).transform({
-            type: "sort",
-            callback(a, b) {
-                // 排序依据，和原生js的排序callback一致
-                return a.population - b.population;
-            }
-        });
-        setData(dv.rows)
+        onDatePickerChange(new moment("201903","YYYYMM"))
     }, [])
 
-    const onFormSubmit = (queryData) => {
-        console.log(queryData)
+    const onDatePickerChange = (date) => {
         setLoading(true)
+        setChartName(`${date.format("YYYY年M月")} 各城市平均机票价格排名`)
         setTimeout(() => {
             setLoading(false)
-            setChartName(`${queryData.month} 各城市平均机票价格排名`)
+            const res = [
+                {city: "北京",price: 131744},
+                {city: "上海",price: 104970},
+                {city: "广州",price: 29034},
+                {city: "深圳",price: 23489},
+                {city: "厦门",price: 18203},
+                {city: "珠海",price: 131744},
+                {city: "天津",price: 104970},
+                {city: "重庆",price: 29034},
+                {city: "杭州",price: 23489},
+                {city: "海口",price: 18203}
+            ];
+            const ds = new DataSet();
+            const dv = ds.createView().source(res);
+            dv.source(res).transform({
+                type: "sort",
+                callback(a, b) {
+                    // 排序依据，和原生js的排序callback一致
+                    return a.price - b.price;
+                }
+            });
+            setData(dv.rows)
         }, 1000)
     }
 
@@ -135,16 +70,15 @@ const CityAvgPrice = () => {
         <div className="ab-page-header-wrapper">
             <PageHeader title="平均机票价格" routes={routes} />
             <div className="ab-container">
-                <PriceMonthForm onFormSubmit={onFormSubmit} />
-                <div className="ab-content-container">
+                <Card title={chartName} bordered={false} 
+                      extra={<DatePicker picker="month" locale={locale} onSelect={onDatePickerChange} defaultValue={new moment("201903","YYYYMM")} allowClear={false} />} >
                     <Skeleton loading={loading} active>
-                        <div className="ab-chart-title">{chartName}</div>
+                        {/* <div className="ab-chart-title">{chartName}</div> */}
                         <Row gutter={24}>
                             <Col xxl={16} xl={16} lg={16} md={24} sm={24} xs={24}>
-                                <Chart height={500} data={data} autoFit>
-                                    {/* 设置成条形图 */}
+                                <Chart height={600} data={data} autoFit>
                                     <Coordinate transpose />
-                                    <Interval position="country*population" />
+                                    <Interval position="city*price" style={{cursor:"pointer"}} />
                                     <Tooltip showMarkers={false} />
                                 </Chart>
                             </Col>
@@ -152,9 +86,8 @@ const CityAvgPrice = () => {
                                 this is detail
                             </Col>
                         </Row>
-
                     </Skeleton>
-                </div>
+                </Card>
             </div>
         </div>
     );
