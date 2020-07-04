@@ -1,7 +1,5 @@
 import React from 'react'
-
 import { Select } from 'antd';
-
 import {cityArray} from '../city'
 const { Option } = Select;
 
@@ -11,17 +9,6 @@ const CitySelector = ({formDataChange}) => {
             formDataChange(value)
         }
     }
-    // const onBlur = ()=> {
-    //     console.log('blur');
-    // }
-    
-    // const onFocus = ()=>{
-    //     console.log('focus');
-    // }
-    
-    // const onSearch = (val)=>{
-    //     console.log('search:', val);
-    // }
 
     return (
         <Select
@@ -35,9 +22,6 @@ const CitySelector = ({formDataChange}) => {
             style={{maxWidth:"230px"}}
             // 数据发送变化的回调函数
             onChange={onChange}
-            // onFocus={onFocus}
-            // onBlur={onBlur}
-            // onSearch={onSearch}
             // 数据选择器，数据code或城市名进行快速选择
             filterOption={(input, option) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0

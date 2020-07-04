@@ -6,7 +6,6 @@ import YearPriceBarChart from './dashboard-component/YearPriceBarChart'
 import CompanyPriceBarChart from './dashboard-component/CompanyPriceBarChart'
 import CompanyLineNumRoseChart from './dashboard-component/CompanyLineNumRoseChart'
 import { Row, Col } from 'antd'
-import { Card } from 'antd'
 
 const Dashboard = (props) => {
     return (

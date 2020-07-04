@@ -6,6 +6,8 @@ import geoJson from 'echarts/map/json/china.json';
 import { cityCord } from '../../city';
 import locale from "antd/es/date-picker/locale/zh_CN";
 import moment from 'moment';
+import axios from 'axios'
+import host from '../../config'
 
 echarts.registerMap('china', geoJson);
 
@@ -34,11 +36,11 @@ const convertData = (data) => {
     let min = 0x7f7f7f7f;
     let max = 0;
     data.forEach((element)=>{
-        if(element.linenum > max){
-            max = element.linenum
+        if(element.sum_dep_arr > max){
+            max = element.sum_dep_arr
         }
-        if(element.linenum < min){
-            min = element.linenum
+        if(element.sum_dep_arr < min){
+            min = element.sum_dep_arr
         }
     })
     data.forEach((element) => {
@@ -46,9 +48,9 @@ const convertData = (data) => {
         if (geoCoord) {
             res.push({
                 name: element.city,
-                value: [geoCoord.log, geoCoord.lat, element.linenum],
+                value: [geoCoord.log, geoCoord.lat, element.sum_dep_arr],
                 type: 'node',
-                size: Math.floor( (element.linenum - min) / (max - min) * 20 ) + 10
+                size: Math.floor( (element.sum_dep_arr - min) / (max - min) * 20 ) + 10
             });
         }
     })
@@ -193,19 +195,31 @@ const CityLineNum = () => {
     const [loading, setLoading] = useState(false)
     const [chartName, setChartName] = useState("")
     useEffect(() => {
-        onDatePickerChange(new moment("201903", "YYYYMM"))
+        onDatePickerChange(new moment("201907", "YYYYMM"))
     }, [])
 
     const onDatePickerChange = (date) => {
         setLoading(true)
         setChartName(`${date.format("YYYY年M月")} 各城市航班数量`)
-        setTimeout(() => {
-            dataTemplate.forEach((element) => {
-                element.linenum = Math.floor(Math.random() * 1000) + 1
-            })
-            setData(dataTemplate)
+        axios.get(host+"/city/getCityLineNum",{params:{
+            month:date.format("YYYY-MM")
+        }}).then((res)=>{
+            if(res.data.success){
+                setData(res.data.data)
+                setLoading(false)
+            }           
+        }).catch((e)=>{
             setLoading(false)
-        }, 1000)
+            alert(e)
+            // console.log(e)
+        })
+        // setTimeout(() => {
+        //     dataTemplate.forEach((element) => {
+        //         element.linenum = Math.floor(Math.random() * 1000) + 1
+        //     })
+        //     setData(dataTemplate)
+        //     setLoading(false)
+        // }, 1000)
     }
 
     return (
@@ -213,7 +227,7 @@ const CityLineNum = () => {
             <PageHeader title="各市航班数量" routes={routes} />
             <div className="ab-container">
                 <Card title={chartName} bordered={false}
-                    extra={<DatePicker picker="month" locale={locale} onSelect={onDatePickerChange} defaultValue={new moment("201903", "YYYYMM")} allowClear={false} format="YYYY/M" />} >
+                    extra={<DatePicker picker="month" locale={locale} onSelect={onDatePickerChange} defaultValue={new moment("201907", "YYYYMM")} allowClear={false} format="YYYY/M" />} >
                     <Skeleton loading={loading} active>
                         <ScatterMap data={data} />
                     </Skeleton>
