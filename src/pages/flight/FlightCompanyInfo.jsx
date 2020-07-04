@@ -9,10 +9,17 @@ import {
     Legend,
     View,
     Axis,
-    Coordinate
+    Coordinate,
+    Interaction
 } from 'bizcharts';
 import { DataView, DataSet } from '@antv/data-set';
 import axios from 'axios';
+import { host } from "../../config"
+import { company, getCodeByCompanyName, getCompanyNameByCode } from "../../city"
+
+
+
+
 
 const { Option } = Select;
 const routes = [
@@ -35,7 +42,7 @@ const routes = [
 //航空公司选择器
 const CompanySeletor = ({ formDataChange }) => {
 
-    const companyData = ["南方航空", "东方航空", "西方肮空", "北方航空"];
+    const companyData = company;
 
     function onChange(value) {
         formDataChange(value);
@@ -45,22 +52,16 @@ const CompanySeletor = ({ formDataChange }) => {
         <Select
             showSearch
             style={{ width: 200 }}
-            placeholder="选择航班"
+            placeholder="选择航空公司"
             optionFilterProp="children"
             onChange={onChange}
-            // onFocus={onFocus}
-            // onBlur={onBlur}
-            // onSearch={onSearch}
             filterOption={(input, option) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
             }
         >
-            {/* <Option value="jack">Jack</Option>
-        <Option value="lucy">Lucy</Option>
-        <Option value="tom">Tom</Option> */}
             {
                 companyData.map((element, index) => {
-                    return <Option value={element} key={index}>{element}</Option>
+                    return <Option value={element.comp_code} key={index}>{element.comp_name} {element.comp_code}</Option>
                 })
             }
         </Select>
@@ -73,22 +74,9 @@ const InputTable = ({ onFormSubmit }) => {
     // 获取表单数据信息
     const [form] = Form.useForm();
 
-    // 数据变化回调函数
-
-    const onFinish = (values) => {
-        if (onFormSubmit) {
-            const data = {
-                company: values.company,
-            };
-            onFormSubmit(data);
-        }
-    };
-
     const onCompanyChange = (value) => {
-        form.setFieldsValue({
-            company: value,
-        });
-        form.validateFields(["company"]);
+        let data = { company: value };
+        onFormSubmit(data);
     };
 
     return (
@@ -98,7 +86,7 @@ const InputTable = ({ onFormSubmit }) => {
                 // 表单名称
                 name="cityminprice"
                 // 结束回调函数
-                onFinish={onFinish}
+                // onFinish={onFinish}
                 layout="horizontal"
                 // 隐藏必须输入标记
                 hideRequiredMark
@@ -115,118 +103,121 @@ const InputTable = ({ onFormSubmit }) => {
                         </Form.Item>
                     </Col>
 
-                    <Col xs={24} sm={12} md={12} lg={12} xl={16} xxl={6}>
+                    {/* <Col xs={24} sm={12} md={12} lg={12} xl={16} xxl={6}>
                         <Form.Item className="ab-form-item">
                             <Button type="primary" htmlType="submit" style={{ marginRight: "10px" }}>
                                 查询
                             </Button>
                         </Form.Item>
-                    </Col>
+                    </Col> */}
                 </Row>
             </Form>
         </div>
     );
 };
 
+//飞机公司饼图
+const PlaneCompanyPieChart = ({ data, onClick }) => {
+    // const data = [
+    //     { item: '事例一', count: 40, percent: 0.4 },
+    //     { item: '事例二', count: 21, percent: 0.21 },
+    //     { item: '事例三', count: 17, percent: 0.17 },
+    //     { item: '事例四', count: 13, percent: 0.13 },
+    //     { item: '事例五', count: 9, percent: 0.09 },
+    //   ];
 
-//特定航空公司饼图
-const PlaneTypePie = ({ data, isClicked }) => {
+    console.log(data);
 
-    // 通过 DataSet 计算百分比
-    const dv = new DataView();
-    dv.source(data).transform({
-        type: 'percent',
-        field: 'value',
-        dimension: 'type',
-        as: 'percent',
-    });
-
-    // console.log(dv.rows);
-
-
-    const dv1 = new DataView();
-    dv1.source(data).transform({
-        type: 'percent',
-        field: 'value',
-        dimension: 'name',
-        as: 'percent',
-    });
-
-    // console.log(dv1.rows);
-
-    console.log("rendering...")
+    const cols = {
+        percent: {
+            formatter: val => {
+                val = val * 100 + '%';
+                return val;
+            },
+        },
+    };
 
     return (
-        <Chart
-            height={400}
-            data={dv.rows}
-            autoFit
-            scale={{
-                percent: {
-                    formatter: (val) => {
-                        val = (val * 100).toFixed(2) + '%';
-                        return val;
-                    },
-                }
-            }}
+        <Chart height={400} data={data} scale={cols} autoFit
             onIntervalClick={ev => {
-                const curData = ev.data.data;
-                //根据data的name type 和 value尝试在data中匹配数据，如果匹配失败，就说明是内饼，如果成功，就说明是外饼
-                let isInternal = true;
-                data.map((element, index) => {
-                    if (element.type === curData.type && element.name === curData.name && element.value === curData.value) {
-                        //do nothing
-                        isInternal = false;
-                    } else {
-                        // do nothing
-                    }
-                })
-
-                if (isInternal) {
-                    //是内饼
-                    isClicked(curData.type);
-                } else {
-                    //是外饼
-                    isClicked(curData.name);
-                }
+                let planeCompany = ev.data.data.item;
+                //根据点击的公司画下一个饼图
+                onClick(planeCompany);
             }}
         >
-            <Coordinate type="theta" radius={0.5} />
-            <Axis visible={false} />
-            <Legend visible={false} />
+            <Coordinate type="theta" radius={0.75} />
             <Tooltip showTitle={false} />
+            <Axis visible={false} />
             <Interval
                 position="percent"
                 adjust="stack"
-                color="type"
-                element-highlight
+                color="item"
                 style={{
                     lineWidth: 1,
                     stroke: '#fff',
                 }}
-                label={['type', {
-                    offset: -15,
+                label={['count', {
+                    content: (data) => {
+                        return `${data.item}: ${data.percent * 100}%`;
+                    },
                 }]}
             />
-            <View data={dv1.rows}>
-                <Coordinate type="theta" radius={0.75} innerRadius={0.5 / 0.75} />
-                <Interval
-                    position="percent"
-                    adjust="stack"
-                    color={['name', ['#BAE7FF', '#7FC9FE', '#71E3E3', '#ABF5F5', '#8EE0A1', '#BAF5C4']]}
-                    element-highlight
-                    style={{
-                        lineWidth: 1,
-                        stroke: '#fff',
-                    }}
-                    label="name"
-                />
-            </View>
+            <Interaction type='element-single-selected' />
+
         </Chart>
     );
-
-
 }
+
+//某个飞机公司的具体机型饼图
+const PlaneTypesPieChart = ({ data, onClick }) => {
+    // const data = [
+    //     { item: '事例一', count: 40, percent: 0.4 },
+    //     { item: '事例二', count: 21, percent: 0.21 },
+    //     { item: '事例三', count: 17, percent: 0.17 },
+    //     { item: '事例四', count: 13, percent: 0.13 },
+    //     { item: '事例五', count: 9, percent: 0.09 },
+    //   ];
+    console.log(data);
+    
+    const cols = {
+        percent: {
+            formatter: val => {
+                val = val * 100 + '%';
+                return val;
+            },
+        },
+    };
+
+    return (
+        <Chart height={400} data={data} scale={cols} autoFit
+            onIntervalClick={ev => {
+                let plane = ev.data.data.item;
+                onClick(plane);
+            }}
+        >
+            <Coordinate type="theta" radius={0.75} />
+            <Tooltip showTitle={false} />
+            <Axis visible={false} />
+            <Interval
+                position="percent"
+                adjust="stack"
+                color="item"
+                style={{
+                    lineWidth: 1,
+                    stroke: '#fff',
+                }}
+                label={['count', {
+                    content: (data) => {
+                        return `${data.item}: ${data.percent * 100}%`;
+                    },
+                }]}
+            />
+            <Interaction type='element-single-selected' />
+        </Chart>
+    );
+}
+
+
 
 //特定航空公司偏爱城市图
 const CompanyLoveCountriesChart = ({ data }) => {
@@ -241,9 +232,8 @@ const CompanyLoveCountriesChart = ({ data }) => {
         }
     });
 
-    console.log("bar chart rendering")
     return (
-        <Chart data={dv.rows} autoFit>
+        <Chart data={dv.rows} autoFit height={400}>
             <Coordinate transpose />
             <Interval position="city*到达总航班数" />
             <Tooltip marker={false} />
@@ -257,7 +247,7 @@ const PlaneCard = ({ content }) => {
     // console.log(content);
     return (
         <>
-            <Card title={content.name} style={{ width: "300px" }}>
+            <Card title={content.name}>
                 <p>{content.introduction}</p>
             </Card>
         </>
@@ -265,14 +255,17 @@ const PlaneCard = ({ content }) => {
 }
 
 
-
 //页面主组件
 const FlightCompanyInfo = () => {
-    const [planeTypeData, setPlaneTypeData] = useState([]);
+    //const [planeTypeData, setPlaneTypeData] = useState([]); //已废弃
     const [loveCityData, setLoveCityData] = useState([]);
     const [planeInfos, setPlaneInfos] = useState([]);
     const [planeIntroduction, setPlaneIntroduction] = useState({ name: "", introduction: "" });
     const [chartName, setChartName] = useState("");
+
+    const [planeCompaniesAndTypes, setPlaneCompaniesAndTypes] = useState([]);
+    const [planeCompanies, setPlaneCompanies] = useState([]);
+    const [planesInPlaneCompanies, setPlanesInPlaneCompanies] = useState([]);
 
 
     /**
@@ -280,14 +273,23 @@ const FlightCompanyInfo = () => {
      */
     const getAndSetPlaneInfos = () => {
         //发送axios请求获取所有机型以及介绍
-        axios.get("/plane/getPlanesIntroductions").then((res) => {
+        axios.get(host + "/plane/getPlanesIntroductions").then((res) => {
             if (res.data.success) {
-                let infos = res.data.data;
+                //收到数据的形式是{craftFamily:"波音747",craftDesc:"xxxxx"}
+                let tmpInfos = res.data.data;
+                console.log(tmpInfos);
+                
+                let infos = [];
+
+                for (let index in tmpInfos) {
+                    infos.push({ name: tmpInfos[index].craftFamily, introduction: tmpInfos[index].craftDesc });
+                }
                 setPlaneInfos(infos);
             } else {
                 console.log("Yichang ");
             }
         }).catch((e) => {
+            alert("请求机型以及介绍数据异常");
             let infos = [
                 { name: "波音737", introduction: "this is 波音737" },
                 { name: "波音747", introduction: "this is 波音747" },
@@ -304,77 +306,146 @@ const FlightCompanyInfo = () => {
     }
 
     /**
-     * 
-     * @param {获取并设置航公公司所有飞机机型以及数量} companyName 
+     * 获取并设置航公公司所有飞机机型以及数量-----已废弃
+     * @param {城市名，CKG} companyName 
      */
-    function getAndSetPlaneTypeData(companyName) {
-        //根据companyName 进行网络请求拿到对应航空公司的机型数据
-        //通过axios获取飞机机型信息   
-        axios.get("/company/getAircraftInfos?companyName=" + companyName).then((res) => {
-            if (res.data.success) {
-                setPlaneTypeData(res.data.data);
-            } else {
-                console.log("not success");
-            }
-        }).catch((e) => {
-            console.log("异常");
-            let types = [
-                { value: 251, type: '波音737', name: '波音737-1' },
-                { value: 1048, type: '波音737', name: '波音737-2' },
-                { value: 610, type: '波音747', name: '波音747-1' },
-                { value: 434, type: '波音747', name: '波音747-2' },
-                { value: 335, type: '空客', name: '空客A318' },
-                { value: 250, type: '空客', name: '空客A319' },
-            ]
-            setPlaneTypeData(types);
-        })
-    }
+    // function getAndSetPlaneTypeData(companyName) {
+    //     //根据companyName 进行网络请求拿到对应航空公司的机型数据
+    //     //通过axios获取飞机机型信息      
+    //     axios.get(host + "/company/getAircraftInfos?companyName=" + companyName).then((res) => {
+    //         if (res.data.success) {
+    //             let tmpData = res.data.data;
+    //             let data = [];
+    //             for (let index in tmpData) {
+    //                 data.push({ value: tmpData[index].num, type: tmpData[index].craftCompany, name: tmpData[index].craftFamily });
+    //             }
+    //             setPlaneTypeData(data);
+    //         } else {
+    //             console.log("not success");
+    //         }
+    //     }).catch((e) => {
+    //         alert("请求机型占比异常");
+    //         let types = [
+    //             { value: 251, type: '波音737', name: '波音737-1' },
+    //             { value: 1048, type: '波音737', name: '波音737-2' },
+    //             { value: 610, type: '波音747', name: '波音747-1' },
+    //             { value: 434, type: '波音747', name: '波音747-2' },
+    //             { value: 335, type: '空客', name: '空客A318' },
+    //             { value: 250, type: '空客', name: '空客A319' },
+    //         ]
+    //         setPlaneTypeData(types);
+    //     })
+    // }
 
     /**
-     * 
-     * @param {获取并设置公司的偏爱城市列表} companyName 
+     * 获取并设置公司的偏爱城市列表
+     * @param {城市名,CKG} companyName 
      */
     const getAndSetLoveCityData = (companyName) => {
-        axios.get("/company/getLoveCities?companyName=" + companyName).then((res) => {
+        axios.get(host + "/company/getLoveCities?companyName=" + companyName).then((res) => {
+
             if (res.data.success) {
-                setLoveCityData(res.data.data)
+                let tmpData = res.data.data;
+                let data = [];
+                for (let index in tmpData) {
+                    data.push({ city: tmpData[index].ct, 到达总航班数: tmpData[index].count });
+                }
+                setLoveCityData(data);
             } else {
                 console.log(res.data.msg);
-
             }
         }).catch((e) => {
+            alert("获取偏爱城市异常");
             let data = [{ city: "重庆", 到达总航班数: 131744 },
-                        { city: "北京", 到达总航班数: 104970 },
-                        { city: "上海", 到达总航班数: 29034 },
-                        { city: "深圳", 到达总航班数: 23489 },
-                        { city: "CQU", 到达总航班数: 18203 }
-                        ]
+            { city: "北京", 到达总航班数: 104970 },
+            { city: "上海", 到达总航班数: 29034 },
+            { city: "深圳", 到达总航班数: 23489 },
+            { city: "CQU", 到达总航班数: 18203 }
+            ]
             setLoveCityData(data);
         })
     }
-    
+
+
+    /**
+     * 获取某个航空公司的飞机公司占比以及飞机公司内型号的占比
+     */
+    const getAndSetPlaneCompaniesAndTypes = (companyName) => {
+
+        //这里的data需要通过axios请求获取
+
+        axios.get(host + "/planes/getPlaneCompanyAndTypesInfo?companyName=" + companyName).then((res) => {
+            if (res.data.success) {
+                let data = res.data.data;
+                setPlaneCompaniesAndTypes(data);
+                plotCompanyPieChart(data);
+            } else {
+                alert(res.data.msg);
+            }
+        }).catch((e) => {
+            alert("请求航空公司的飞机公司占比以及飞机公司内型号的占比失败")
+            let data = [
+                { item: "波音公司", count: 50, percent: 0.5, planes: [{ item: "波音737", count: 30, percent: 0.3 }, { item: "波音787", count: 70, percent: 0.7 }] },
+                { item: "空客公司", count: 50, percent: 0.5, planes: [{ item: "空客319", count: 70, percent: 0.7 }, { item: "波音787", count: 30, percent: 0.3 }] }
+            ];
+            setPlaneCompaniesAndTypes(data);
+            plotCompanyPieChart(data);
+        })
+
+
+    }
+
+    /**
+     * 根据总数据画出第一个饼图
+     * @param {planeCompaniesAndTypes，是请求的到的总数据} data 
+     */
+    const plotCompanyPieChart = (data) => {
+        //根据data先画出飞机公司占比图
+        let planeCompanies = [];
+        for (let index in data) {
+            planeCompanies.push({ item: data[index].item, count: data[index].count, percent: data[index].percent });
+        }
+        setPlaneCompanies(planeCompanies);
+    }
+
+    const companyPieClickHandler = (companyName) => {
+        for (let index in planeCompaniesAndTypes) {
+            if (planeCompaniesAndTypes[index].item === companyName) {
+                setPlanesInPlaneCompanies(planeCompaniesAndTypes[index].planes);
+            }
+        }
+    }
+
+    const planesPieHandler = (planeName) => {
+        console.log(planeInfos);
+
+        for (let index in planeInfos) {
+            if (planeInfos[index].name === planeName) {
+                setPlaneIntroduction({ name: planeInfos[index].name, introduction: planeInfos[index].introduction });
+                return;
+            }
+        }
+
+    }
+
+
     useEffect(() => {
         //默认设置南方航空
         getAndSetPlaneInfos();
-        getAndSetPlaneTypeData("南方航空");
-        getAndSetLoveCityData("南方航空");
+        //getAndSetPlaneTypeData("CZ");
+        getAndSetLoveCityData("CZ");
+        getAndSetPlaneCompaniesAndTypes("CZ");
     }, [])
 
     const onFormSubmit = (queryData) => {
         console.log(queryData);
-        setChartName(`${queryData.company} 详细信息`);
-        getAndSetPlaneTypeData(queryData);
-        getAndSetLoveCityData(queryData);
+        setChartName(`${getCompanyNameByCode(queryData.company)} 详细信息`);
+        //getAndSetPlaneTypeData(queryData.company);
+        getAndSetLoveCityData(queryData.company);
+        getAndSetPlaneCompaniesAndTypes(queryData.company);
     }
 
-    const clickPieHandler = (clickName) => {
-        planeInfos.map((element, index) => {
-            if (element.name === clickName) {
-                setPlaneIntroduction({ name: element.name, introduction: element.introduction });
-                return;
-            }
-        })
-    }
+
 
     return (
         <div className="ab-page-header-wrapper">
@@ -384,15 +455,25 @@ const FlightCompanyInfo = () => {
                 <div className="ab-content-container">
                     <div className="ab-chart-title">{chartName}</div>
                     <Row gutter={[16, 8]}>
-                        <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
-                            <CompanyLoveCountriesChart data={loveCityData} />
+                        <Col xs={24} sm={24} md={24} lg={12} xl={24} xxl={24}>
+                            <Card title="航空公司最爱城市排名">
+                                <CompanyLoveCountriesChart data={loveCityData} />
+                            </Card>
                         </Col>
-                        <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
-                            <div className="ab-pie-card">
-                                <PlaneTypePie data={planeTypeData} isClicked={clickPieHandler} />
-                                <PlaneCard content={planeIntroduction} />
-                            </div>
+                        <Col xs={24} sm={24} md={24} lg={12} xl={10} xxl={10} >
+                            <Card title="航空公司持有飞机的飞机公司占比">
+                                <PlaneCompanyPieChart data={planeCompanies} onClick={companyPieClickHandler} />
+                            </Card>
                         </Col>
+                        <Col xs={24} sm={24} md={24} lg={12} xl={10} xxl={10} >
+                            <Card title={"XX飞机公司的机型占比"}>
+                                <PlaneTypesPieChart data={planesInPlaneCompanies} onClick={planesPieHandler} />
+                            </Card>
+                        </Col>
+                        <Col xs={24} sm={24} md={24} lg={12} xl={4} xxl={4}>
+                            <PlaneCard content={planeIntroduction} />
+                        </Col>
+
                     </Row>
 
                 </div>

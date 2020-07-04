@@ -6,6 +6,7 @@ import PageHeader from '../../component/pageheader'
 import { ColumnLine } from '@ant-design/charts';
 import { getCityByCode } from "../../city"
 import axios from 'axios';
+import {host} from "../../config"
 
 
 const routes = [
@@ -138,26 +139,26 @@ const CoronaPrice = () => {
      * @param {城市} city 
      */
     const getAndSetPriceData = (city)=>{
-        console.log("this is city" + city);
-        
-        axios.get("/corona/getPrice?city="+city).then((res)=>{
-            if(res.data.success){
+        let eCity = getCityByCode(city);
+    
+        axios.get("/flight/getPrice?city="+eCity).then((res)=>{
+            if(res.data.success){   
                 setPriceData(res.data.data);
             }else{
                 alert(res.data.msg);
             }
         }).catch((e)=>{
             let priceData = [
-                { 时间: '2019-03-10', 价格: 350, },
-                { 时间: '2019-03-20', 价格: 360, },
-                { 时间: '2019-03-30', 价格: 370, },
-                { 时间: '2019-04-10', 价格: 380, },
-                { 时间: '2019-04-20', 价格: 550, },
-                { 时间: '2019-04-30', 价格: 250, },
-                { 时间: '2019-05-10', 价格: 850, },
-                { 时间: '2019-05-20', 价格: 950, },
-                { 时间: '2019-05-30', 价格: 350, },
-                { 时间: '2019-06-10', 价格: 350, },
+                { 时间: '2020-03-10', 价格: 350, },
+                { 时间: '2020-03-20', 价格: 360, },
+                { 时间: '2020-03-30', 价格: 370, },
+                { 时间: '2020-04-10', 价格: 380, },
+                { 时间: '2020-04-20', 价格: 550, },
+                { 时间: '2020-04-30', 价格: 250, },
+                { 时间: '2020-05-10', 价格: 850, },
+                { 时间: '2020-05-20', 价格: 950, },
+                { 时间: '2020-05-30', 价格: 350, },
+                { 时间: '2020-06-10', 价格: 350, },
             ];
             setPriceData(priceData);
         })
@@ -168,24 +169,34 @@ const CoronaPrice = () => {
      * @param {城市} city 
      */
     const getAndSetAffectedData = (city)=>{
-        axios.get("/corona/getAffected?city="+city).then((res)=>{
+        let eCity = getCityByCode(city);
+        axios.get(host+"/corona/getAffected?city="+eCity).then((res)=>{
+            console.log(res);
+            console.log(host);
+            
             if(res.data.success){
-                setAffectedData(res.data.data);
+                let tmpData = res.data.data;
+                let data =[];
+                for(let index in tmpData){
+                    data.push({时间:tmpData[index].dateId,感染人数:tmpData[index].confirmedCount});
+                }
+                console.log(data);
+                setAffectedData(data);
             }else{
                 alert(res.data.msg);
             }
         }).catch((e)=>{
             let affectedData = [
-                { 时间: '2019-03-10', 感染人数: 23, },
-                { 时间: '2019-03-20', 感染人数: 35, },
-                { 时间: '2019-03-30', 感染人数: 89, },
-                { 时间: '2019-04-10', 感染人数: 69, },
-                { 时间: '2019-04-20', 感染人数: 345, },
-                { 时间: '2019-04-30', 感染人数: 2220, },
-                { 时间: '2019-05-10', 感染人数: 3500, },
-                { 时间: '2019-05-20', 感染人数: 4500, },
-                { 时间: '2019-05-30', 感染人数: 7000, },
-                { 时间: '2019-06-10', 感染人数: 10000, },
+                { 时间: '2020-03-10', 感染人数: 23, },
+                { 时间: '2020-03-20', 感染人数: 35, },
+                { 时间: '2020-03-30', 感染人数: 89, },
+                { 时间: '2020-04-10', 感染人数: 69, },
+                { 时间: '2020-04-20', 感染人数: 345, },
+                { 时间: '2020-04-30', 感染人数: 2220, },
+                { 时间: '2020-05-10', 感染人数: 3500, },
+                { 时间: '2020-05-20', 感染人数: 4500, },
+                { 时间: '2020-05-30', 感染人数: 7000, },
+                { 时间: '2020-06-10', 感染人数: 10000, },
             ];
             setAffectedData(affectedData);
         })
