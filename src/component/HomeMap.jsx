@@ -2,7 +2,7 @@ import React, { Component, useRef, useEffect, useState } from 'react';
 import echarts from 'echarts';
 // import 'echarts/map/js/china';
 import geoJson from 'echarts/map/json/china.json';
-import { cityCord, cityArray } from '../city';
+import { cityCord, cityMap } from '../city';
 
 echarts.registerMap("china", geoJson)
 
@@ -72,10 +72,10 @@ const option = {
                 formatter: (params, ticket, callback) => {
                     // node
                     if (params.data.type === 'node') {
-                        return `${params.data.name}<br/>总航班数：${params.value[2]}`
+                        return `${params.data.name}<br/>总起降数：${params.value[2]}`
                     } else {
                         // link
-                        return `${params.data.source} -> ${params.data.target}<br/>航班数：${params.data.value}`
+                        return `${params.data.source} ➡ ${params.data.target}<br/>过往航班数：${params.data.value}`
                     }
                 }
             }
@@ -86,42 +86,19 @@ const option = {
 
 const Map = () => {
     const mapContainer = useRef(null)
-    const [data, setData] = useState([])
+    // const [data, setData] = useState([])
     let chart = null
     useEffect(() => {
-        //请求
-        setTimeout(() => {
-            const response = {
-                "北京": { total: 12345, lines: [{ city: "上海", lines: 1234 }, { city: "广州", lines: 2345 }] },
-                "深圳": { total: 12345, lines: [{ city: "上海", lines: 1234 }, { city: "广州", lines: 2345 }] },
-                "厦门": { total: 12345, lines: [{ city: "上海", lines: 1234 }, { city: "广州", lines: 2345 }] },
-                "重庆": { total: 12345, lines: [{ city: "上海", lines: 1234 }, { city: "广州", lines: 2345 }] },
-                "天津": { total: 12345, lines: [{ city: "上海", lines: 1234 }, { city: "广州", lines: 2345 }] },
-                "上海": { total: 12345, lines: [{ city: "上海", lines: 1234 }, { city: "广州", lines: 2345 }] },
-                "广州": { total: 12345, lines: [{ city: "北京", lines: 1234 }, { city: "深圳", lines: 2345 }] }
-            }
-            setData(response)
-        }, 1000)
-        return () => {
-            console.log("dispose chart")
-            if (chart) {
-                chart.dispose()
-            }
-        }
-    }, [])
-
-    useEffect(() => {
-        // 保证chart对象有效
         console.log("get data")
         initChart()
-        chart.setOption({ series: { name: "出发城市", data: convertData(data) } })
+        chart.setOption({ series: { name: "出发城市", data: convertData(cityMap) } })
         chart.on('click', (params) => {
-            if (data.length !== 0 && params.data.type === 'node') {
+            if (params.data.type === 'node') {
                 // 显示航线信息
                 const currCity = params.data.name
                 // console.log(data[currCity].lines)
                 const line = []
-                const lineData = data[currCity].lines
+                const lineData = cityMap[currCity].lines
                 // console.log(lineData.link)
                 lineData.forEach((element) => {
                     line.push({ source: currCity, target: element.city, value: element.lines })
@@ -130,7 +107,13 @@ const Map = () => {
                 chart.setOption({ series: { name: "出发城市", links: line } })
             }
         })
-    }, [data])
+        return () => {
+            console.log("dispose chart")
+            if (chart) {
+                chart.dispose()
+            }
+        }
+    }, [])
 
     const initChart = () => {
         const chartInstance = echarts.getInstanceByDom(mapContainer.current)
