@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import PageHeader from '../../component/pageheader'
-import { Skeleton, Form, Button } from "antd";
+import { Skeleton, Form, Button, Alert } from "antd";
 import CitySelector from "../../component/citySelector";
 import { Row, Col, Select } from 'antd'
 import { Chart, Line, Point,Tooltip } from 'bizcharts';
 import axios from 'axios';
+import {host} from "../../config"
 
 const { Option } = Select;
 
@@ -72,13 +73,18 @@ const FlightHistoryInputTable = ({ onFormSubmit }) => {
      * @param {到达城市} arr_city 
      */
     const getAndSetFlightData = (dep_city,arr_city)=>{
-        axios.post("/flight/getCityToCityFlights",{dep_city:dep_city,arr_city:arr_city}).then((res)=>{
+        axios.get(host+"/flight/getCityToCityFlights?dep_city="+dep_city+"&arr_city="+arr_city).then((res)=>{
+            console.log(dep_city+"=>"+arr_city);
+            
+            console.log("233333");
+            console.log(res);
             if(res.data.success){
                 setFlightData(res.data.data);
             }else{
                 alert(res.data.msg);
             }
         }).catch((e)=>{
+            alert("连接异常");
             let data = ["AA1234", "AA2345", "AA3456"];
             setFlightData(data);
         })
@@ -98,7 +104,7 @@ const FlightHistoryInputTable = ({ onFormSubmit }) => {
             setFlightData([]);
         }
         else {
-            getAndSetFlightData(curValues.arr_city,curValues.dep_city);//这里的set是异步的
+            getAndSetFlightData(curValues.dep_city,curValues.arr_city);//这里的set是异步的
         }
 
     };
@@ -116,7 +122,7 @@ const FlightHistoryInputTable = ({ onFormSubmit }) => {
             setFlightData([]);
         }
         else {
-            getAndSetFlightData(curValues.arr_city,curValues.dep_city);//这里的set是异步的
+            getAndSetFlightData(curValues.dep_city,curValues.arr_city);//这里的set是异步的
         }
     };
 
@@ -237,7 +243,9 @@ const FlightHistoryPrice = () => {
      * @param {航班号} flightNum 
      */
     const getAndSetFlightData = (dep_city,arr_city,flightNum)=>{
-        axios.post("/flight/getFlightHistoryPrice",{dep_city:dep_city,arr_city:arr_city,flightNum:flightNum}).then((res)=>{
+        axios.get(host+"/flight/getFlightHistoryPrice?dep_city="+dep_city+"&arr_city="+arr_city+"&flightNum="+flightNum).then((res)=>{
+            console.log(res);
+            
             if(res.data.success){
                 setFlightData(res.data.data);
             }else{
@@ -318,8 +326,8 @@ const FlightHistoryPrice = () => {
                             data={flightData}
                             scale={{ price: { min: 0 } }}
                         >
-                            <Line position="year*price" shape="smooth" tooltip={false} />
-                            <Point position="year*price" style={{ cursor: "pointer" }} tooltip={true} />
+                            <Line position="day*price" shape="smooth" tooltip={false} />
+                            <Point position="day*price" style={{ cursor: "pointer" }} tooltip={true} />
                             <Tooltip showCrosshairs={true} />
                         </Chart>
                     </Skeleton>
