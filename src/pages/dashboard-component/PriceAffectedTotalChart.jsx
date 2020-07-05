@@ -46,9 +46,11 @@ const PriceAffectedChart = () => {
      * 每月获取全国机票平均价格
      */
     const getAndSetPriceData = () =>{
-        axios.get("/flight/getTotalPrice").then((res)=>{
+        axios.get(host+"/flight/getTotalPrice").then((res)=>{
             if(res.data.success){
-                setAffectedData(res.data.data);
+                console.log(res.data.data);
+                
+                setPriceData(res.data.data);
             }else{
                 alert(res.data.msg);
             }

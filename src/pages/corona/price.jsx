@@ -136,12 +136,15 @@ const CoronaPrice = () => {
 
     /**
      * 获取并设置特定城市在1月到7月的平均机票价格
-     * @param {城市} city 
+     * @param {城市,英文} city 
      */
     const getAndSetPriceData = (city)=>{
+
     
         axios.get(host+"/flight/getPrice?city="+city).then((res)=>{
             if(res.data.success){   
+                console.log(res.data.data);
+                
                 setPriceData(res.data.data);
             }else{
                 alert(res.data.msg);
@@ -203,7 +206,7 @@ const CoronaPrice = () => {
     
     useEffect(() => {
         setCity("武汉的感染人数和到达该城市机票价格随时间变化图");
-        getAndSetPriceData("武汉");
+        getAndSetPriceData("WUH");
         getAndSetAffectedData("武汉");
     }, [])
 
@@ -211,7 +214,7 @@ const CoronaPrice = () => {
         console.log(data.arr);
         setCity(`${getCityByCode(data.arr)}的感染人数和到达该城市机票价格随时间变化图`)
         //根据拿到的城市信息查询priceData和affectedData
-        getAndSetPriceData(getCityByCode(data.arr));
+        getAndSetPriceData(data.arr);
         getAndSetAffectedData(getCityByCode(data.arr));
     }
 

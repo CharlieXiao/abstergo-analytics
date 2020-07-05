@@ -14,9 +14,7 @@ const LineNumAffectedTotalChart = () => {
      * 每月获取全国所有感染人数
      */
     const getAndSetAffectedData = ()=>{
-        axios.get(host+"/corona/getTotalAffected").then((res)=>{    
-            console.log(res);
-                  
+        axios.get(host+"/corona/getTotalAffected").then((res)=>{                   
             if(res.data.success){
                 let tmpData = res.data.data;
                 let data =[];
@@ -45,20 +43,21 @@ const LineNumAffectedTotalChart = () => {
      * 每月获取全国航班数
      */
     const getAndSetLineNumData = () =>{
-        axios.get("/flight/getTotalFlightsNum").then((res)=>{
+        axios.get(host+"/flight/getTotalFlightsNum").then((res)=>{
             if(res.data.success){
-                setAffectedData(res.data.data);
+                console.log(res.data.data);
+                setLineNumData(res.data.data);
             }else{
                 alert(res.data.msg);
             }
         }).catch((e)=>{
             let lineNumData = [
-                { 时间: '2020-01', 航班起降数: 3540, },
-                { 时间: '2020-02', 航班起降数: 3610, },
-                { 时间: '2020-03', 航班起降数: 3270, },
-                { 时间: '2020-04', 航班起降数: 1380, },
-                { 时间: '2020-05', 航班起降数: 1550, },
-                { 时间: '2020-06', 航班起降数: 250, },
+                { 时间: '2020-01', 起降数: 3540, },
+                { 时间: '2020-02', 起降数: 3610, },
+                { 时间: '2020-03', 起降数: 3270, },
+                { 时间: '2020-04', 起降数: 1380, },
+                { 时间: '2020-05', 起降数: 1550, },
+                { 时间: '2020-06', 起降数: 250, },
                 ];
                 
             setLineNumData(lineNumData);
@@ -83,7 +82,7 @@ const LineNumAffectedTotalChart = () => {
         },
         data: [affectedData, lineNumData],
         xField: '时间',
-        yField: ['感染人数', '航班起降数'],
+        yField: ['感染人数', '起降数'],
         columnConfig: { color: '#b71c1c' }, //A52A2A
         lineConfig: {
             color: '#008080',
