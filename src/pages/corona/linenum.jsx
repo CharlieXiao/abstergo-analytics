@@ -276,7 +276,8 @@ const option = {
             bottom: '10%',
             silent: true
         },
-        series: [{
+        series: [
+        {
             name: 'mapSer',
             type: 'map',
             map: 'china',
@@ -504,7 +505,7 @@ const ScatterMap = ({ mapData }) => {
             }
             seriesOptions.push({
                 title: [{
-                    text: dayText + "日 感染人数与航班数量",
+                    text: dayText + " 感染人数与航班数量",
                     textStyle: {
                         color: '#2D3E53',
                         fontSize: 28

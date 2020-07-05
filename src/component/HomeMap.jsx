@@ -23,8 +23,16 @@ const option = {
         zoom: 1.2,
         silent: true,
         itemStyle: {
-            areaColor: 'rgba(255,255,255,0.8)',
-            borderColor: '#666'
+            // areaColor: 'rgba(255,255,255,0.8)',
+            // borderColor: '#666',
+            areaColor: 'rgba(60,72,72,0.8)',
+            borderColor: 'rgb(15,156,144)',
+            shadowColor:'rgba(0,0,0,0.7)',
+            shadowBlur:20
+            // areaColor: '#3a7fd5',
+            // borderColor: '#0a53e9',//线
+            // shadowColor: '#092f8f',//外发光
+            // shadowBlur: 20
         }
     },
     series: [
@@ -41,7 +49,8 @@ const option = {
             // 节点样式
             itemStyle: {
                 normal: {
-                    borderColor: '#fff',
+                    borderColor: 'rgb(15,156,144)',
+                    color: 'rgba(60,72,72,0.8)',
                     borderWidth: 1,
                 }
             },
@@ -53,7 +62,9 @@ const option = {
             // 线样式
             lineStyle: {
                 color: 'source',
-                curveness: 0.1
+                curveness: 0.15,
+                width:2,
+                color:'rgb(15,156,144)'
             },
             // hover时的样式
             emphasis: {

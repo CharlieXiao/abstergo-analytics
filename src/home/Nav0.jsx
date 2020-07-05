@@ -2,7 +2,7 @@ import React from 'react';
 import TweenOne from 'rc-tween-one';
 import { Menu } from 'antd';
 import { getChildrenToRender } from './utils';
-import logo from "../img/abstergo-white.png"
+import logo from "../img/plane-white.png"
 
 const { Item, SubMenu } = Menu;
 
