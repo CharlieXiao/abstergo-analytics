@@ -1,2 +1,2 @@
-const host = "http://192.168.1.171:8080";
+const host = "http://localhost";
 export {host};

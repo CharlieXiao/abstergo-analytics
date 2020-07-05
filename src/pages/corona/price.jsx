@@ -34,26 +34,26 @@ const CityInputTable = ({ onFormSubmit }) => {
 
     // 数据变化回调函数
     const onArrCityChange = (value) => {
-        form.setFieldsValue({
-            arr_city: value,
-        });
-        form.validateFields(["arr_city"]);
+        // form.setFieldsValue({
+        //     arr_city: value,
+        // });
+        // form.validateFields(["arr_city"]);
+        onFormSubmit({arr:value});
 
     }
 
+    // const onFinish = (values) => {
+    //     if (onFormSubmit) {
+    //         const data = {
+    //             arr: values.arr_city,
+    //         };
+    //         onFormSubmit(data);
+    //     }
+    // };
 
-    const onFinish = (values) => {
-        if (onFormSubmit) {
-            const data = {
-                arr: values.arr_city,
-            };
-            onFormSubmit(data);
-        }
-    };
-
-    const onReset = () => {
-        form.resetFields();
-    };
+    // const onReset = () => {
+    //     form.resetFields();
+    // };
 
 
     return (
@@ -64,7 +64,7 @@ const CityInputTable = ({ onFormSubmit }) => {
                     // 表单名称
                     name="cityminprice"
                     // 结束回调函数
-                    onFinish={onFinish}
+                    //onFinish={onFinish}
                     layout="horizontal"
                     // 隐藏必须输入标记
                     hideRequiredMark
@@ -81,7 +81,7 @@ const CityInputTable = ({ onFormSubmit }) => {
                             </Form.Item>
                         </Col>
 
-                        <Col xs={24} sm={12} md={12} lg={12} xl={24} xxl={6}>
+                        {/* <Col xs={24} sm={12} md={12} lg={12} xl={24} xxl={6}>
                             <Form.Item>
                                 <Button type="primary" htmlType="submit" style={{ marginRight: "10px" }}>
                                     查询
@@ -90,7 +90,7 @@ const CityInputTable = ({ onFormSubmit }) => {
                                     重置
                                 </Button>
                             </Form.Item>
-                        </Col>
+                        </Col> */}
                     </Row>
                 </Form>
             </div>
@@ -139,9 +139,8 @@ const CoronaPrice = () => {
      * @param {城市} city 
      */
     const getAndSetPriceData = (city)=>{
-        let eCity = getCityByCode(city);
     
-        axios.get("/flight/getPrice?city="+eCity).then((res)=>{
+        axios.get(host+"/flight/getPrice?city="+city).then((res)=>{
             if(res.data.success){   
                 setPriceData(res.data.data);
             }else{
@@ -166,11 +165,11 @@ const CoronaPrice = () => {
 
     /**
      * 获取并设置特定城市在1月到7月总计感染人数
-     * @param {城市} city 
+     * @param {城市:是中文} city 
      */
     const getAndSetAffectedData = (city)=>{
-        let eCity = getCityByCode(city);
-        axios.get(host+"/corona/getAffected?city="+eCity).then((res)=>{
+        
+        axios.get(host+"/corona/getAffected?city="+city).then((res)=>{
             console.log(res);
             console.log(host);
             
@@ -203,16 +202,17 @@ const CoronaPrice = () => {
     }
     
     useEffect(() => {
+        setCity("武汉的感染人数和到达该城市机票价格随时间变化图");
         getAndSetPriceData("武汉");
         getAndSetAffectedData("武汉");
     }, [])
 
     const onFormSubmit = (data) => {
-        console.log(data);
+        console.log(data.arr);
         setCity(`${getCityByCode(data.arr)}的感染人数和到达该城市机票价格随时间变化图`)
         //根据拿到的城市信息查询priceData和affectedData
-        getAndSetPriceData(data.arr);
-        getAndSetAffectedData(data.arr);
+        getAndSetPriceData(getCityByCode(data.arr));
+        getAndSetAffectedData(getCityByCode(data.arr));
     }
 
     return (

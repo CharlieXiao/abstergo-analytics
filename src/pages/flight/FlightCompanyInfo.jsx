@@ -261,11 +261,13 @@ const FlightCompanyInfo = () => {
     const [loveCityData, setLoveCityData] = useState([]);
     const [planeInfos, setPlaneInfos] = useState([]);
     const [planeIntroduction, setPlaneIntroduction] = useState({ name: "", introduction: "" });
-    const [chartName, setChartName] = useState("");
+    //const [chartName, setChartName] = useState("");
 
     const [planeCompaniesAndTypes, setPlaneCompaniesAndTypes] = useState([]);
     const [planeCompanies, setPlaneCompanies] = useState([]);
     const [planesInPlaneCompanies, setPlanesInPlaneCompanies] = useState([]);
+    const [selectCompanyName,setSelectCompanyName] = useState("");
+    const [selectPlaneCompany,setSelectPlaneCompany] = useState("");
 
 
     /**
@@ -378,7 +380,7 @@ const FlightCompanyInfo = () => {
             if (res.data.success) {
                 let data = res.data.data;
                 setPlaneCompaniesAndTypes(data);
-                plotCompanyPieChart(data);
+                plotCompanyPieChartAndPlaneTypeChart(data);
             } else {
                 alert(res.data.msg);
             }
@@ -389,26 +391,33 @@ const FlightCompanyInfo = () => {
                 { item: "空客公司", count: 50, percent: 0.5, planes: [{ item: "空客319", count: 70, percent: 0.7 }, { item: "波音787", count: 30, percent: 0.3 }] }
             ];
             setPlaneCompaniesAndTypes(data);
-            plotCompanyPieChart(data);
+            plotCompanyPieChartAndPlaneTypeChart(data);
         })
 
 
     }
 
     /**
-     * 根据总数据画出第一个饼图
+     * 根据总数据画出第一个饼图和第二个饼图
      * @param {planeCompaniesAndTypes，是请求的到的总数据} data 
      */
-    const plotCompanyPieChart = (data) => {
+    const plotCompanyPieChartAndPlaneTypeChart = (data) => {
         //根据data先画出飞机公司占比图
         let planeCompanies = [];
         for (let index in data) {
             planeCompanies.push({ item: data[index].item, count: data[index].count, percent: data[index].percent });
         }
         setPlaneCompanies(planeCompanies);
+        
+        //再默认选择第一个公司，画出第一个公司的飞机机型占比图
+        setSelectPlaneCompany(data[0].item);
+        setPlanesInPlaneCompanies(data[0].planes);
     }
 
+
+
     const companyPieClickHandler = (companyName) => {
+        setSelectPlaneCompany(companyName);
         for (let index in planeCompaniesAndTypes) {
             if (planeCompaniesAndTypes[index].item === companyName) {
                 setPlanesInPlaneCompanies(planeCompaniesAndTypes[index].planes);
@@ -432,6 +441,7 @@ const FlightCompanyInfo = () => {
     useEffect(() => {
         //默认设置南方航空
         getAndSetPlaneInfos();
+        setSelectCompanyName(getCompanyNameByCode("CZ"));
         //getAndSetPlaneTypeData("CZ");
         getAndSetLoveCityData("CZ");
         getAndSetPlaneCompaniesAndTypes("CZ");
@@ -439,7 +449,7 @@ const FlightCompanyInfo = () => {
 
     const onFormSubmit = (queryData) => {
         console.log(queryData);
-        setChartName(`${getCompanyNameByCode(queryData.company)} 详细信息`);
+        setSelectCompanyName(getCompanyNameByCode(queryData.company));
         //getAndSetPlaneTypeData(queryData.company);
         getAndSetLoveCityData(queryData.company);
         getAndSetPlaneCompaniesAndTypes(queryData.company);
@@ -453,20 +463,20 @@ const FlightCompanyInfo = () => {
             <div className="ab-container">
                 <InputTable onFormSubmit={onFormSubmit} />
                 <div className="ab-content-container">
-                    <div className="ab-chart-title">{chartName}</div>
+                    <div className="ab-chart-title">{selectCompanyName+"的详细信息"}</div>
                     <Row gutter={[16, 8]}>
                         <Col xs={24} sm={24} md={24} lg={12} xl={24} xxl={24}>
-                            <Card title="航空公司最爱城市排名">
+                            <Card title={selectCompanyName+"最爱城市排名"}>
                                 <CompanyLoveCountriesChart data={loveCityData} />
                             </Card>
                         </Col>
                         <Col xs={24} sm={24} md={24} lg={12} xl={10} xxl={10} >
-                            <Card title="航空公司持有飞机的飞机公司占比">
+                            <Card title={selectCompanyName+"持有飞机公司占比"}>
                                 <PlaneCompanyPieChart data={planeCompanies} onClick={companyPieClickHandler} />
                             </Card>
                         </Col>
                         <Col xs={24} sm={24} md={24} lg={12} xl={10} xxl={10} >
-                            <Card title={"XX飞机公司的机型占比"}>
+                            <Card title={selectCompanyName+"拥有"+selectPlaneCompany+"的机型占比"}>
                                 <PlaneTypesPieChart data={planesInPlaneCompanies} onClick={planesPieHandler} />
                             </Card>
                         </Col>

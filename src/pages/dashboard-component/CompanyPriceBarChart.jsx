@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import DataSet from '@antv/data-set'
 import { Chart, Interval, Tooltip, Interaction } from 'bizcharts'
 import { Card } from 'antd'
-import host from '../../config'
+import {host} from '../../config'
 import axios from 'axios'
 
 const CompanyPriceBarChart = () => {
