@@ -9,7 +9,7 @@ import CitySelector from "../../component/citySelector";
 import locale from "antd/es/date-picker/locale/zh_CN";
 import { getCityByCode } from '../../city'
 import axios from 'axios'
-import host from '../../config'
+import {host} from '../../config'
 
 const routes = [
   {

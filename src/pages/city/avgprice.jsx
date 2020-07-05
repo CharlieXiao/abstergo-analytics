@@ -6,7 +6,7 @@ import locale from "antd/es/date-picker/locale/zh_CN";
 import DataSet from "@antv/data-set";
 import moment from 'moment'
 import axios from 'axios'
-import host from '../../config'
+import {host} from '../../config'
 
 const routes = [
     {

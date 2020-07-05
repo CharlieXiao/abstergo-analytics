@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Row, Col, Select } from 'antd'
-import CitySelector from "../../component/citySelector";
-import { Skeleton, Form, Button } from "antd";
-import PageHeader from '../../component/pageheader'
 import { ColumnLine } from '@ant-design/charts';
-import { getCityByCode } from "../../city"
 import { Card } from 'antd'
 import axios from 'axios'
 import {host} from "../../config"

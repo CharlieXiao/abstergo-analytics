@@ -8,7 +8,7 @@ import {
     Legend
 } from 'bizcharts';
 import { Card } from 'antd'
-import host from '../../config'
+import {host} from '../../config'
 import axios from 'axios'
 
 const CompanyLineNumRoseChart = () => {
