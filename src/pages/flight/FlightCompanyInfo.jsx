@@ -61,7 +61,7 @@ const CompanySeletor = ({ formDataChange }) => {
         >
             {
                 companyData.map((element, index) => {
-                    return <Option value={element.comp_code} key={index}>{element.comp_name} {element.comp_code}</Option>
+                    return <Option value={element.comp_code} key={index}>{`${element.comp_name} ${element.comp_code}`}</Option>
                 })
             }
         </Select>
@@ -149,7 +149,7 @@ const PlaneCompanyPieChart = ({ data, onClick }) => {
             <Tooltip showTitle={false} />
             <Axis visible={false} />
             <Interval
-                position="percent"
+                position="count"
                 adjust="stack"
                 color="item"
                 style={{
@@ -158,9 +158,10 @@ const PlaneCompanyPieChart = ({ data, onClick }) => {
                 }}
                 label={['count', {
                     content: (data) => {
-                        return `${data.item}: ${data.percent * 100}%`;
+                        return `${data.item}: ${Math.floor(data.percent * 100)}%`;
                     },
                 }]}
+                tooltip={{fields: ['item','count']}}
             />
             <Interaction type='element-single-selected' />
 
@@ -199,7 +200,7 @@ const PlaneTypesPieChart = ({ data, onClick }) => {
             <Tooltip showTitle={false} />
             <Axis visible={false} />
             <Interval
-                position="percent"
+                position="count"
                 adjust="stack"
                 color="item"
                 style={{
@@ -208,9 +209,14 @@ const PlaneTypesPieChart = ({ data, onClick }) => {
                 }}
                 label={['count', {
                     content: (data) => {
-                        return `${data.item}: ${data.percent * 100}%`;
+                        if(data.percent < 0.05){
+                            return "";
+                        }
+                        else
+                            return `${data.item}: ${Math.floor(data.percent * 100)}%`;
                     },
                 }]}
+                tooltip={{fields: ['item','count']}}
             />
             <Interaction type='element-single-selected' />
         </Chart>
@@ -233,7 +239,7 @@ const CompanyLoveCountriesChart = ({ data }) => {
     });
 
     return (
-        <Chart data={dv.rows} autoFit height={400}>
+        <Chart data={dv.rows} autoFit height={500}>
             <Coordinate transpose />
             <Interval position="city*到达总航班数" />
             <Tooltip marker={false} />
@@ -398,7 +404,7 @@ const FlightCompanyInfo = () => {
     }
 
     /**
-     * 根据总数据画出第一个饼图和第二个饼图
+     * 根据总数据画出第一个饼图和第二个饼图和卡片
      * @param {planeCompaniesAndTypes，是请求的到的总数据} data 
      */
     const plotCompanyPieChartAndPlaneTypeChart = (data) => {
@@ -412,6 +418,11 @@ const FlightCompanyInfo = () => {
         //再默认选择第一个公司，画出第一个公司的飞机机型占比图
         setSelectPlaneCompany(data[0].item);
         setPlanesInPlaneCompanies(data[0].planes);
+
+        //设置卡片
+        setPlaneIntroduction({ name: "点击饼图查看飞机详细信息", introduction: ""});
+       
+
     }
 
 
@@ -462,31 +473,31 @@ const FlightCompanyInfo = () => {
             <PageHeader title="航空公司相关信息" routes={routes} />
             <div className="ab-container">
                 <InputTable onFormSubmit={onFormSubmit} />
-                <div className="ab-content-container">
-                    <div className="ab-chart-title">{selectCompanyName+"的详细信息"}</div>
-                    <Row gutter={[16, 8]}>
+                {/* <div className="ab-content-container">
+                    <div className="ab-chart-title">{selectCompanyName+"的详细信息"}</div> */}
+                    <Row gutter={[24, 24]}>
                         <Col xs={24} sm={24} md={24} lg={12} xl={24} xxl={24}>
                             <Card title={selectCompanyName+"最爱城市排名"}>
                                 <CompanyLoveCountriesChart data={loveCityData} />
                             </Card>
                         </Col>
-                        <Col xs={24} sm={24} md={24} lg={12} xl={10} xxl={10} >
+                        <Col xs={24} sm={24} md={24} lg={12} xl={10} xxl={9} >
                             <Card title={selectCompanyName+"持有飞机公司占比"}>
                                 <PlaneCompanyPieChart data={planeCompanies} onClick={companyPieClickHandler} />
                             </Card>
                         </Col>
-                        <Col xs={24} sm={24} md={24} lg={12} xl={10} xxl={10} >
+                        <Col xs={24} sm={24} md={24} lg={12} xl={10} xxl={9} >
                             <Card title={selectCompanyName+"拥有"+selectPlaneCompany+"的机型占比"}>
                                 <PlaneTypesPieChart data={planesInPlaneCompanies} onClick={planesPieHandler} />
                             </Card>
                         </Col>
-                        <Col xs={24} sm={24} md={24} lg={12} xl={4} xxl={4}>
+                        <Col xs={24} sm={24} md={24} lg={12} xl={4} xxl={6}>
                             <PlaneCard content={planeIntroduction} />
                         </Col>
 
                     </Row>
 
-                </div>
+                {/* </div> */}
             </div>
         </div>
     );
