@@ -3,9 +3,10 @@ import PageHeader from '../../component/pageheader'
 import { Skeleton, Form, Button, Alert } from "antd";
 import CitySelector from "../../component/citySelector";
 import { Row, Col, Select } from 'antd'
-import { Chart, Line, Point,Tooltip } from 'bizcharts';
+//import { Chart, Line, Point,Tooltip } from 'bizcharts';
 import axios from 'axios';
 import {host} from "../../config"
+import { Line } from '@ant-design/charts';
 
 const { Option } = Select;
 
@@ -228,6 +229,78 @@ const FlightHistoryInputTable = ({ onFormSubmit }) => {
     );
 };
 
+//缩略折线图，有点bug，先不用了
+const PriceSliderChart = ({data}) =>{
+
+    console.log(data);
+    
+  
+  const config = {
+    title: {
+      visible: true,
+      text: '为折线添加缩略轴交互',
+    },
+    description: {
+      visible: true,
+      text:
+        '缩略轴 (slider) 交互适用于折线数据较多\uFF0C用户希望关注数据集中某个特殊区间的场景\u3002',
+    },
+    forceFit: true,
+    padding: 'auto',
+    data,
+    xField: 'day',
+    xAxis: {
+      visible: true,
+      label: { autoHide: true },
+    },
+    yField: 'price',
+    yAxis: { label: { formatter: (v) => `${v}`.replace(/\d{1,3}(?=(\d{3})+$)/g, (s) => `${s},`) } },
+    interactions: [
+      {
+        type: 'slider',
+        cfg: {
+          start: 0.1,
+          end: 0.2,
+        },
+      },
+    ],
+  };
+  return <Line {...config} />;
+}
+
+const AntPriceLineChart = ({data})=>{
+    const config = {
+        title: {
+          visible: false,
+          text: '配置折线数据点样式',
+        },
+        description: {
+          visible: false,
+          text: '自定义配置趋势线上数据点的样式',
+        },
+        padding: 'auto',
+        forceFit: true,
+        data,
+        xField: 'day',
+        yField: 'price',
+        label: {
+          visible: false,
+          type: 'point',
+        },
+        point: {
+          visible: false,
+          size: 5,
+          shape: 'diamond',
+          style: {
+            fill: 'white',
+            stroke: '#2593fc',
+            lineWidth: 2,
+          },
+        },
+      };
+      return <Line {...config} />;
+}
+
 
 const FlightHistoryPrice = () => {
 
@@ -307,7 +380,8 @@ const FlightHistoryPrice = () => {
 
     useEffect(() => {
         setLoading(true)
-        getAndSetFlightData("重庆","北京","123456");
+        setChartName("上海航空FM9166 号航班的历史价格");
+        getAndSetFlightData("CKG","SHA","上海航空FM9166");
         setLoading(false);
     }, [])
 
@@ -319,7 +393,7 @@ const FlightHistoryPrice = () => {
                 <div className="ab-content-container">
                     <Skeleton loading={loading} active>
                         <div className="ab-chart-title">{chartName}</div>
-                        <Chart
+                        {/* <Chart
                             padding={[10, 20, 50, 40]}
                             autoFit
                             height={500}
@@ -327,9 +401,11 @@ const FlightHistoryPrice = () => {
                             scale={{ price: { min: 0 } }}
                         >
                             <Line position="day*price" shape="smooth" tooltip={false} />
-                            <Point position="day*price" style={{ cursor: "pointer" }} tooltip={true} />
+                            <Point position="day*price" style={{ cursor: "pointer" }} tooltip={true}  visible={false}/>
                             <Tooltip showCrosshairs={true} />
-                        </Chart>
+                        </Chart> */}
+                        {/* <PriceSliderChart data={flightData}/> */}
+                        < AntPriceLineChart data={flightData}/>
                     </Skeleton>
                 </div>
             </div>
