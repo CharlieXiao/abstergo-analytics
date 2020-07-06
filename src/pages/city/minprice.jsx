@@ -23,7 +23,10 @@ const routes = [
       title: '平均机票价格'
     }, {
       path: '/city/linenum',
-      title: '航班数'
+      title: '各市航班数量'
+    },{
+      path: '/city/timeprice',
+      title: '最低价格时间段分布'
     }]
   },
   {

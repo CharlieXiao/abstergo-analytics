@@ -17,11 +17,12 @@ class Feature6 extends React.PureComponent {
   }
 
   onTitleClick = (_, i) => {
-    console.log(i)
-    console.log(this.carouselRef.current)
+    // console.log(i)
+    // console.log(this.carouselRef)
     const carouselRef = this.carouselRef.current.childRefs.carousel;
-    console.log(carouselRef)
-    carouselRef.goTo(i);
+    // console.log(carouselRef)
+    // carouselRef.goTo(i)
+    // carouselRef.goTo(i);
   };
 
   onBeforeChange = (_, newIndex) => {

@@ -24,6 +24,9 @@ const routes = [
         }, {
             path: '/city/avgprice',
             title: '平均机票价格'
+        }, {
+            path: '/city/timeprice',
+            title: '最低价格时间段分布'
         }]
     },
     {

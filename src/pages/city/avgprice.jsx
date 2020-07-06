@@ -21,6 +21,9 @@ const routes = [
         }, {
             path: '/city/linenum',
             title: '各市航班数量'
+        },{
+            path: '/city/timeprice',
+            title: '最低价格时间段分布'
         }]
     },
     {
