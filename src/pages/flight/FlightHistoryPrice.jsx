@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import PageHeader from '../../component/pageheader'
-import { Skeleton, Form, Button, Alert } from "antd";
+import { Skeleton, Form, Button, Alert,Card } from "antd";
 import CitySelector from "../../component/citySelector";
 import { Row, Col, Select } from 'antd'
 //import { Chart, Line, Point,Tooltip } from 'bizcharts';
 import axios from 'axios';
-import {host} from "../../config"
+import { host } from "../../config"
 import { Line } from '@ant-design/charts';
 
 const { Option } = Select;
@@ -20,7 +20,11 @@ const routes = [
         menu: [{
             path: '/flight/companyinfo',
             title: '航空公司相关信息'
-        },]
+        }, {
+            path: '/flight/timecompanylinenum',
+            title: '航空公司起降数时间段'
+        },
+        ]
     },
     {
         breadcrumbName: '航班历史价格',
@@ -68,23 +72,23 @@ const FlightHistoryInputTable = ({ onFormSubmit }) => {
     const [form] = Form.useForm();
     const [flightData, setFlightData] = useState([]);
 
-     /**
-     * 根据出发城市和到达城市查询有哪些航班
-     * @param {出发城市} dep_city 
-     * @param {到达城市} arr_city 
-     */
-    const getAndSetFlightData = (dep_city,arr_city)=>{
-        axios.get(host+"/flight/getCityToCityFlights?dep_city="+dep_city+"&arr_city="+arr_city).then((res)=>{
-            console.log(dep_city+"=>"+arr_city);
-            
+    /**
+    * 根据出发城市和到达城市查询有哪些航班
+    * @param {出发城市} dep_city 
+    * @param {到达城市} arr_city 
+    */
+    const getAndSetFlightData = (dep_city, arr_city) => {
+        axios.get(host + "/flight/getCityToCityFlights?dep_city=" + dep_city + "&arr_city=" + arr_city).then((res) => {
+            console.log(dep_city + "=>" + arr_city);
+
             console.log("233333");
             console.log(res);
-            if(res.data.success){
+            if (res.data.success) {
                 setFlightData(res.data.data);
-            }else{
+            } else {
                 alert(res.data.msg);
             }
-        }).catch((e)=>{
+        }).catch((e) => {
             alert("连接异常");
             let data = ["AA1234", "AA2345", "AA3456"];
             setFlightData(data);
@@ -105,7 +109,7 @@ const FlightHistoryInputTable = ({ onFormSubmit }) => {
             setFlightData([]);
         }
         else {
-            getAndSetFlightData(curValues.dep_city,curValues.arr_city);//这里的set是异步的
+            getAndSetFlightData(curValues.dep_city, curValues.arr_city);//这里的set是异步的
         }
 
     };
@@ -123,11 +127,11 @@ const FlightHistoryInputTable = ({ onFormSubmit }) => {
             setFlightData([]);
         }
         else {
-            getAndSetFlightData(curValues.dep_city,curValues.arr_city);//这里的set是异步的
+            getAndSetFlightData(curValues.dep_city, curValues.arr_city);//这里的set是异步的
         }
     };
 
-   
+
 
     const onFlighChange = (value) => {
         form.setFieldsValue({
@@ -230,53 +234,53 @@ const FlightHistoryInputTable = ({ onFormSubmit }) => {
 };
 
 //缩略折线图，有点bug，先不用了
-const PriceSliderChart = ({data}) =>{
+const PriceSliderChart = ({ data }) => {
 
     console.log(data);
-    
-  
-  const config = {
-    title: {
-      visible: true,
-      text: '为折线添加缩略轴交互',
-    },
-    description: {
-      visible: true,
-      text:
-        '缩略轴 (slider) 交互适用于折线数据较多\uFF0C用户希望关注数据集中某个特殊区间的场景\u3002',
-    },
-    forceFit: true,
-    padding: 'auto',
-    data,
-    xField: 'day',
-    xAxis: {
-      visible: true,
-      label: { autoHide: true },
-    },
-    yField: 'price',
-    yAxis: { label: { formatter: (v) => `${v}`.replace(/\d{1,3}(?=(\d{3})+$)/g, (s) => `${s},`) } },
-    interactions: [
-      {
-        type: 'slider',
-        cfg: {
-          start: 0.1,
-          end: 0.2,
-        },
-      },
-    ],
-  };
-  return <Line {...config} />;
-}
 
-const AntPriceLineChart = ({data})=>{
+
     const config = {
         title: {
-          visible: false,
-          text: '配置折线数据点样式',
+            visible: true,
+            text: '为折线添加缩略轴交互',
         },
         description: {
-          visible: false,
-          text: '自定义配置趋势线上数据点的样式',
+            visible: true,
+            text:
+                '缩略轴 (slider) 交互适用于折线数据较多\uFF0C用户希望关注数据集中某个特殊区间的场景\u3002',
+        },
+        forceFit: true,
+        padding: 'auto',
+        data,
+        xField: 'day',
+        xAxis: {
+            visible: true,
+            label: { autoHide: true },
+        },
+        yField: 'price',
+        yAxis: { label: { formatter: (v) => `${v}`.replace(/\d{1,3}(?=(\d{3})+$)/g, (s) => `${s},`) } },
+        interactions: [
+            {
+                type: 'slider',
+                cfg: {
+                    start: 0.1,
+                    end: 0.2,
+                },
+            },
+        ],
+    };
+    return <Line {...config} />;
+}
+
+const AntPriceLineChart = ({ data }) => {
+    const config = {
+        title: {
+            visible: false,
+            text: '配置折线数据点样式',
+        },
+        description: {
+            visible: false,
+            text: '自定义配置趋势线上数据点的样式',
         },
         padding: 'auto',
         forceFit: true,
@@ -284,22 +288,22 @@ const AntPriceLineChart = ({data})=>{
         xField: 'day',
         yField: 'price',
         label: {
-          visible: false,
-          type: 'point',
+            visible: false,
+            type: 'point',
         },
         point: {
-          visible: false,
-          size: 5,
-          shape: 'diamond',
-          style: {
-            fill: 'white',
-            stroke: '#2593fc',
-            lineWidth: 2,
-          },
+            visible: false,
+            size: 5,
+            shape: 'diamond',
+            style: {
+                fill: 'white',
+                stroke: '#2593fc',
+                lineWidth: 2,
+            },
         },
-        height:600
-      };
-      return <Line {...config} />;
+        height: 600
+    };
+    return <Line {...config} />;
 }
 
 
@@ -316,17 +320,17 @@ const FlightHistoryPrice = () => {
      * @param {到达城市} arr_city 
      * @param {航班号} flightNum 
      */
-    const getAndSetFlightData = (dep_city,arr_city,flightNum)=>{
-        axios.get(host+"/flight/getFlightHistoryPrice?dep_city="+dep_city+"&arr_city="+arr_city+"&flightNum="+flightNum).then((res)=>{
+    const getAndSetFlightData = (dep_city, arr_city, flightNum) => {
+        axios.get(host + "/flight/getFlightHistoryPrice?dep_city=" + dep_city + "&arr_city=" + arr_city + "&flightNum=" + flightNum).then((res) => {
             console.log(res);
-            
-            if(res.data.success){
+
+            if (res.data.success) {
                 setFlightData(res.data.data);
-            }else{
+            } else {
                 console.log(res.data.msg);
-                
+
             }
-        }).catch((e)=>{
+        }).catch((e) => {
             let res = [
                 {
                     year: "2020-7-2",
@@ -374,7 +378,7 @@ const FlightHistoryPrice = () => {
         setLoading(true)
         setTimeout(() => {
             setChartName(`${queryData.flight} 号航班的历史价格`)
-            getAndSetFlightData(queryData.dep,queryData.arr,queryData.flight);
+            getAndSetFlightData(queryData.dep, queryData.arr, queryData.flight);
             setLoading(false)
         }, 1000)
     }
@@ -382,7 +386,7 @@ const FlightHistoryPrice = () => {
     useEffect(() => {
         setLoading(true)
         setChartName("上海航空FM9166 号航班的历史价格");
-        getAndSetFlightData("CKG","SHA","上海航空FM9166");
+        getAndSetFlightData("CKG", "SHA", "上海航空FM9166");
         setLoading(false);
     }, [])
 
@@ -391,24 +395,12 @@ const FlightHistoryPrice = () => {
             <PageHeader title="航班历史价格" routes={routes} />
             <div className="ab-container">
                 <FlightHistoryInputTable onFormSubmit={onFormSubmit} />
-                <div className="ab-content-container">
-                    <Skeleton loading={loading} active>
-                        <div className="ab-chart-title">{chartName}</div>
-                        {/* <Chart
-                            padding={[10, 20, 50, 40]}
-                            autoFit
-                            height={500}
-                            data={flightData}
-                            scale={{ price: { min: 0 } }}
-                        >
-                            <Line position="day*price" shape="smooth" tooltip={false} />
-                            <Point position="day*price" style={{ cursor: "pointer" }} tooltip={true}  visible={false}/>
-                            <Tooltip showCrosshairs={true} />
-                        </Chart> */}
-                        {/* <PriceSliderChart data={flightData}/> */}
-                        < AntPriceLineChart data={flightData}/>
+                <Card title={chartName}>
+                <Skeleton loading={loading} active>
+                        < AntPriceLineChart data={flightData} />
                     </Skeleton>
-                </div>
+                </Card>
+    
             </div>
         </div>
     );

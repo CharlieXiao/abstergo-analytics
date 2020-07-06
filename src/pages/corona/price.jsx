@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Row, Col, Select } from 'antd'
+import { Row, Col, Select,Card } from 'antd'
 import CitySelector from "../../component/citySelector";
 import { Skeleton, Form, Button } from "antd";
 import PageHeader from '../../component/pageheader'
 import { ColumnLine } from '@ant-design/charts';
 import { getCityByCode } from "../../city"
 import axios from 'axios';
-import {host} from "../../config"
+import { host } from "../../config"
 
 
 const routes = [
@@ -38,7 +38,7 @@ const CityInputTable = ({ onFormSubmit }) => {
         //     arr_city: value,
         // });
         // form.validateFields(["arr_city"]);
-        onFormSubmit({arr:value});
+        onFormSubmit({ arr: value });
 
     }
 
@@ -138,18 +138,18 @@ const CoronaPrice = () => {
      * 获取并设置特定城市在1月到7月的平均机票价格
      * @param {城市,英文} city 
      */
-    const getAndSetPriceData = (city)=>{
+    const getAndSetPriceData = (city) => {
 
-    
-        axios.get(host+"/flight/getPrice?city="+city).then((res)=>{
-            if(res.data.success){   
+
+        axios.get(host + "/flight/getPrice?city=" + city).then((res) => {
+            if (res.data.success) {
                 console.log(res.data.data);
-                
+
                 setPriceData(res.data.data);
-            }else{
+            } else {
                 alert(res.data.msg);
             }
-        }).catch((e)=>{
+        }).catch((e) => {
             let priceData = [
                 { 时间: '2020-03-10', 价格: 350, },
                 { 时间: '2020-03-20', 价格: 360, },
@@ -170,24 +170,24 @@ const CoronaPrice = () => {
      * 获取并设置特定城市在1月到7月总计感染人数
      * @param {城市:是中文} city 
      */
-    const getAndSetAffectedData = (city)=>{
-        
-        axios.get(host+"/corona/getAffected?city="+city).then((res)=>{
+    const getAndSetAffectedData = (city) => {
+
+        axios.get(host + "/corona/getAffected?city=" + city).then((res) => {
             console.log(res);
             console.log(host);
-            
-            if(res.data.success){
+
+            if (res.data.success) {
                 let tmpData = res.data.data;
-                let data =[];
-                for(let index in tmpData){
-                    data.push({时间:tmpData[index].dateId,感染人数:tmpData[index].confirmedCount});
+                let data = [];
+                for (let index in tmpData) {
+                    data.push({ 时间: tmpData[index].dateId, 感染人数: tmpData[index].confirmedCount });
                 }
                 console.log(data);
                 setAffectedData(data);
-            }else{
+            } else {
                 alert(res.data.msg);
             }
-        }).catch((e)=>{
+        }).catch((e) => {
             let affectedData = [
                 { 时间: '2020-03-10', 感染人数: 23, },
                 { 时间: '2020-03-20', 感染人数: 35, },
@@ -203,7 +203,7 @@ const CoronaPrice = () => {
             setAffectedData(affectedData);
         })
     }
-    
+
     useEffect(() => {
         setCity("武汉的感染人数和到达该城市机票价格随时间变化图");
         getAndSetPriceData("WUH");
@@ -223,13 +223,9 @@ const CoronaPrice = () => {
             <PageHeader title="机票价格变化" routes={routes} />
             <div className="ab-container">
                 <CityInputTable onFormSubmit={onFormSubmit} />
-                <div className="ab-content-container">
-                    {/* <Skeleton loading={loading} active>
-                        
-                    </Skeleton> */}
-                    <div className="ab-chart-title">{city}</div>
+                <Card title={city}>
                     <PriceAffectedChart priceData={priceData} affectedData={affectedData} />
-                </div>
+                </Card>
             </div>
         </div>
     );
