@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import PageHeader from '../../component/pageheader'
-import { Skeleton, Form, Button, Alert } from "antd";
+import { Skeleton, Form, Button, Alert,Card } from "antd";
 import CitySelector from "../../component/citySelector";
 import { Row, Col, Select } from 'antd'
 //import { Chart, Line, Point,Tooltip } from 'bizcharts';
@@ -395,24 +395,12 @@ const FlightHistoryPrice = () => {
             <PageHeader title="航班历史价格" routes={routes} />
             <div className="ab-container">
                 <FlightHistoryInputTable onFormSubmit={onFormSubmit} />
-                <div className="ab-content-container">
-                    <Skeleton loading={loading} active>
-                        <div className="ab-chart-title">{chartName}</div>
-                        {/* <Chart
-                            padding={[10, 20, 50, 40]}
-                            autoFit
-                            height={500}
-                            data={flightData}
-                            scale={{ price: { min: 0 } }}
-                        >
-                            <Line position="day*price" shape="smooth" tooltip={false} />
-                            <Point position="day*price" style={{ cursor: "pointer" }} tooltip={true}  visible={false}/>
-                            <Tooltip showCrosshairs={true} />
-                        </Chart> */}
-                        {/* <PriceSliderChart data={flightData}/> */}
+                <Card title={chartName}>
+                <Skeleton loading={loading} active>
                         < AntPriceLineChart data={flightData} />
                     </Skeleton>
-                </div>
+                </Card>
+    
             </div>
         </div>
     );
