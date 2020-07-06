@@ -110,24 +110,28 @@ const MutipleCompanySelector = ({ selectorDataChange }) => {
 const CompanyInputTable = ({ onFormSubmit }) => {
     // 获取表单数据信息
     const [form] = Form.useForm(); //没啥用
-    const [companyList, setCompanyList] = useState([]);
+   // const [companyList, setCompanyList] = useState([]);
 
 
     // 数据变化回调函数
     const onCompanyChange = (value) => {
+        
+        form.setFieldsValue({
+            companyList:value
+        })
 
         //每当选择器选择的内容变化，重新设置companylist,value是一个数组
-        setCompanyList(value);
+       // setCompanyList(value);
     }
 
     const onFinish = (values) => {
-        console.log("companylist is " + companyList);
-        onFormSubmit(companyList);
+        onFormSubmit(values.companyList);
     };
 
-    // const onReset = () => {
-    //     setCompanyList([]);
-    // };
+    const onReset = () => {
+        form.resetFields();
+        //setCompanyList([]);
+    };
 
 
     return (
@@ -145,7 +149,10 @@ const CompanyInputTable = ({ onFormSubmit }) => {
                 >
                     <Row gutter={[16, 8]}>
                         <Col xs={12} sm={12} md={12} lg={12} xl={8} xxl={6}>
-                            <MutipleCompanySelector selectorDataChange={onCompanyChange}  />
+                            <Form.Item name="companyList"  label="航空公司" rules={[{ required: true, message: "请选择航空公司" }]}>
+                                <MutipleCompanySelector selectorDataChange={onCompanyChange}  />
+                            </Form.Item>
+                            
                         </Col>
 
                         <Col xs={24} sm={12} md={12} lg={12} xl={24} xxl={6}>
@@ -153,9 +160,9 @@ const CompanyInputTable = ({ onFormSubmit }) => {
                                 <Button type="primary" htmlType="submit" style={{ marginRight: "10px" }}>
                                     查询
                                 </Button>
-                                {/* <Button htmlType="button" onClick={onReset} style={{ marginLeft: "10px" }} >
+                                <Button htmlType="button" onClick={onReset} style={{ marginLeft: "10px" }} >
                                     重置
-                                </Button> */}
+                                </Button>
                             </Form.Item>
                         </Col>
                     </Row>
@@ -231,6 +238,8 @@ const TimeCompanyLineNum = () => {
      * @param {表单提交时提供的公司数组} companyList 
      */
     const onFormSubmitHandler = (companyList) => {
+        console.log(companyList);
+        
         getAndSetData(companyList);
     }
 
