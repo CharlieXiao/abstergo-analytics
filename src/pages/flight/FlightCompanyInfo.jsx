@@ -32,10 +32,14 @@ const routes = [
         menu: [{
             path: '/flight/historyprice',
             title: '历史价格查询'
-        },]
+        }, {
+            path: '/flight/timecompanylinenum',
+            title: '航空公司起降数时间段'
+        },
+        ]
     },
     {
-        breadcrumbName: '航班历史价格',
+        breadcrumbName: '航空公司相关信息',
     },
 ];
 
@@ -161,7 +165,7 @@ const PlaneCompanyPieChart = ({ data, onClick }) => {
                         return `${data.item}: ${Math.floor(data.percent * 100)}%`;
                     },
                 }]}
-                tooltip={{fields: ['item','count']}}
+                tooltip={{ fields: ['item', 'count'] }}
             />
             <Interaction type='element-single-selected' />
 
@@ -179,7 +183,7 @@ const PlaneTypesPieChart = ({ data, onClick }) => {
     //     { item: '事例五', count: 9, percent: 0.09 },
     //   ];
     console.log(data);
-    
+
     const cols = {
         percent: {
             formatter: val => {
@@ -209,14 +213,14 @@ const PlaneTypesPieChart = ({ data, onClick }) => {
                 }}
                 label={['count', {
                     content: (data) => {
-                        if(data.percent < 0.05){
+                        if (data.percent < 0.05) {
                             return "";
                         }
                         else
                             return `${data.item}: ${Math.floor(data.percent * 100)}%`;
                     },
                 }]}
-                tooltip={{fields: ['item','count']}}
+                tooltip={{ fields: ['item', 'count'] }}
             />
             <Interaction type='element-single-selected' />
         </Chart>
@@ -272,8 +276,8 @@ const FlightCompanyInfo = () => {
     const [planeCompaniesAndTypes, setPlaneCompaniesAndTypes] = useState([]);
     const [planeCompanies, setPlaneCompanies] = useState([]);
     const [planesInPlaneCompanies, setPlanesInPlaneCompanies] = useState([]);
-    const [selectCompanyName,setSelectCompanyName] = useState("");
-    const [selectPlaneCompany,setSelectPlaneCompany] = useState("");
+    const [selectCompanyName, setSelectCompanyName] = useState("");
+    const [selectPlaneCompany, setSelectPlaneCompany] = useState("");
 
 
     /**
@@ -286,7 +290,7 @@ const FlightCompanyInfo = () => {
                 //收到数据的形式是{craftFamily:"波音747",craftDesc:"xxxxx"}
                 let tmpInfos = res.data.data;
                 console.log(tmpInfos);
-                
+
                 let infos = [];
 
                 for (let index in tmpInfos) {
@@ -414,14 +418,14 @@ const FlightCompanyInfo = () => {
             planeCompanies.push({ item: data[index].item, count: data[index].count, percent: data[index].percent });
         }
         setPlaneCompanies(planeCompanies);
-        
+
         //再默认选择第一个公司，画出第一个公司的飞机机型占比图
         setSelectPlaneCompany(data[0].item);
         setPlanesInPlaneCompanies(data[0].planes);
 
         //设置卡片
-        setPlaneIntroduction({ name: "点击饼图查看飞机详细信息", introduction: ""});
-       
+        setPlaneIntroduction({ name: "点击饼图查看飞机详细信息", introduction: "" });
+
 
     }
 
@@ -475,27 +479,27 @@ const FlightCompanyInfo = () => {
                 <InputTable onFormSubmit={onFormSubmit} />
                 {/* <div className="ab-content-container">
                     <div className="ab-chart-title">{selectCompanyName+"的详细信息"}</div> */}
-                    <Row gutter={[24, 24]}>
-                        <Col xs={24} sm={24} md={24} lg={12} xl={24} xxl={24}>
-                            <Card title={selectCompanyName+"最爱城市排名"}>
-                                <CompanyLoveCountriesChart data={loveCityData} />
-                            </Card>
-                        </Col>
-                        <Col xs={24} sm={24} md={24} lg={12} xl={10} xxl={9} >
-                            <Card title={selectCompanyName+"持有飞机公司占比"}>
-                                <PlaneCompanyPieChart data={planeCompanies} onClick={companyPieClickHandler} />
-                            </Card>
-                        </Col>
-                        <Col xs={24} sm={24} md={24} lg={12} xl={10} xxl={9} >
-                            <Card title={selectCompanyName+"拥有"+selectPlaneCompany+"的机型占比"}>
-                                <PlaneTypesPieChart data={planesInPlaneCompanies} onClick={planesPieHandler} />
-                            </Card>
-                        </Col>
-                        <Col xs={24} sm={24} md={24} lg={12} xl={4} xxl={6}>
-                            <PlaneCard content={planeIntroduction} />
-                        </Col>
+                <Row gutter={[24, 24]}>
+                    <Col xs={24} sm={24} md={24} lg={12} xl={24} xxl={24}>
+                        <Card title={selectCompanyName + "最爱城市排名"}>
+                            <CompanyLoveCountriesChart data={loveCityData} />
+                        </Card>
+                    </Col>
+                    <Col xs={24} sm={24} md={24} lg={12} xl={10} xxl={9} >
+                        <Card title={selectCompanyName + "持有飞机公司占比"}>
+                            <PlaneCompanyPieChart data={planeCompanies} onClick={companyPieClickHandler} />
+                        </Card>
+                    </Col>
+                    <Col xs={24} sm={24} md={24} lg={12} xl={10} xxl={9} >
+                        <Card title={selectCompanyName + "拥有" + selectPlaneCompany + "的机型占比"}>
+                            <PlaneTypesPieChart data={planesInPlaneCompanies} onClick={planesPieHandler} />
+                        </Card>
+                    </Col>
+                    <Col xs={24} sm={24} md={24} lg={12} xl={4} xxl={6}>
+                        <PlaneCard content={planeIntroduction} />
+                    </Col>
 
-                    </Row>
+                </Row>
 
                 {/* </div> */}
             </div>
