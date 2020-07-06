@@ -41,7 +41,7 @@ const DayTimeAndPriceChart = () => {
   }, [])
 
   const config = {
-    height: "300",
+    height: 400,
     title: {
       visible: false,
       text: '配置折线数据点样式',
@@ -55,6 +55,10 @@ const DayTimeAndPriceChart = () => {
     data: dayTimePrice,
     xField: '时间',
     yField: '价格',
+    yAxis:{
+      min:500,
+      max:1600
+    },
     label: {
       visible: true,
       type: 'point',

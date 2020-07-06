@@ -64,7 +64,8 @@ const option = {
                 // color: 'source',
                 curveness: 0.15,
                 width:2,
-                color:'rgb(255,251,229)'
+                color:'rgba(255,255,255,0.5)'
+                // color:'rgb(255,251,229)'
             },
             // hover时的样式
             emphasis: {

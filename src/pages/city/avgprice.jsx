@@ -97,7 +97,7 @@ const CityAvgPrice = () => {
                         {/* <div className="ab-chart-title">{chartName}</div> */}
                         <Row gutter={24}>
                             <Col xxl={16} xl={16} lg={16} md={24} sm={24} xs={24}>
-                                <Chart height={600} data={data} autoFit scale={{price:{min:650}}}>
+                                <Chart height={600} data={data} autoFit scale={{price:{min:300}}}>
                                     <Coordinate transpose />
                                     <Interval position="city*price" style={{ cursor: "pointer" }} />
                                     <Tooltip showMarkers={false} />

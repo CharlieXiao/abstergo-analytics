@@ -295,7 +295,7 @@ const CityLineNum = () => {
     const onDatePickerChange = (date) => {
         setLoading(true)
         setChartName(`${date.format("YYYY年M月")} 各城市航班数量`)
-        axios.get(host+"/city/getCityLineNum",{params:{
+        axios.get(host+"/city/getCityFlightNum",{params:{
             month:date.format("YYYY-MM")
         }}).then((res)=>{
             if(res.data.success){
