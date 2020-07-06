@@ -11,13 +11,13 @@ const Dashboard = (props) => {
     return (
         <div className="ab-container">
             <Row gutter={[24, 24]}>
-                <Col xs={24} sm={24} md={16} lg={16} xl={8} xxl={8}>
+                <Col xs={24} sm={24} md={16} lg={16} xl={8} xxl={12}>
                     <YearPriceBarChart />
                 </Col>
-                <Col xs={24} sm={24} md={16} lg={16} xl={8} xxl={8}>
+                <Col xs={24} sm={24} md={16} lg={16} xl={8} xxl={12}>
                     <CompanyLineNumRoseChart />
                 </Col>
-                <Col xs={24} sm={24} md={24} lg={12} xl={8} xxl={8}>
+                <Col xs={24} sm={24} md={24} lg={12} xl={8} xxl={24}>
                     <DayTimeAndPriceChart />
                 </Col>
                 <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>

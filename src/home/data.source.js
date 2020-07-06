@@ -85,6 +85,21 @@ export const Nav00DataSource = {
               ],
             },
           },
+          {
+            name: 'sub3',
+            className: 'item-sub',
+            children: {
+              className: 'item-sub-item',
+              children: [
+                {
+                  name: 'title',
+                  className: 'item-title',
+                  children: '价格时间分布',
+                  href: '#/city/timeprice',
+                },
+              ],
+            },
+          },
         ],
       },
      
@@ -123,6 +138,21 @@ export const Nav00DataSource = {
                   className: 'item-title',
                   children: '航空公司信息',
                   href: '#/flight/companyinfo',
+                },
+              ],
+            },
+          },
+          {
+            name: 'sub2',
+            className: 'item-sub',
+            children: {
+              className: 'item-sub-item',
+              children: [
+                {
+                  name: 'title',
+                  className: 'item-title',
+                  children: '航空公司起降数时间分布',
+                  href: '#/flight/timecompanylinenum',
                 },
               ],
             },
@@ -209,7 +239,7 @@ export const Content130DataSource = {
           'https://gw.alipayobjects.com/zos/rmsportal/PiqyziYmvbgAudYfhuBr.svg',
         className: 'title-image',
       },
-      { name: 'title', children: '丰富的特色展台', className: 'title-h1' },
+      { name: 'title', children: '多样化分析展示', className: 'title-h1' },
       {
         name: 'content',
         children:

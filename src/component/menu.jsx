@@ -15,14 +15,15 @@ const PageKeyMapper = {
     "/city/minprice": { key: "2", title: "城市间最低机票价格 | Abstergo", openKey: "city" },
     "/city/avgprice": { key: "3", title: "城市平均机票价格 | Abstergo", openKey: "city" },
     "/city/linenum": { key: "4", title: "各市航班数量 | Abstergo", openKey: "city" },
-    // "/flight/avgprice":{key:"5",title:"平均机票价格 | Abstergo",openKey:"flight"},
-    // "/flight/plane":{key:"6",title:"航班飞机偏好 | Abstergo",openKey:"flight"},
-    // "/flight/linenum":{key:"7",title:"各大航空公司航班数 | Abstergo",openKey:"flight"},
     "/corona/price": { key: "8", title: "新冠与机票价格变化 | Abstergo", openKey: "corona" },
     "/corona/linenum": { key: "9", title: "新冠与航班数量变化 | Abstergo", openKey: "corona" },
     "/trivial": { key: "10", title: "你知道吗？ | Abstergo", openKey: "" },
     "/flight/historyprice": { key: "11", title: "航班历史价格查询 | Abstergo", openKey: "flight" },
     "/flight/companyinfo": { key: "12", title: "航空公司相关信息 | Abstergo", openKey: "flight" },
+    "/city/timeprice":{key:"13",title:"最低价格时间段分布 | Abstergo",openKey:"city"},
+    "/flight/timecompanylinenum":{key:"14",title:"航空公司起降数时间段变化趋势 | Abstergo",openKey:"flight"}
+    
+
 }
 
 // 页表menu组件
@@ -69,6 +70,9 @@ const PageMenu = () => {
                     <Item key="4">
                         <Link to="/city/linenum">各市航班数量</Link>
                     </Item>
+                    <Item key="13">
+                        <Link to="/city/timeprice">最低价格时间段分布</Link>
+                    </Item>
                 </SubMenu>
                 <SubMenu icon={<SendOutlined />} key="flight" title="航班">
                     <Item key="11">
@@ -76,6 +80,9 @@ const PageMenu = () => {
                     </Item>
                     <Item key="12">
                         <Link to="/flight/companyinfo">航空公司相关信息</Link>
+                    </Item>
+                    <Item key="14">
+                        <Link to="/flight/timecompanylinenum">航空公司起降数时间段</Link>
                     </Item>
                 </SubMenu>
                 <SubMenu icon={<BarChartOutlined />} key="corona" title="新冠疫情专题">

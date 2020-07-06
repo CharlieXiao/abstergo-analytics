@@ -6,7 +6,7 @@ import locale from "antd/es/date-picker/locale/zh_CN";
 import DataSet from "@antv/data-set";
 import moment from 'moment'
 import axios from 'axios'
-import {host} from '../../config'
+import { host } from '../../config'
 
 const routes = [
     {
@@ -59,7 +59,7 @@ const CityAvgPrice = () => {
                         return a.price - b.price;
                     }
                 });
-                setData(dv.rows)
+                setData(dv.rows.slice(0,15))
                 setLoading(false)
             }
         }).catch((e) => {
@@ -92,19 +92,18 @@ const CityAvgPrice = () => {
                     extra={<DatePicker picker="month" locale={locale} onSelect={onDatePickerChange} defaultValue={new moment("201907", "YYYYMM")} allowClear={false} />} >
                     <Skeleton loading={loading} active>
                         {/* <div className="ab-chart-title">{chartName}</div> */}
-                        {/* <Row gutter={24}>
+                        <Row gutter={24}>
                             <Col xxl={16} xl={16} lg={16} md={24} sm={24} xs={24}>
-                                
+                                <Chart height={600} data={data} autoFit scale={{price:{min:650}}}>
+                                    <Coordinate transpose />
+                                    <Interval position="city*price" style={{ cursor: "pointer" }} />
+                                    <Tooltip showMarkers={false} />
+                                </Chart>
                             </Col>
                             <Col xxl={8} xl={8} lg={8} md={24} sm={24} xs={24}>
                                 this is detail
                             </Col>
-                        </Row> */}
-                        <Chart height={600} data={data} autoFit>
-                            <Coordinate transpose />
-                            <Interval position="city*price" style={{ cursor: "pointer" }} />
-                            <Tooltip showMarkers={false} />
-                        </Chart>
+                        </Row>
                     </Skeleton>
                 </Card>
             </div>

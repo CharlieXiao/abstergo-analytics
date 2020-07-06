@@ -83,12 +83,12 @@ const LineNumAffectedTotalChart = () => {
         data: [affectedData, lineNumData],
         xField: '时间',
         yField: ['感染人数', '起降数'],
-        columnConfig: { color: '#b71c1c' }, //A52A2A
+        columnConfig: { color: '#ef5350' }, //A52A2A #b71c1c
         lineConfig: {
-            color: '#008080',
+            color: '#00bcd4', // #008080
             point: { visible: true, shape: 'diamond' },
             label: { visible: true },
-            lineSize: 2,
+            lineSize: 3,
         },
     };
 

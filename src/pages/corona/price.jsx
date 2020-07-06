@@ -114,12 +114,12 @@ const PriceAffectedChart = ({ priceData, affectedData }) => {
         data: [affectedData, priceData],
         xField: '时间',
         yField: ['感染人数', '价格'],
-        columnConfig: { color: '#b71c1c' }, //A52A2A
+        columnConfig: { color: '#ef5350' }, //A52A2A #b71c1c
         lineConfig: {
             color: 'rgb(91,143,249)',
             point: { visible: true, shape: 'diamond' },
             label: { visible: true },
-            lineSize: 2,
+            lineSize: 3,
         },
     };
 

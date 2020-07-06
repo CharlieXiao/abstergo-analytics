@@ -61,7 +61,7 @@ const CompanyLineNumRoseChart = () => {
                 <Interval
                     position="company*airlinesCount"
                     adjust="stack"
-                    color={['company', 'rgb(252,143,72)-rgb(255,215,135)']}
+                    color={['company', '#8bc34a-#dcedc8']}
                     element-highlight
                     style={{
                         lineWidth: 1,

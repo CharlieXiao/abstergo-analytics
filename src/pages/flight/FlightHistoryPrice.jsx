@@ -297,6 +297,7 @@ const AntPriceLineChart = ({data})=>{
             lineWidth: 2,
           },
         },
+        height:600
       };
       return <Line {...config} />;
 }

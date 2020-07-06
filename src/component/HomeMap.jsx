@@ -50,7 +50,7 @@ const option = {
             itemStyle: {
                 normal: {
                     borderColor: 'rgb(15,156,144)',
-                    color: 'rgba(60,72,72,0.8)',
+                    color: 'rgba(15,156,144,0.6)',
                     borderWidth: 1,
                 }
             },
@@ -61,10 +61,10 @@ const option = {
             },
             // 线样式
             lineStyle: {
-                color: 'source',
+                // color: 'source',
                 curveness: 0.15,
                 width:2,
-                color:'rgb(15,156,144)'
+                color:'rgb(255,251,229)'
             },
             // hover时的样式
             emphasis: {
