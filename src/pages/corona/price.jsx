@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { Row, Col, Select,Card } from 'antd'
+import { Row, Col, Card } from 'antd'
 import CitySelector from "../../component/citySelector";
-import { Skeleton, Form, Button } from "antd";
+import {  Form } from "antd";
 import PageHeader from '../../component/pageheader'
 import { ColumnLine } from '@ant-design/charts';
 import { getCityByCode } from "../../city"

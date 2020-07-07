@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import PageHeader from '../../component/pageheader'
-import { Skeleton, Form, Button, Alert,Card } from "antd";
+import { Skeleton, Form, Button, Card } from "antd";
 import CitySelector from "../../component/citySelector";
 import { Row, Col, Select } from 'antd'
 //import { Chart, Line, Point,Tooltip } from 'bizcharts';
@@ -235,44 +235,6 @@ const FlightHistoryInputTable = ({ onFormSubmit }) => {
     );
 };
 
-//缩略折线图，有点bug，先不用了
-const PriceSliderChart = ({ data }) => {
-
-    console.log(data);
-
-
-    const config = {
-        title: {
-            visible: true,
-            text: '为折线添加缩略轴交互',
-        },
-        description: {
-            visible: true,
-            text:
-                '缩略轴 (slider) 交互适用于折线数据较多\uFF0C用户希望关注数据集中某个特殊区间的场景\u3002',
-        },
-        forceFit: true,
-        padding: 'auto',
-        data,
-        xField: 'day',
-        xAxis: {
-            visible: true,
-            label: { autoHide: true },
-        },
-        yField: 'price',
-        yAxis: { label: { formatter: (v) => `${v}`.replace(/\d{1,3}(?=(\d{3})+$)/g, (s) => `${s},`) } },
-        interactions: [
-            {
-                type: 'slider',
-                cfg: {
-                    start: 0.1,
-                    end: 0.2,
-                },
-            },
-        ],
-    };
-    return <Line {...config} />;
-}
 
 const AntPriceLineChart = ({ data }) => {
     const config = {
