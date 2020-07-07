@@ -107,7 +107,7 @@ const CityAvgPrice = () => {
                 <Card title={chartName} bordered={false}
                     extra={
                         <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                            <span>从该城市出发？</span>
+                            从该城市 <span style={{color:"#1890ff"}}>出发</span> 或  <span style={{color:"grey"}}>到达</span>
                             <Switch style={{ margin: "0 24px 0 24px" }} onChange={onSwitchChange} defaultChecked />
                             <DatePicker picker="month" locale={locale} onSelect={onDatePickerChange} defaultValue={new moment("201907", "YYYYMM")} allowClear={false} />
                         </div>}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import PageHeader from '../../component/pageheader'
-import { Skeleton } from 'antd'
+import { Skeleton, Card } from 'antd'
 import echarts from 'echarts';
 // import 'echarts/map/js/china';
 import geoJson from 'echarts/map/json/china.json';
@@ -9,7 +9,7 @@ import locale from "antd/es/date-picker/locale/zh_CN";
 import { host } from '../../config'
 import axios from 'axios'
 
-echarts.registerMap('china',geoJson)
+echarts.registerMap('china', geoJson)
 
 const routes = [
     {
@@ -30,7 +30,7 @@ const routes = [
 
 const convertData = (data) => {
     var res = [];
-    data.forEach((element)=>{
+    data.forEach((element) => {
         var geoCoord = cityCord[element.name];
         if (geoCoord) {
             res.push({
@@ -141,7 +141,7 @@ const option = {
         // grid组件，用于绘制条形图
         grid: {
             right: '0%',
-            top: '20%',
+            top: '0%',
             bottom: '10%',
             width: '20%'
         },
@@ -186,35 +186,35 @@ const option = {
             map: 'china',
             right: '35%',
             left: '5%',
-            top: '10%',
+            top: '0%',
             bottom: '10%',
             silent: true
         },
         series: [
-        {
-            name: 'mapSer',
-            type: 'map',
-            map: 'china',
-            roam: false,
-            geoIndex: 0,
-            label: {
-                show: false,
+            {
+                name: 'mapSer',
+                type: 'map',
+                map: 'china',
+                roam: false,
+                geoIndex: 0,
+                label: {
+                    show: false,
+                },
             },
-        },
-        {
-            'name': '',
-            'type': 'bar',
-            zlevel: 2,
-            barWidth: '40%',
-            label: {
-                normal: {
-                    show: true,
-                    fontSize: 14,
-                    position: 'right',
-                    formatter: '{c}'
-                }
-            },
-        }
+            {
+                'name': '',
+                'type': 'bar',
+                zlevel: 2,
+                barWidth: '40%',
+                label: {
+                    normal: {
+                        show: true,
+                        fontSize: 14,
+                        position: 'right',
+                        formatter: '{c}'
+                    }
+                },
+            }
         ],
 
     },
@@ -286,25 +286,6 @@ const ScatterMap = ({ mapData }) => {
                 res2[t] = res[t].value;
             }
             seriesOptions.push({
-                title: [{
-                    text: dayText + " 感染人数与航班数量",
-                    textStyle: {
-                        color: '#2D3E53',
-                        fontSize: 28
-                    },
-                    left: 20,
-                    top: 20,
-                }, {
-                    show: true,
-                    text: '感染人数排行',
-                    textStyle: {
-                        color: '#2D3E53',
-                        fontSize: 18
-                    },
-                    right: '10%',
-                    top: '15%'
-                }
-                ],
                 yAxis: {
                     data: res1,
                 },
@@ -351,19 +332,19 @@ const ScatterMap = ({ mapData }) => {
                         name: '航班起降数',
                         type: 'scatter',
                         coordinateSystem: 'geo',
-                        data:convertData(cityLineNum[n]),
-                        symbol:'pin',
-                        symbolSize:(value,params)=>{
+                        data: convertData(cityLineNum[n]),
+                        symbol: 'pin',
+                        symbolSize: (value, params) => {
                             // 保证最小大小为5
                             return params.data.size;
                         },
-                        itemStyle:{
-                            color:'rgba(128,0,0,1)',
-                            borderColor:"#fff",
+                        itemStyle: {
+                            color: 'rgba(128,0,0,1)',
+                            borderColor: "#fff",
                             // borderWidth:2
                         },
-                        tooltip:{
-                            formatter:(params)=>{
+                        tooltip: {
+                            formatter: (params) => {
                                 return `${params.data.name} <br/> 航班数量: ${params.value[2]}`
                             }
                         }
@@ -391,7 +372,7 @@ const CoronaLineNumber = () => {
             if (res.data.success) {
                 console.log(res.data.data)
                 setMapData(res.data.data)
-            }else{
+            } else {
                 alert(res.data.msg)
             }
             setLoading(false)
@@ -406,12 +387,12 @@ const CoronaLineNumber = () => {
         <div className="ab-page-header-wrapper">
             <PageHeader title="航班数量变化" routes={routes} />
             <div className="ab-container">
-                <div className="ab-content-container">
+                <Card title="各市航班数量随感染人数变化情况">
                     <Skeleton loading={loading} active>
                         {/* <div className="ab-chart-title">{chartName}</div> */}
                         <ScatterMap mapData={mapData} />
                     </Skeleton>
-                </div>
+                </Card>
             </div>
         </div>
     );

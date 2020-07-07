@@ -62,7 +62,7 @@ const CompanyLineNumRoseChart = () => {
                     adjust={{
                         type:"stack"
                     }}
-                    color={['company', 'rgb(252,143,72)-rgb(255,215,135)']}
+                    color={['company', '#00796b-#a7ffeb']}
                     element-highlight
                     style={{
                         lineWidth: 1,

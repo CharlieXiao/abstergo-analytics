@@ -41,7 +41,7 @@ const YearPriceBarChart = () => {
     return (
     <Card title="全年各市航班价格平均值" extra={
         <div>
-            <span>从该城市出发？</span>
+            从该城市 <span style={{color:"#1890ff"}}>出发</span> 或  <span style={{color:"grey"}}>到达</span>
             <Switch style={{ marginLeft: "24px" }} onChange={onSwitchChange} defaultChecked />
         </div>
     }>
