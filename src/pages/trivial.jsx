@@ -21,67 +21,67 @@ const Trivial = () => {
     return (
         <div className="ab-container">
             <Row gutter={[24, 24]}>
-                <Col xxl={12}>
+                <Col xxl={12} xl={12} lg={24} md={24} sm={24} xs={24}>
                     <Row gutter={[24, 24]}>
-                        <Col xxl={12}>
+                        <Col xxl={12} xl={12} lg={24} md={24} sm={24} xs={24}>
                             <Card>
-                                <Comment content={DoYouKnow[0]} />
+                                <Comment content={DoYouKnow[0]} author="白翔宇"/>
                             </Card>
                         </Col>
-                        <Col xxl={12}>
+                        <Col xxl={12} xl={12} lg={24} md={24} sm={24} xs={24}>
                             <Card>
-                                <Comment content={DoYouKnow[1]} />
+                                <Comment content={DoYouKnow[1]} author="肖祎龙" />
                             </Card>
                         </Col>
-                        <Col xxl={24}>
+                        <Col xxl={24} xl={24} lg={24} md={24} sm={24} xs={24}>
                             <Card>
-                                <Comment content={DoYouKnow[2]} />
+                                <Comment content={DoYouKnow[2]} author="智翔宇" />
                             </Card>
                         </Col>
-                        <Col xxl={10}>
+                        <Col xxl={10} xl={10} lg={24} md={24} sm={24} xs={24}>
                             <Card>
-                                <Comment content={DoYouKnow[7]} />
+                                <Comment content={DoYouKnow[7]} author="胥岚林"/>
 
                             </Card>
                         </Col>
-                        <Col xxl={14}>
+                        <Col xxl={14} xl={14} lg={24} md={24} sm={24} xs={24}>
                             <Card>
 
-                                <Comment content={DoYouKnow[3]} />
+                                <Comment content={DoYouKnow[3]} author="许东明"/>
                             </Card>
                         </Col>
-                        <Col xxl={24}>
+                        <Col xxl={24} xl={24} lg={24} md={24} sm={24} xs={24}>
                             <Card>
-                                <Comment content={DoYouKnow[9]} />
+                                <Comment content={DoYouKnow[9]} author="白翔宇"/>
                             </Card>
                         </Col>
                     </Row>
                 </Col>
-                <Col xxl={12}>
+                <Col xxl={12} xl={12} lg={24} md={24} sm={24} xs={24}>
                     <Row gutter={[24, 24]}>
-                        <Col xxl={24}>
+                        <Col xxl={24} xl={24} lg={24} md={24} sm={24} xs={24}>
                             <Card>
-                                <Comment content={DoYouKnow[4]} />
+                                <Comment content={DoYouKnow[4]} author="胥岚林" />
                             </Card>
                         </Col>
-                        <Col xxl={14}>
+                        <Col xxl={14} xl={14} lg={24} md={24} sm={24} xs={24}>
                             <Card>
-                                <Comment content={DoYouKnow[5]} />
+                                <Comment content={DoYouKnow[5]} author="龙俊桦"/>
                             </Card>
                         </Col>
-                        <Col xxl={10}>
+                        <Col xxl={10} xl={10} lg={24} md={24} sm={24} xs={24}>
                             <Card>
-                                <Comment content={DoYouKnow[6]} />
+                                <Comment content={DoYouKnow[6]} author="智翔宇"/>
                             </Card>
                         </Col>
-                        <Col xxl={12}>
+                        <Col xxl={12} xl={12} lg={24} md={24} sm={24} xs={24}>
                             <Card>
-                                <Comment content={DoYouKnow[10]} />
+                                <Comment content={DoYouKnow[10]} author="肖祎龙"/>
                             </Card>
                         </Col>
-                        <Col xxl={12}>
+                        <Col xxl={12} xl={12} lg={24} md={24} sm={24} xs={24}>
                             <Card>
-                                <Comment content={DoYouKnow[8]} />
+                                <Comment content={DoYouKnow[8]} author="许东明"/>
                             </Card>
                         </Col>
 
