@@ -11,17 +11,17 @@ import {
 const { SubMenu, Item } = Menu
 
 const PageKeyMapper = {
-    "/dashboard": { key: "1", title: "概览 | Abstergo", openKey: "" },
-    "/city/minprice": { key: "2", title: "城市间最低机票价格 | Abstergo", openKey: "city" },
-    "/city/avgprice": { key: "3", title: "城市平均机票价格 | Abstergo", openKey: "city" },
-    "/city/linenum": { key: "4", title: "各市航班数量 | Abstergo", openKey: "city" },
-    "/corona/price": { key: "8", title: "新冠与机票价格变化 | Abstergo", openKey: "corona" },
-    "/corona/linenum": { key: "9", title: "新冠与航班数量变化 | Abstergo", openKey: "corona" },
-    "/trivial": { key: "10", title: "你知道吗？ | Abstergo", openKey: "" },
-    "/flight/historyprice": { key: "11", title: "航班历史价格查询 | Abstergo", openKey: "flight" },
-    "/flight/companyinfo": { key: "12", title: "航空公司相关信息 | Abstergo", openKey: "flight" },
-    "/city/timeprice":{key:"13",title:"最低价格时间段分布 | Abstergo",openKey:"city"},
-    "/flight/timecompanylinenum":{key:"14",title:"航空公司起降数时间段变化趋势 | Abstergo",openKey:"flight"}
+    "/dashboard": { key: "1", title: "概览 | PaperPlane", openKey: "" },
+    "/city/minprice": { key: "2", title: "城市间最低机票价格 | PaperPlane", openKey: "city" },
+    "/city/avgprice": { key: "3", title: "城市平均机票价格 | PaperPlane", openKey: "city" },
+    "/city/linenum": { key: "4", title: "各市航班数量 | PaperPlane", openKey: "city" },
+    "/corona/price": { key: "8", title: "新冠与机票价格变化 | PaperPlane", openKey: "corona" },
+    "/corona/linenum": { key: "9", title: "新冠与航班数量变化 | PaperPlane", openKey: "corona" },
+    "/trivial": { key: "10", title: "你知道吗？ | PaperPlane", openKey: "" },
+    "/flight/historyprice": { key: "11", title: "航班历史价格查询 | PaperPlane", openKey: "flight" },
+    "/flight/companyinfo": { key: "12", title: "航空公司相关信息 | PaperPlane", openKey: "flight" },
+    "/city/timeprice":{key:"13",title:"最低价格时间段分布 | PaperPlane",openKey:"city"},
+    "/flight/timecompanylinenum":{key:"14",title:"航空公司起降数时间段变化趋势 | PaperPlane",openKey:"flight"}
     
 
 }
@@ -42,7 +42,7 @@ const PageMenu = () => {
         } else {
             // 路由错误
             setSelectKey("0")
-            document.title = "内容不存在 | Abstergo "
+            document.title = "内容不存在 | PaperPlane "
         }
         // setSelectKey([location.pathname])
         // 仅在地址发生变化的时候执行该段代码

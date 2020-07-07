@@ -87,7 +87,7 @@ const MutipleCompanySelector = ({ selectorDataChange }) => {
     const children = [];
 
     company.map((element, index) => {
-        children.push(<Option key={index} value={element.comp_name}>{element.comp_name} {element.comp_code}</Option>)
+        children.push(<Option key={index} value={element.comp_name}>{`${element.comp_name} ${element.comp_code}`}</Option>)
     });
 
 
@@ -97,7 +97,17 @@ const MutipleCompanySelector = ({ selectorDataChange }) => {
     }
 
     return (
-        <Select mode="tags" style={{ width: '100%' }} placeholder="Tags Mode" onChange={handleChange}>
+        <Select 
+            mode="multiple" 
+            showSearch
+            style={{ minWidth: '100%' }} 
+            placeholder="选择航空公司" 
+            onChange={handleChange} 
+            // optionFilterProp="children"
+            // filterOption={(input, option) =>
+            //     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            // }
+        >
             {children}
         </Select>
     )
@@ -270,7 +280,11 @@ const TimeCompanyLineNum = () => {
             <div className="ab-container">
                 < CompanyInputTable onFormSubmit={onFormSubmitHandler} />
                 <Card title="各航空公司在不同时间段起降数图" extra={
-                    <Switch checkedChildren="dep" unCheckedChildren="arr" defaultChecked onChange={onSwitchChangeHandler} />
+                <div>
+                    <span>出发：</span>
+                    <Switch  defaultChecked onChange={onSwitchChangeHandler} style={{marginLeft:"10px"}}/>
+                </div>
+                    
                 }>
                     <CompanyLineNumByTimeChart data={data} direction={direction} />
                 </Card>

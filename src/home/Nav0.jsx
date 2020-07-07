@@ -99,7 +99,7 @@ class Header extends React.Component {
             {/* <img width="100%" src={abstergo_logo} alt="img" className="ab-logo-home"/> */}
             <div className="ab-home-logo-container">
               <img src={logo} alt="logo" className="ab-home-logo-img" />
-              <div className="ab-home-logo-text" >Abstergo</div>
+              <div className="ab-home-logo-text" >PaperPlane</div>
             </div>
           </TweenOne>
           {/* 手机模式下显示 */}

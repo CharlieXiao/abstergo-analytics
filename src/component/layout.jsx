@@ -47,7 +47,7 @@ const PageLayout = () => {
                 trigger={null} hidden={!useSider}>
                 <div className="ab-logo-container" onClick={() => { history.push("/") }}>
                     <img src={logo} alt="logo" className="ab-logo-img" />
-                    <div className="ab-logo-text" hidden={collapsed}>Abstergo</div>
+                    <div className="ab-logo-text" hidden={collapsed}>PaperPlane</div>
                 </div>
                 <PageMenu />
             </Sider>
@@ -56,7 +56,7 @@ const PageLayout = () => {
                 <Drawer visible={!collapsed} onClose={closeDrawer} width={256} placement={"left"} closable={false}>
                     <div className="ab-logo-container">
                         <img src={logo} alt="logo" className="ab-logo-img" />
-                        <div className="ab-logo-text" hidden={collapsed}>Abstergo</div>
+                        <div className="ab-logo-text" hidden={collapsed}>PaperPlane</div>
                     </div>
                     <PageMenu />
                 </Drawer>
@@ -75,7 +75,7 @@ const PageLayout = () => {
                     <PageRouter />
                 </Content>
                 <Footer className="ab-footer">
-                    Abstergo Analytics ©2020 | Powered by Ant Design
+                PaperPlane Analytics ©2020 | Powered by React
                 </Footer>
             </Layout>
         </Layout>

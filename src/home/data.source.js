@@ -1,4 +1,5 @@
 import React from 'react';
+import logo from '../img/plane-white.png'
 export const Nav00DataSource = {
   wrapper: { className: 'header0 home-page-wrapper' },
   page: { className: 'home-page' },
@@ -239,16 +240,16 @@ export const Content130DataSource = {
           'https://gw.alipayobjects.com/zos/rmsportal/PiqyziYmvbgAudYfhuBr.svg',
         className: 'title-image',
       },
-      { name: 'title', children: '多样化分析展示', className: 'title-h1' },
+      { name: 'title', children: '一站式机票数据分析平台', className: 'title-h1' },
       {
         name: 'content',
         children:
-          '特色展台包括 Ant Design 、AntV、AntG、Egg 等明星产品，更有产品专家',
+          '将机票数据分析融进一个平台，进行统一管控',
         className: 'title-content',
       },
       {
         name: 'content2',
-        children: '现场问诊，为你答疑解难',
+        children: '全面的数据分析、丰富的图表展示',
         className: 'title-content',
       },
     ],
@@ -271,7 +272,7 @@ export const Feature60DataSource = {
     },
     children: [
       {
-        title: { className: 'feature6-title-text', children: '服务指标' },
+        title: { className: 'feature6-title-text', children: '数据规模' },
         className: 'feature6-item',
         name: 'block0',
         children: [
@@ -282,11 +283,11 @@ export const Feature60DataSource = {
             name: 'child0',
             number: {
               className: 'feature6-number',
-              unit: { className: 'feature6-unit', children: '万' },
+              unit: { className: 'feature6-unit', children: '万次' },
               toText: true,
-              children: '116',
+              children: '1.83',
             },
-            children: { className: 'feature6-text', children: '模型数据' },
+            children: { className: 'feature6-text', children: '航班收录' },
           },
           {
             md: 8,
@@ -295,11 +296,11 @@ export const Feature60DataSource = {
             name: 'child1',
             number: {
               className: 'feature6-number',
-              unit: { className: 'feature6-unit', children: '亿' },
+              unit: { className: 'feature6-unit', children: '万条' },
               toText: true,
-              children: '1.17',
+              children: '216.31',
             },
-            children: { className: 'feature6-text', children: '模型迭代数量' },
+            children: { className: 'feature6-text', children: '价格信息' },
           },
           {
             md: 8,
@@ -308,11 +309,11 @@ export const Feature60DataSource = {
             name: 'child2',
             number: {
               className: 'feature6-number',
-              unit: { className: 'feature6-unit', children: '亿' },
+              unit: { className: 'feature6-unit', children: '个' },
               toText: true,
-              children: '2.10',
+              children: '39',
             },
-            children: { className: 'feature6-text', children: '训练样本数量' },
+            children: { className: 'feature6-text', children: '航空公司' },
           },
         ],
       },
@@ -365,6 +366,8 @@ export const Feature60DataSource = {
     ],
   },
 };
+
+
 export const Content00DataSource = {
   wrapper: { className: 'home-page-wrapper content0-wrapper' },
   page: { className: 'home-page content0' },
@@ -393,9 +396,9 @@ export const Content00DataSource = {
             {
               name: 'title',
               className: 'content0-block-title',
-              children: '一站式业务接入',
+              children: '数据采集',
             },
-            { name: 'content', children: '支付、结算、核算接入产品效率翻四倍' },
+            { name: 'content', children: '具备专有数据来源通道，数据多元且综合，支持多维度交叉深度分析' },
           ],
         },
       },
@@ -416,11 +419,11 @@ export const Content00DataSource = {
             {
               name: 'title',
               className: 'content0-block-title',
-              children: '一站式事中风险监控',
+              children: '数据分析',
             },
             {
               name: 'content',
-              children: '在所有需求配置环节事前风险控制和质量控制能力',
+              children: '提供快速查询和分析的能力，支持较大数量数据分析，提供可视化展示',
             },
           ],
         },
@@ -442,11 +445,11 @@ export const Content00DataSource = {
             {
               name: 'title',
               className: 'content0-block-title',
-              children: '一站式数据运营',
+              children: '辅助决策',
             },
             {
               name: 'content',
-              children: '沉淀产品接入效率和运营小二工作效率数据',
+              children: '自助化数据分析，可为用户科研学习和日常生活提供数据分析参考',
             },
           ],
         },
@@ -469,14 +472,14 @@ export const Footer10DataSource = {
         title: {
           className: 'logo',
           children:
-            'https://zos.alipayobjects.com/rmsportal/qqaimmXZVSwAhpL.svg',
+            <img src={logo} alt="paperplane" style={{height:"60px"}}/>,
         },
         childWrapper: {
           className: 'slogan',
           children: [
             {
               name: 'content0',
-              children: 'Animation specification and components of Ant Design.',
+              children: 'A website dedicated to flight analysis.',
             },
           ],
         },
@@ -490,7 +493,6 @@ export const Footer10DataSource = {
         childWrapper: {
           children: [
             { name: 'link0', href: '#', children: '产品更新记录' },
-            { name: 'link1', href: '#', children: 'API文档' },
             { name: 'link2', href: '#', children: '快速入门' },
             { name: 'link3', href: '#', children: '参考指南' },
           ],
@@ -517,8 +519,8 @@ export const Footer10DataSource = {
         title: { children: '资源' },
         childWrapper: {
           children: [
-            { href: '#', name: 'link0', children: 'Ant Design' },
-            { href: '#', name: 'link1', children: 'Ant Motion' },
+            { href: '#', name: 'link0', children: 'React' },
+            { href: '#', name: 'link1', children: 'Spring Boot' },
           ],
         },
       },
@@ -530,8 +532,7 @@ export const Footer10DataSource = {
     className: 'copyright',
     children: (
       <span>
-        ©2018 by <a href="https://motion.ant.design">Ant Motion</a> All Rights
-        Reserved
+        ©2020 by PaperPlane Analytics All Rights Reserved
       </span>
     ),
   },

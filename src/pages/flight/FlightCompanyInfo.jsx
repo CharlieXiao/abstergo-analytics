@@ -257,7 +257,7 @@ const CompanyLoveCountriesChart = ({ data }) => {
     });
 
     return (
-        <Chart data={dv.rows} autoFit height={500}>
+        <Chart data={dv.rows.slice(dv.rows.length-15,dv.rows.length)} autoFit height={500}>
             <Coordinate transpose />
             <Interval position="city*到达总航班数" />
             <Tooltip marker={false} />
@@ -269,12 +269,15 @@ const CompanyLoveCountriesChart = ({ data }) => {
 //飞机详细介绍卡片
 const PlaneCard = ({ content }) => {
     // console.log(content);
+    if(content.introduction === ""){
+        return <div></div>
+    }
     return (
         <>
             <Card title={content.name}>
-                <p>{content.craftSize===""?"":"机型大小:  "+content.craftSize}</p>
-                <p>{content.craftLoad===""?"":"载客量:  "+content.craftLoad+"人"}</p>
-                <p>{content.introduction===""?"":"介绍:  "+content.introduction}</p>
+                <p><span style={{fontWeight:"bold",marginRight:"10px"}}>机型大小: </span>{content.craftSize}</p>
+                <p><span style={{fontWeight:"bold",marginRight:"10px"}}>载客量: </span>{content.craftLoad}<span>人</span></p>
+                <p style={{lineHeight:"30px"}}><span style={{fontWeight:"bold",marginRight:"10px"}}>介绍:  </span>{content.introduction}</p>
             </Card>
         </>
     )
@@ -503,7 +506,7 @@ const FlightCompanyInfo = () => {
                         </Card>
                     </Col>
                     <Col xs={24} sm={24} md={24} lg={12} xl={10} xxl={9} >
-                        <Card title={selectCompanyName + "持有飞机公司占比"}>
+                        <Card title={selectCompanyName + "飞机制造商占比"}>
                             <PlaneCompanyPieChart data={planeCompanies} onClick={companyPieClickHandler} />
                         </Card>
                     </Col>
