@@ -100,6 +100,7 @@ const FlightHistoryInputTable = ({ onFormSubmit }) => {
         form.setFieldsValue({
             dep_city: value,
         });
+        form.resetFields(["flight"]); //清除航班号
         form.validateFields(["dep_city"]);
 
         //每次输入完城市后，判断输入是否完成，如果完成就查询航班数据
@@ -118,6 +119,7 @@ const FlightHistoryInputTable = ({ onFormSubmit }) => {
         form.setFieldsValue({
             arr_city: value,
         });
+        form.resetFields(["flight"]);
         // 数据输入完成后验证数据
         form.validateFields(["arr_city"]);
         //每次输入完城市后，判断输入是否完成，如果完成就查询航班数据
@@ -274,6 +276,12 @@ const PriceSliderChart = ({ data }) => {
 
 const AntPriceLineChart = ({ data }) => {
     const config = {
+        meta: {
+            price: {
+                alias: '价格',
+                formatter: (v) => { return `￥${v}` }
+            }
+        },
         title: {
             visible: false,
             text: '配置折线数据点样式',

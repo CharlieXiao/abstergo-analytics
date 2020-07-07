@@ -131,6 +131,14 @@ const PlaneCompanyPieChart = ({ data, onClick }) => {
     //   ];
 
     console.log(data);
+    //将英文字段的data转换为中文字段
+    let newData = [];
+    for(let index in data){
+        newData.push({飞机公司:data[index].item,起降数:data[index].count,percent:data[index].percent});
+    }
+    data = newData;
+    console.log(data);
+    
 
     const cols = {
         percent: {
@@ -144,7 +152,7 @@ const PlaneCompanyPieChart = ({ data, onClick }) => {
     return (
         <Chart height={400} data={data} scale={cols} autoFit
             onIntervalClick={ev => {
-                let planeCompany = ev.data.data.item;
+                let planeCompany = ev.data.data.飞机公司;
                 //根据点击的公司画下一个饼图
                 onClick(planeCompany);
             }}
@@ -153,19 +161,19 @@ const PlaneCompanyPieChart = ({ data, onClick }) => {
             <Tooltip showTitle={false} />
             <Axis visible={false} />
             <Interval
-                position="count"
+                position="起降数"
                 adjust="stack"
-                color="item"
+                color="飞机公司"
                 style={{
                     lineWidth: 1,
                     stroke: '#fff',
                 }}
-                label={['count', {
+                label={['起降数', {
                     content: (data) => {
-                        return `${data.item}: ${Math.floor(data.percent * 100)}%`;
+                        return `${data.飞机公司}: ${Math.floor(data.percent * 100)}%`;
                     },
                 }]}
-                tooltip={{ fields: ['item', 'count'] }}
+                tooltip={{ fields: ['飞机公司', '起降数'] }}
             />
             <Interaction type='element-single-selected' />
 
@@ -182,7 +190,13 @@ const PlaneTypesPieChart = ({ data, onClick }) => {
     //     { item: '事例四', count: 13, percent: 0.13 },
     //     { item: '事例五', count: 9, percent: 0.09 },
     //   ];
-    console.log(data);
+
+
+    let newData = [];
+    for(let index in data){
+        newData.push({机型:data[index].item,起降数:data[index].count,percent:data[index].percent});
+    }
+    data = newData;
 
     const cols = {
         percent: {
@@ -196,7 +210,7 @@ const PlaneTypesPieChart = ({ data, onClick }) => {
     return (
         <Chart height={400} data={data} scale={cols} autoFit
             onIntervalClick={ev => {
-                let plane = ev.data.data.item;
+                let plane = ev.data.data.机型;
                 onClick(plane);
             }}
         >
@@ -204,23 +218,23 @@ const PlaneTypesPieChart = ({ data, onClick }) => {
             <Tooltip showTitle={false} />
             <Axis visible={false} />
             <Interval
-                position="count"
+                position="起降数"
                 adjust="stack"
-                color="item"
+                color="机型"
                 style={{
                     lineWidth: 1,
                     stroke: '#fff',
                 }}
-                label={['count', {
+                label={['起降数', {
                     content: (data) => {
                         if (data.percent < 0.05) {
                             return "";
                         }
                         else
-                            return `${data.item}: ${Math.floor(data.percent * 100)}%`;
+                            return `${data.机型}: ${Math.floor(data.percent * 100)}%`;
                     },
                 }]}
-                tooltip={{ fields: ['item', 'count'] }}
+                tooltip={{ fields: ['机型', '起降数']}}
             />
             <Interaction type='element-single-selected' />
         </Chart>
@@ -258,7 +272,9 @@ const PlaneCard = ({ content }) => {
     return (
         <>
             <Card title={content.name}>
-                <p>{content.introduction}</p>
+                <p>{content.craftSize===""?"":"机型大小:  "+content.craftSize}</p>
+                <p>{content.craftLoad===""?"":"载客量:  "+content.craftLoad+"人"}</p>
+                <p>{content.introduction===""?"":"介绍:  "+content.introduction}</p>
             </Card>
         </>
     )
@@ -270,7 +286,7 @@ const FlightCompanyInfo = () => {
     //const [planeTypeData, setPlaneTypeData] = useState([]); //已废弃
     const [loveCityData, setLoveCityData] = useState([]);
     const [planeInfos, setPlaneInfos] = useState([]);
-    const [planeIntroduction, setPlaneIntroduction] = useState({ name: "", introduction: "" });
+    const [planeIntroduction, setPlaneIntroduction] = useState({ name: "", introduction: "" ,craftSize:"",craftLoad:""});
     //const [chartName, setChartName] = useState("");
 
     const [planeCompaniesAndTypes, setPlaneCompaniesAndTypes] = useState([]);
@@ -286,6 +302,7 @@ const FlightCompanyInfo = () => {
     const getAndSetPlaneInfos = () => {
         //发送axios请求获取所有机型以及介绍
         axios.get(host + "/plane/getPlanesIntroductions").then((res) => {
+            
             if (res.data.success) {
                 //收到数据的形式是{craftFamily:"波音747",craftDesc:"xxxxx"}
                 let tmpInfos = res.data.data;
@@ -294,7 +311,7 @@ const FlightCompanyInfo = () => {
                 let infos = [];
 
                 for (let index in tmpInfos) {
-                    infos.push({ name: tmpInfos[index].craftFamily, introduction: tmpInfos[index].craftDesc });
+                    infos.push({ name: tmpInfos[index].craftFamily, introduction: tmpInfos[index].craftDesc,craftLoad:tmpInfos[index].craftLoad,craftSize:tmpInfos[index].craftSize});
                 }
                 setPlaneInfos(infos);
             } else {
@@ -424,7 +441,7 @@ const FlightCompanyInfo = () => {
         setPlanesInPlaneCompanies(data[0].planes);
 
         //设置卡片
-        setPlaneIntroduction({ name: "点击饼图查看飞机详细信息", introduction: "" });
+        setPlaneIntroduction({ name: "点击饼图查看飞机详细信息", introduction: "" ,craftSize:"",craftLoad:""});
 
 
     }
@@ -445,7 +462,7 @@ const FlightCompanyInfo = () => {
 
         for (let index in planeInfos) {
             if (planeInfos[index].name === planeName) {
-                setPlaneIntroduction({ name: planeInfos[index].name, introduction: planeInfos[index].introduction });
+                setPlaneIntroduction({ name: planeInfos[index].name, introduction: planeInfos[index].introduction,craftSize:planeInfos[index].craftSize,craftLoad:planeInfos[index].craftLoad });
                 return;
             }
         }

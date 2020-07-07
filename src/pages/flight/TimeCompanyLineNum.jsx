@@ -65,6 +65,7 @@ const CompanyLineNumByTimeChart = ({ data,direction}) => {
                 visible: true,
                 autoHide: true,
             },
+            formatter: (v) => `${v}:00`
         },
         yAxis: { formatter: (v) => direction==="dep"?`起飞数${(v)} `:`降落数${(v)} `
             },
@@ -256,7 +257,7 @@ const TimeCompanyLineNum = () => {
     }
 
     useEffect(() => {
-        let companyList = [];
+        let companyList = ["南方航空","东方航空","中国国际航空"];
         getAndSetData(companyList);
         setDirection("dep");
     }, [])
