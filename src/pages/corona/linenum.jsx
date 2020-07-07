@@ -386,7 +386,7 @@ const CoronaLineNumber = () => {
     useEffect(() => {
         setLoading(true)
         console.log("get data")
-        axios.get(host + "/wdnmd").then((res) => {
+        axios.get(host + "/corona/linenum").then((res) => {
             console.log(res)
             if (res.data.success) {
                 console.log(res.data.data)

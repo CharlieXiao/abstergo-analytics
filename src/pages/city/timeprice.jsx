@@ -41,28 +41,6 @@ const TimePrice = () => {
                 console.log(response)
                 setArrData(response.data.data.arr)
                 setDepData(response.data.data.dep)
-                // const res = {
-                //     arr: [
-                //         { city: '北京', clock: '01.23', price: 809 },
-                //         { city: '上海', clock: '03.24', price: 345 },
-                //         { city: '广州', clock: '05.24', price: 234 },
-                //         { city: '深圳', clock: '07.24', price: 453 },
-                //         { city: '厦门', clock: '09.24', price: 1231 },
-                //         { city: '重庆', clock: '11.24', price: 321 },
-                //         { city: '天津', clock: '13.24', price: 468 }
-                //     ],
-                //     dep: [
-                //         { city: '北京', clock: '01.25', price: 123 },
-                //         { city: '上海', clock: '03.25', price: 456 },
-                //         { city: '广州', clock: '05.25', price: 789 },
-                //         { city: '深圳', clock: '07.25', price: 910 },
-                //         { city: '厦门', clock: '09.25', price: 1234 },
-                //         { city: '重庆', clock: '11.25', price: 2134 },
-                //         { city: '天津', clock: '13.25', price: 678 }
-                //     ]
-                // }
-                // setDepData(res.arr)
-                // setArrData(res.dep)
             })
             .catch((error) => {
                 console.log('fetch data failed', error);
@@ -86,6 +64,7 @@ const TimePrice = () => {
         },
         xField: 'clock',
         yField: 'price',
+        pointSize:5,
         // colorField:'city',
         xAxis: {
             tickCount: 12,

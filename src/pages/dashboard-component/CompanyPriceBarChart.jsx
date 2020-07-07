@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import DataSet from '@antv/data-set'
 import { Chart, Interval, Tooltip, Interaction } from 'bizcharts'
 import { Card } from 'antd'
 import {host} from '../../config'
@@ -26,7 +25,12 @@ const CompanyPriceBarChart = () => {
             <Chart height={400} data={data} autoFit scale={{ avg_price: { min: 700 } }}>
                 {/* 设置成条形图 */}
                 {/* <Coordinate transpose /> */}
-                <Interval position="company*avg_price" />
+                <Interval position="company*avg_price" tooltip={{fields:['avg_price'],callback:(v)=>{
+                    return {
+                        name:'平均价格',
+                        value:`￥${v}`
+                    }
+                }}} />
                 <Tooltip showMarkers={false} />
                 <Interaction type="active-region" />
             </Chart>

@@ -46,34 +46,37 @@ const CompanyLineNumRoseChart = () => {
             <Chart height={300} data={data} autoFit>
                 <Coordinate
                     type="polar"
+                    // innerRadius={0.05}
                     // startAngle={Math.PI} // 起始角度
                     // endAngle={Math.PI * (3 / 2)} // 结束角度
                 />
-                <Axis name="company" grid={{
-                    line: {
-                        type: 'circle',
-                    },
-                    closed: false,
-                }} />
-                <Axis name="airlinesCount" label={null} />
+                <Axis name="company" 
+                    grid={{line: {type: 'circle',}, closed: false,}} 
+                    visible={true}    
+                />
+                <Axis name="airlinesCount" visible={false} />
                 <Tooltip showTitle={false} />
                 <Legend visible={false}/>
                 <Interval
                     position="company*airlinesCount"
-                    adjust="stack"
-                    color={['company', '#8bc34a-#dcedc8']}
+                    adjust={{
+                        type:"stack"
+                    }}
+                    color={['company', 'rgb(252,143,72)-rgb(255,215,135)']}
                     element-highlight
                     style={{
                         lineWidth: 1,
                         stroke: '#fff',
                     }}
-                    label={['lines', {
-                        offset: -15,
-                        style: {
-                            textAlign: 'center',
-                            fill: '#000',
-                        },
-                    }]}
+                    tooltip={{
+                        fields:['airlinesCount'],
+                        callback:(v)=>{
+                            return {
+                                name:'总航班数',
+                                value:v
+                            }
+                        }
+                    }}
                 />
             </Chart>
         </Card>

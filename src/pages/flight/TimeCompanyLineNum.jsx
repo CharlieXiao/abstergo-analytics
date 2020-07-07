@@ -66,7 +66,7 @@ const CompanyLineNumByTimeChart = ({ data,direction}) => {
                 autoHide: true,
             },
         },
-        yAxis: { formatter: (v) => direction=="dep"?`起飞数${(v)} `:`降落数${(v)} `
+        yAxis: { formatter: (v) => direction==="dep"?`起飞数${(v)} `:`降落数${(v)} `
             },
         legend: { visible: false },
         label: {

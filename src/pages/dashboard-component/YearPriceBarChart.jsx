@@ -1,48 +1,24 @@
 import React, { useState, useEffect } from 'react'
-import DataSet from '@antv/data-set'
 import { Chart, Interval, Tooltip, Coordinate } from 'bizcharts'
-import { Card } from 'antd'
+import { Card,Switch } from 'antd'
 import {host} from '../../config'
 import axios from 'axios'
 
 const YearPriceBarChart = () => {
     const [data, setData] = useState([])
     useEffect(() => {
-        // setTimeout(() => {
-        //     const res =  [
-        //         {city: "北京",price: 131744},
-        //         {city: "上海",price: 104970},
-        //         {city: "广州",price: 29034},
-        //         {city: "深圳",price: 23489},
-        //         {city: "厦门",price: 18203}
-        //     ];
-        //     const ds = new DataSet();
-        //     const dv = ds.createView().source(res);
-        //     dv.source(res).transform({
-        //         type: "sort",
-        //         callback(a, b) {
-        //             // 排序依据，和原生js的排序callback一致
-        //             return a.price - b.price;
-        //         }
-        //     });
-        //     setData(dv.rows)
-        // }, 1000)
+        asyncFetch("dep")
+    }, [])
+
+    const asyncFetch = (type)=>{
         axios.get(host+"/flight/getAllyearAvgPrice",{params:{
-            type:"dep"
+            type:type
         }}).then((res)=>{
             if(res.data.success){
-                const response = res.data.data
+                let response = res.data.data
                 console.log(res.data.data)
-                const ds = new DataSet();
-                const dv = ds.createView().source(response);
-                dv.source(response).transform({
-                    type: "sort",
-                    callback(a, b) {
-                        // 排序依据，和原生js的排序callback一致
-                        return a.price - b.price;
-                    }
-                });
-                setData(dv.rows)
+                response = response.sort((a,b)=>a.price - b.price)
+                setData(response)
             }else{
                 console.log(res.data.msg)
             }
@@ -50,14 +26,34 @@ const YearPriceBarChart = () => {
             console.log(e)
             alert(e)
         })
-    }, [])
+    }
+
+    const onSwitchChange = (checked)=>{
+        console.log("change...")
+        if(checked){
+            asyncFetch("dep")
+        }else{
+            asyncFetch("arr")
+        }
+
+    }
 
     return (
-        <Card title="全年各市航班价格平均值">
+    <Card title="全年各市航班价格平均值" extra={
+        <div>
+            <span>从该城市出发？</span>
+            <Switch style={{ marginLeft: "24px" }} onChange={onSwitchChange} defaultChecked />
+        </div>
+    }>
             <Chart height={300} data={data} autoFit scale={{price:{min:800}}}>
                 {/* 设置成条形图 */}
                 <Coordinate transpose />
-                <Interval position="city*price" />
+                <Interval position="city*price" tooltip={{fields:['price'],callback:(v)=>{
+                    return {
+                        name:'平均价格',
+                        value:`￥${v}`
+                    }
+                }}} />
                 <Tooltip showMarkers={false} />
             </Chart>
         </Card>

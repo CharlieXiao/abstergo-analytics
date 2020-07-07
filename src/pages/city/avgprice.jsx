@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import PageHeader from '../../component/pageheader'
-import { Skeleton, Row, Col, Form, Button, DatePicker, Card } from 'antd'
+import { Skeleton, Row, Col, DatePicker, Card, Table, Switch } from 'antd'
 import { Chart, Coordinate, Interval, Tooltip } from "bizcharts";
 import locale from "antd/es/date-picker/locale/zh_CN";
-import DataSet from "@antv/data-set";
 import moment from 'moment'
 import axios from 'axios'
 import { host } from '../../config'
+import { Bar } from '@ant-design/charts';
 
 const routes = [
     {
@@ -21,7 +21,7 @@ const routes = [
         }, {
             path: '/city/linenum',
             title: '各市航班数量'
-        },{
+        }, {
             path: '/city/timeprice',
             title: '最低价格时间段分布'
         }]
@@ -31,12 +31,30 @@ const routes = [
     },
 ];
 
+const columns = [
+    {
+        title: '城市',
+        dataIndex: 'city',
+        key: 'city',
+    },
+    {
+        title: '价格',
+        dataIndex: 'price',
+        key: 'price',
+        render:(value)=> `￥${value}` ,
+        sorter: (a, b) => a.price - b.price,
+        // 禁止排序恢复到默认状态
+        sortDirections: ['descend', 'ascend', 'descend'],
+    },
+];
 
 const CityAvgPrice = () => {
 
     const [data, setData] = useState([])
+    const [chartData, setChartData] = useState([])
     const [loading, setLoading] = useState(true)
     const [chartName, setChartName] = useState("")
+    const [min, setMin] = useState(0)
     useEffect(() => {
         onDatePickerChange(new moment("201907", "YYYYMM"))
     }, [])
@@ -50,41 +68,36 @@ const CityAvgPrice = () => {
             }
         }).then((res) => {
             if (res.data.success) {
-                const resData = res.data.data.arr
-                console.log(resData)
-                setData(resData)
-                const ds = new DataSet();
-                const dv = ds.createView().source(resData);
-                dv.source(resData).transform({
-                    type: "sort",
-                    callback(a, b) {
-                        // 排序依据，和原生js的排序callback一致
-                        return a.price - b.price;
-                    }
-                });
-                setData(dv.rows.slice(0,15))
+                let depData = res.data.data.dep
+                depData = depData.sort((a, b) => a.price - b.price)
+                setData(res.data.data)
+                setChartData(depData)
+                setMin(Math.floor(depData[0].price / 100) * 100)
                 setLoading(false)
             }
         }).catch((e) => {
             setLoading(false)
             alert(e)
         })
-        // setTimeout(() => {
-        //     setLoading(false)
-        //     const res = [
-        //         {city: "北京",price: 131744},
-        //         {city: "上海",price: 104970},
-        //         {city: "广州",price: 29034},
-        //         {city: "深圳",price: 23489},
-        //         {city: "厦门",price: 18203},
-        //         {city: "珠海",price: 131744},
-        //         {city: "天津",price: 104970},
-        //         {city: "重庆",price: 29034},
-        //         {city: "杭州",price: 23489},
-        //         {city: "海口",price: 18203}
-        //     ];
+    }
 
-        // }, 1000)
+    const onSwitchChange = (checked) => {
+        if (checked) {
+            console.log(data)
+            let depData = data.dep
+            depData = depData.sort((a, b) => a.price - b.price)
+            console.log(depData)
+            setChartData(depData)
+            setMin(Math.floor(depData[0].price / 100) * 100)
+        } else {
+            console.log(data)
+            let arrData = data.arr
+            arrData = arrData.sort((a, b) => a.price - b.price)
+            console.log(arrData)
+            setChartData(arrData)
+            setMin(Math.floor(arrData[0].price / 100) * 100)
+        }
+        // setDir(checked)
     }
 
     return (
@@ -92,19 +105,30 @@ const CityAvgPrice = () => {
             <PageHeader title="平均机票价格" routes={routes} />
             <div className="ab-container">
                 <Card title={chartName} bordered={false}
-                    extra={<DatePicker picker="month" locale={locale} onSelect={onDatePickerChange} defaultValue={new moment("201907", "YYYYMM")} allowClear={false} />} >
+                    extra={
+                        <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                            <span>从该城市出发？</span>
+                            <Switch style={{ margin: "0 24px 0 24px" }} onChange={onSwitchChange} defaultChecked />
+                            <DatePicker picker="month" locale={locale} onSelect={onDatePickerChange} defaultValue={new moment("201907", "YYYYMM")} allowClear={false} />
+                        </div>}
+                >
                     <Skeleton loading={loading} active>
                         {/* <div className="ab-chart-title">{chartName}</div> */}
-                        <Row gutter={24}>
+                        <Row gutter={[24, 24]}>
                             <Col xxl={16} xl={16} lg={16} md={24} sm={24} xs={24}>
-                                <Chart height={600} data={data} autoFit scale={{price:{min:300}}}>
+                                <Chart height={600} data={chartData.slice(0, 15)} autoFit scale={{ price: { min: min } }}>
                                     <Coordinate transpose />
-                                    <Interval position="city*price" style={{ cursor: "pointer" }} />
+                                    <Interval position="city*price" style={{ cursor: "pointer" }} tooltip={{fields:['price'],callback:(value)=>{
+                                        return {
+                                            name:'价格',
+                                            value:`￥${value}`
+                                        }
+                                    }}} />
                                     <Tooltip showMarkers={false} />
                                 </Chart>
                             </Col>
                             <Col xxl={8} xl={8} lg={8} md={24} sm={24} xs={24}>
-                                this is detail
+                                <Table columns={columns} dataSource={chartData} rowKey="city" />
                             </Col>
                         </Row>
                     </Skeleton>

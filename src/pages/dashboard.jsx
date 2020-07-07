@@ -18,7 +18,7 @@ const Dashboard = (props) => {
                 <Col xs={24} sm={24} md={16} lg={16} xl={8} xxl={8}>
                     <CompanyLineNumRoseChart />
                 </Col>
-                <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
+                <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={8}>
                     <LineNumCalendar />
                 </Col>
                 <Col xs={24} sm={24} md={24} lg={12} xl={8} xxl={24}>

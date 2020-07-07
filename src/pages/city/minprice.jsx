@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react'
 import PageHeader from '../../component/pageheader'
 // import CityDayForm from '../../component/CityDayForm'
 import { Skeleton, Card } from 'antd'
-import { Chart, Line, Point, Tooltip } from 'bizcharts';
+import { Chart, Line, Point, Tooltip, Slider } from 'bizcharts';
 import { Form, Button, DatePicker, Row, Col } from "antd";
 import CitySelector from "../../component/citySelector";
 // 导入地区
 import locale from "antd/es/date-picker/locale/zh_CN";
 import { getCityByCode } from '../../city'
 import axios from 'axios'
-import {host} from '../../config'
+import { host } from '../../config'
 
 const routes = [
   {
@@ -24,7 +24,7 @@ const routes = [
     }, {
       path: '/city/linenum',
       title: '各市航班数量'
-    },{
+    }, {
       path: '/city/timeprice',
       title: '最低价格时间段分布'
     }]
@@ -81,7 +81,7 @@ const CityDayForm = ({ onFormSubmit }) => {
     // 自定义验证规则
     ({ getFieldValue }) => ({
       validator(rule, value) {
-        if ( !value || (getFieldValue("arr_city") !== getFieldValue("dep_city") )) {
+        if (!value || (getFieldValue("arr_city") !== getFieldValue("dep_city"))) {
           return Promise.resolve();
         }
         return Promise.reject("出发城市和目的城市不能相同");
@@ -169,19 +169,19 @@ const CityMinPrice = () => {
 
   const onFormSubmit = (queryData) => {
     console.log(queryData)
-    const title = `${getCityByCode(queryData.dep)} - ${getCityByCode(queryData.arr)} 最低价格折线图`
+    const title = `${getCityByCode(queryData.dep)} - ${getCityByCode(queryData.arr)} 最低机票价格折线图`
     setLoading(true)
-    axios.get(host+'/city/getCityMinPriList',{params:queryData}).then((res)=>{
+    axios.get(host + '/city/getCityMinPriList', { params: queryData }).then((res) => {
       console.log(res)
-      if(res.data.success){
+      if (res.data.success) {
         setData(res.data.data)
         setLoading(false)
         setChartName(title)
-      }else{
+      } else {
         setLoading(false)
         alert("暂无数据")
       }
-    }).catch((e)=>{
+    }).catch((e) => {
       alert(e)
       console.log(e)
       setLoading(false)
@@ -204,9 +204,14 @@ const CityMinPrice = () => {
               padding={[10, 20, 50, 40]}
             >
               <Line position="date*price" shape="smooth" tooltip={false} />
-              <Point position="date*price" size={5} tooltip={{ fields: ['price', 'line'] }} style={{ cursor: "pointer" }} />
+              <Point position="date*price" size={5} tooltip={{
+                fields: ['price', 'line'], callback: (price, line) => {
+                  return { name: line, value: `￥${price}` }
+                }
+              }} style={{ cursor: "pointer" }} />
               {/* 对Tooltip详细设置 */}
               <Tooltip showCrosshairs={true} />
+              <Slider />
             </Chart>
           </Skeleton>
         </Card>

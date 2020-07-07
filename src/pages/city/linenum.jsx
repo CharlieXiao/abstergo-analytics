@@ -164,7 +164,7 @@ const option = {
             areaColor: '#fff',
             borderColor: '#fff',
             shadowColor:'rgba(0,0,0,0.2)',
-            shadowBlur:20
+            shadowBlur:10
             // areaColor: '#3a7fd5',
             // borderColor: '#0a53e9',//线
             // shadowColor: '#092f8f',//外发光
