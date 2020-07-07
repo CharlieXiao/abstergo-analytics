@@ -276,6 +276,12 @@ const PriceSliderChart = ({ data }) => {
 
 const AntPriceLineChart = ({ data }) => {
     const config = {
+        meta: {
+            price: {
+                alias: '价格',
+                formatter: (v) => { return `￥${v}` }
+            }
+        },
         title: {
             visible: false,
             text: '配置折线数据点样式',

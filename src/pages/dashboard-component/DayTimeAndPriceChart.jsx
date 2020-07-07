@@ -55,10 +55,11 @@ const DayTimeAndPriceChart = () => {
     data: dayTimePrice,
     xField: '时间',
     yField: '价格',
-    xAxis: { label: { formatter: (v) => `${v}:00` } },
+    xAxis: {  formatter: (v) => `${v}:00`  },
     yAxis:{
       min:500,
-      max:1600
+      max:1600,
+      formatter: (v) => `￥${v}`
     },
     label: {
       visible: true,
