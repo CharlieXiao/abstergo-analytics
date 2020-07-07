@@ -103,7 +103,7 @@ export const Nav00DataSource = {
           },
         ],
       },
-     
+
       {
         name: 'item2',
         className: 'header0-item',
@@ -472,7 +472,10 @@ export const Footer10DataSource = {
         title: {
           className: 'logo',
           children:
-            <img src={logo} alt="paperplane" style={{height:"60px"}}/>,
+            <div className="ab-home-logo-container">
+              <img src={logo} alt="logo" className="ab-home-logo-img" />
+              <div className="ab-home-logo-text" >PaperPlane</div>
+            </div>,
         },
         childWrapper: {
           className: 'slogan',
