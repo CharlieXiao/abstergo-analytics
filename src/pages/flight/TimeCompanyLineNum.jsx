@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { Skeleton, Card, Select, Row, Col, Form, Button,Switch } from 'antd'
+import { Card, Select, Row, Col, Form, Button, Switch } from 'antd'
 import { Line } from '@ant-design/charts';
 import PageHeader from '../../component/pageheader'
 import axios from 'axios';
 import { host } from "../../config"
 
-import { company, getCodeByCompanyName, getCompanyNameByCode } from "../../city"
+import { company } from "../../city"
 
 const { Option } = Select;
 
@@ -38,7 +38,7 @@ const routes = [
  * 多折线动画图
  * @param {传入的画图的data}} param0 
  */
-const CompanyLineNumByTimeChart = ({ data,direction}) => {
+const CompanyLineNumByTimeChart = ({ data, direction }) => {
 
     console.log(data);
 
@@ -67,8 +67,9 @@ const CompanyLineNumByTimeChart = ({ data,direction}) => {
             },
             formatter: (v) => `${v}:00`
         },
-        yAxis: { formatter: (v) => direction==="dep"?`起飞数${(v)} `:`降落数${(v)} `
-            },
+        yAxis: {
+            formatter: (v) => direction === "dep" ? `起飞数${(v)} ` : `降落数${(v)} `
+        },
         legend: { visible: false },
         label: {
             visible: true,
@@ -76,7 +77,7 @@ const CompanyLineNumByTimeChart = ({ data,direction}) => {
         },
         animation: { appear: { animation: 'clipingWithData' } },
         smooth: true,
-        height:400,
+        height: 400,
     };
     return <Line {...config} />;
 
@@ -84,36 +85,28 @@ const CompanyLineNumByTimeChart = ({ data,direction}) => {
 
 //多航空公司选择器
 const MutipleCompanySelector = ({ selectorDataChange }) => {
-    const children = [];
-
-    company.map((element, index) => {
-        children.push(<Option key={index} value={element.comp_name}>{`${element.comp_name} ${element.comp_code}`}</Option>)
-    });
-
 
     function handleChange(value) {
         selectorDataChange(value);
-        //console.log(`selected ${value}`);
     }
 
     return (
-        <Select 
-            mode="multiple" 
+        <Select
+            mode="multiple"
             showSearch
-            style={{ minWidth: '100%' }} 
-            placeholder="选择航空公司" 
-            onChange={handleChange} 
-            // optionFilterProp="children"
-            // filterOption={(input, option) =>
-            //     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-            // }
+            style={{ minWidth: '100%' }}
+            placeholder="选择航空公司"
+            onChange={handleChange}
         >
-            {children}
+            {
+                company.map((element, index) => {
+                    return <Option key={index} value={element.comp_name}>{`${element.comp_name} ${element.comp_code}`}</Option>
+                })
+            }
         </Select>
     )
 
 }
-
 
 
 //表单
@@ -121,18 +114,18 @@ const MutipleCompanySelector = ({ selectorDataChange }) => {
 const CompanyInputTable = ({ onFormSubmit }) => {
     // 获取表单数据信息
     const [form] = Form.useForm(); //没啥用
-   // const [companyList, setCompanyList] = useState([]);
+    // const [companyList, setCompanyList] = useState([]);
 
 
     // 数据变化回调函数
     const onCompanyChange = (value) => {
-        
+
         form.setFieldsValue({
-            companyList:value
+            companyList: value
         })
 
         //每当选择器选择的内容变化，重新设置companylist,value是一个数组
-       // setCompanyList(value);
+        // setCompanyList(value);
     }
 
     const onFinish = (values) => {
@@ -160,10 +153,10 @@ const CompanyInputTable = ({ onFormSubmit }) => {
                 >
                     <Row gutter={[16, 8]}>
                         <Col xs={12} sm={12} md={12} lg={12} xl={8} xxl={6}>
-                            <Form.Item name="companyList"  label="航空公司" rules={[{ required: true, message: "请选择航空公司" }]}>
-                                <MutipleCompanySelector selectorDataChange={onCompanyChange}  />
+                            <Form.Item name="companyList" label="航空公司" rules={[{ required: true, message: "请选择航空公司" }]}>
+                                <MutipleCompanySelector selectorDataChange={onCompanyChange} />
                             </Form.Item>
-                            
+
                         </Col>
 
                         <Col xs={24} sm={12} md={12} lg={12} xl={24} xxl={6}>
@@ -187,8 +180,8 @@ const CompanyInputTable = ({ onFormSubmit }) => {
 const TimeCompanyLineNum = () => {
 
     const [data, setData] = useState([]);
-    const [rawdata,setRawdata] = useState("");
-    const [direction,setDirection] = useState("");
+    const [rawdata, setRawdata] = useState("");
+    const [direction, setDirection] = useState("");
 
     /**
      * 获取并设置data
@@ -250,24 +243,24 @@ const TimeCompanyLineNum = () => {
      */
     const onFormSubmitHandler = (companyList) => {
         console.log(companyList);
-        
+
         getAndSetData(companyList);
     }
 
-    const onSwitchChangeHandler = ()=>{
+    const onSwitchChangeHandler = () => {
         console.log(rawdata);
-        
-       if(direction === "dep"){
-           setDirection("arr");
-           setData(rawdata.arr);
-       }else{
-           setDirection("dep")
-           setData(rawdata.dep);
-       }
+
+        if (direction === "dep") {
+            setDirection("arr");
+            setData(rawdata.arr);
+        } else {
+            setDirection("dep")
+            setData(rawdata.dep);
+        }
     }
 
     useEffect(() => {
-        let companyList = ["南方航空","东方航空","中国国际航空"];
+        let companyList = ["南方航空", "东方航空", "中国国际航空"];
         getAndSetData(companyList);
         setDirection("dep");
     }, [])
@@ -280,11 +273,11 @@ const TimeCompanyLineNum = () => {
             <div className="ab-container">
                 < CompanyInputTable onFormSubmit={onFormSubmitHandler} />
                 <Card title="各航空公司在不同时间段起降数图" extra={
-                <div>
-                    <span>出发：</span>
-                    <Switch  defaultChecked onChange={onSwitchChangeHandler} style={{marginLeft:"10px"}}/>
-                </div>
-                    
+                    <div>
+                        <span>出发：</span>
+                        <Switch defaultChecked onChange={onSwitchChangeHandler} style={{ marginLeft: "10px" }} />
+                    </div>
+
                 }>
                     <CompanyLineNumByTimeChart data={data} direction={direction} />
                 </Card>

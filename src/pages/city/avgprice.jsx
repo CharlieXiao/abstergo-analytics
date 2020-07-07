@@ -6,7 +6,6 @@ import locale from "antd/es/date-picker/locale/zh_CN";
 import moment from 'moment'
 import axios from 'axios'
 import { host } from '../../config'
-import { Bar } from '@ant-design/charts';
 
 const routes = [
     {

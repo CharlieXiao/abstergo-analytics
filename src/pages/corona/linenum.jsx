@@ -4,8 +4,7 @@ import { Skeleton, Card } from 'antd'
 import echarts from 'echarts';
 // import 'echarts/map/js/china';
 import geoJson from 'echarts/map/json/china.json';
-import { cityCord, cityArray } from '../../city';
-import locale from "antd/es/date-picker/locale/zh_CN";
+import { cityCord,  } from '../../city';
 import { host } from '../../config'
 import axios from 'axios'
 

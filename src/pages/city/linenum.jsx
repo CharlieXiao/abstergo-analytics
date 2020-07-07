@@ -60,51 +60,6 @@ const convertData = (data) => {
     return res;
 };
 
-const dataTemplate = [
-    { city: '北京', linenum: 36, },
-    { city: '长春', linenum: 36, },
-    { city: '重庆', linenum: 36, },
-    { city: '长沙', linenum: 36, },
-    { city: '成都', linenum: 36, },
-    { city: '大连', linenum: 36,  },
-    { city: '福州', linenum: 36,  },
-    { city: '广州', linenum: 36,  },
-    { city: '贵阳', linenum: 36,  },
-    { city: '桂林', linenum: 36,  },
-    { city: '海口', linenum: 36,  },
-    { city: '合肥', linenum: 36,  },
-    { city: '杭州', linenum: 36,  },
-    { city: '济南', linenum: 36,  },
-    { city: '昆明', linenum: 16,  },
-    { city: '兰州', linenum: 16,  },
-    { city: '拉萨', linenum: 16,  },
-    { city: '南昌', linenum: 16,  },
-    { city: '南京', linenum: 16,  },
-    { city: '南宁', linenum: 16,  },
-    { city: '泉州', linenum: 16,  },
-    { city: '青岛', linenum: 16, },
-    { city: '上海', linenum: 16, },
-    { city: '沈阳', linenum: 16, },
-    { city: '三亚', linenum: 6, },
-    { city: '深圳', linenum: 6, },
-    { city: '天津', linenum: 6,  },
-    { city: '太原', linenum: 6,  },
-    { city: '温州', linenum: 6,  },
-    { city: '武汉', linenum: 6,  },
-    { city: '无锡', linenum: 6,  },
-    { city: '西安', linenum: 6,  },
-    { city: '厦门', linenum: 6,  },
-    { city: '西宁', linenum: 6,  },
-    { city: '银川', linenum: 6,  },
-    { city: '扬州', linenum: 6,  },
-    { city: '郑州', linenum: 6,  },
-    { city: '珠海', linenum: 6,  },
-    { city: '石家庄', linenum: 46,  },
-    { city: '哈尔滨', linenum: 46,  },
-    { city: '呼和浩特', linenum: 46,  },
-    { city: '乌鲁木齐', linenum: 46,  },
-]
-
 const option = {
     tooltip: {
         // hover item时出现tooltip

@@ -1,9 +1,8 @@
 import React, { createElement, useState } from 'react';
-import { Comment as AntComment, Tooltip, Avatar } from 'antd';
-import moment from 'moment';
+import { Comment as AntComment, Tooltip } from 'antd';
 import { DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-design/icons';
 
-const Comment = ({content}) => {
+const Comment = ({content,author}) => {
     const [likes, setLikes] = useState(0);
     const [dislikes, setDislikes] = useState(0);
     const [action, setAction] = useState(null);
@@ -43,7 +42,7 @@ const Comment = ({content}) => {
     return (
         <AntComment
             actions={actions}
-            author={<a>Han Solo</a>}
+            author={author}
             // avatar={
             //     <Avatar
             //         src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"

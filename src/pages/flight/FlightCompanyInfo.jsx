@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import PageHeader from '../../component/pageheader'
 import { Row, Col } from 'antd'
-import { Select, Form, Button, Card } from 'antd';
+import { Select, Form,  Card } from 'antd';
 import {
     Chart,
     Interval,
     Tooltip,
-    Legend,
-    View,
     Axis,
     Coordinate,
     Interaction
 } from 'bizcharts';
-import { DataView, DataSet } from '@antv/data-set';
+import {  DataSet } from '@antv/data-set';
 import axios from 'axios';
 import { host } from "../../config"
-import { company, getCodeByCompanyName, getCompanyNameByCode } from "../../city"
+import { company,  getCompanyNameByCode } from "../../city"
 
 
 

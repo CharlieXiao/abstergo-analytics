@@ -1,4 +1,4 @@
-import React, { Component, useRef, useEffect, useState } from 'react';
+import React, {  useRef, useEffect } from 'react';
 import echarts from 'echarts';
 // import 'echarts/map/js/china';
 import geoJson from 'echarts/map/json/china.json';
