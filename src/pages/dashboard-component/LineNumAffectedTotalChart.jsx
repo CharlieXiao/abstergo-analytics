@@ -93,7 +93,7 @@ const LineNumAffectedTotalChart = () => {
     };
 
     return (
-        <Card title="全年各市航班价格平均值">
+        <Card title="新冠疫情感染人数和航班起降数变化趋势图">
             <ColumnLine {...config} />
         </Card>  
     )

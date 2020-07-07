@@ -220,7 +220,7 @@ const PlaneTypesPieChart = ({ data, onClick }) => {
                             return `${data.item}: ${Math.floor(data.percent * 100)}%`;
                     },
                 }]}
-                tooltip={{ fields: ['item', 'count'] }}
+                tooltip={{ fields: ['item', 'count']}}
             />
             <Interaction type='element-single-selected' />
         </Chart>

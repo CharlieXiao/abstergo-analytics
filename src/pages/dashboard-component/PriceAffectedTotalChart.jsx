@@ -48,6 +48,7 @@ const PriceAffectedChart = () => {
     const getAndSetPriceData = () =>{
         axios.get(host+"/flight/getTotalPrice").then((res)=>{
             if(res.data.success){
+                
                 console.log(res.data.data);
                 
                 setPriceData(res.data.data);
@@ -94,7 +95,7 @@ const PriceAffectedChart = () => {
     };
 
     return (
-        <Card title="全年各市航班价格平均值">
+        <Card title="新冠疫情感染人数和航班价格变化趋势图">
             <ColumnLine {...config} />
         </Card>
     )

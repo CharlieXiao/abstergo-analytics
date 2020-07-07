@@ -55,6 +55,7 @@ const DayTimeAndPriceChart = () => {
     data: dayTimePrice,
     xField: '时间',
     yField: '价格',
+    xAxis: { label: { formatter: (v) => `${v}:00` } },
     yAxis:{
       min:500,
       max:1600
@@ -74,9 +75,16 @@ const DayTimeAndPriceChart = () => {
         lineWidth: 2,
       },
     },
+    // tooltip:{
+    //   visible:true,
+    //   fields:['时间','价格'],
+    //   formatter:{
+       
+    //   }
+    // }
   };
   return (
-    <Card title="全年各市航班价格平均值">
+    <Card title="一天内机票平均价格变化趋势">
       <Line {...config} />
     </Card>
   );
